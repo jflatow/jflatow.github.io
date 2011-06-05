@@ -15,6 +15,16 @@
     <form>
       <label for="topic">Topic:</label>
       <input id="topic" type="text" />
+      <label for="sortby">by:</label>
+      <select id="sortby">
+        <option value="points">points</option>
+        <option value="num_comments">number of comments</option>
+        <option value="create_ts">create date</option>
+      </select>
+      <select id="order">
+        <option value="desc">descending</option>
+        <option value="asc">ascending</option>
+      </select>
     </form>
   </div>
   <div id="content">

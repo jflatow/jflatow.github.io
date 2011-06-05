@@ -135,7 +135,7 @@ function ResultSet(parent, paper) {
 function update(force) {
   var request = {'q': $('#control').data('topic'),
                  'filter[fields][type][]': 'submission',
-                 'sortby': 'points desc'};
+                 'sortby': $('#sortby').val() + ' ' + $('#order').val()};
   search('items', request, receiver(force));
 }
 
