@@ -1,0 +1,86 @@
+body {
+    font-family: Verdana;
+    font-size: 11px;
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+#control {
+    float: left;
+    height: 50px;
+    width: 100%;
+    background-color: black;
+    color: white;
+}
+
+#control form {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+#control form input {
+    line-height: 1.2em;
+}
+
+#info {
+    float: right;
+    padding: 10px;
+    text-align: right;
+}
+
+#info #title {
+    font-size: 16px;
+}
+
+#info #author {
+    font-size: 12px;
+}
+
+#info #author a {
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px dotted white;
+}
+
+#content {
+    float: left;
+    width: 100%;
+}
+
+#paper {
+    float: right;
+    margin: 3px;
+}
+
+#results {
+    float: left;
+    width: 525px;
+}
+
+#results .result {
+    border: 1px dotted black;
+    clear: both;
+    float: left;
+    margin: 3px 5px 0px 5px;
+    padding: 3px;
+    height: 50px;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+#results .result .fieldname {
+    font-weight: bold;
+    clear: left;
+    float: left;
+    padding: 2px;
+}
+
+#results .result .fieldvalue {
+    clear: right;
+    float: left;
+    padding: 2px;
+}
