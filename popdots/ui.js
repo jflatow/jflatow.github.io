@@ -97,6 +97,9 @@ function HNItem(result, parent, paper) {
     if (self.ctrl)
       self.ctrl.text() == '+' ? self.expand() : self.collapse();
   }
+  self.open = function () {
+    window.open('http://news.ycombinator.com/item?id=' + self.item.id);
+  }
 
   self.element = $('<div class="result item"></div>').prependTo(parent)
     .attr({'height': row_height})
@@ -139,6 +142,7 @@ function HNItem(result, parent, paper) {
             result.collapse();
         });
     });
+  self.circle.dblclick(self.open);
   self.circle.mouseover(self.highlight);
   self.circle.mouseout(self.unhighlight);
 
@@ -183,9 +187,9 @@ function ResultSet(parent, paper) {
 
 function update(force) {
   var request = {'q': $('#control').data('topic'),
+                 'sortby': $('#sortby').val() + ' ' + $('#order').val(),
                  'filter[fields][type][]': $('#type').val(),
-                 'limit': 20,
-                 'sortby': $('#sortby').val() + ' ' + $('#order').val()};
+                 'limit': 20};
   search('items', request, receiver(force));
 }
 
