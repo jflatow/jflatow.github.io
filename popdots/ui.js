@@ -92,9 +92,6 @@ function HNItem(result, parent, paper) {
         });
     }
   }
-  self.select = function () {
-    window.open('http://news.ycombinator.com/item?id=' + self.item.id);
-  }
   self.toggle = function () {
     if (self.ctrl)
       self.ctrl.text() == '+' ? self.expand() : self.collapse();
@@ -133,15 +130,15 @@ function HNItem(result, parent, paper) {
                          comments_str)
     .attr({'font-size': '11px'});
   self.label = paper.set([self.title, self.user]).attr({'opacity': 0}).hide();
-  self.circle.click(self.select);
-  self.circle.mouseover(function () {
+  self.circle.click(function () {
       self.highlight();
-      self.expand()
+      self.toggle();
       $.each(Results.data, function (i, result) {
           if (self.element != result.element)
             result.collapse();
         });
     });
+  self.circle.mouseover(self.highlight);
   self.circle.mouseout(self.unhighlight);
 
   self.slideTo = function (x) {
