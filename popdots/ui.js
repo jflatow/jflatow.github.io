@@ -55,6 +55,7 @@ function repeat(fun, interval) {
 
 function HNItem(result, parent, paper) {
   var self = this;
+  var title = result.item.title || 'Re: ' + result.item.discussion.title;
   var points_str = (result.item.points || 0) + ' points by ';
   var comments_str = ' | ' + (result.item.num_comments || 0) + ' comments';
   var row_height = '1.5em';
@@ -105,7 +106,7 @@ function HNItem(result, parent, paper) {
   if (result.item.text)
     self.ctrl = $('<div class="ctrl">+</div>').click(self.toggle).appendTo(self.element);
   self.element.append('<div class="title">' +
-                      link('http://news.ycombinator.com/item?id=' + self.item.id, result.item.title) +
+                      link('http://news.ycombinator.com/item?id=' + self.item.id, title) +
                       '</div>');
   self.element.append('<div class="info">' +
                       points_str +
@@ -122,7 +123,7 @@ function HNItem(result, parent, paper) {
     .attr({'fill': 'rgb(' + [Math.min(255, intensity), 0, Math.max(0, 255 - intensity)].join(",") + ')',
            'fill-opacity': opacity,
            'cursor': 'pointer'});
-  self.title = paper.text(paper.width / 2, 20, result.item.title)
+  self.title = paper.text(paper.width / 2, 20, title)
     .attr({'font-size': '16px', 'font-weight': 'bold'});
   self.user = paper.text(paper.width / 2, 40,
                          points_str +
@@ -183,7 +184,7 @@ function ResultSet(parent, paper) {
 
 function update(force) {
   var request = {'q': $('#control').data('topic'),
-                 'filter[fields][type][]': 'submission',
+                 'filter[fields][type][]': $('#type').val(),
                  'limit': 20,
                  'sortby': $('#sortby').val() + ' ' + $('#order').val()};
   search('items', request, receiver(force));
@@ -216,6 +217,7 @@ $().ready(function () {
       Paper.text(20, Paper.height - ymarker - 36 * 2, Math.floor(ymarker * 3));
     }
     $('#control form').submit(change_topic);
+    $('#control form select').change(change_topic);
     $('#topic').focus();
     repeat(update, 5000);
   });
