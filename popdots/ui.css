@@ -58,7 +58,7 @@ body {
 
 #results {
     float: left;
-    width: 525px;
+    width: 450px;
 }
 
 #results .result {
@@ -67,21 +67,41 @@ body {
     float: left;
     margin: 3px 5px 0px 5px;
     padding: 3px;
-    height: 50px;
+    height: 35px;
     width: 100%;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: hidden;
 }
 
-#results .result .fieldname {
-    font-weight: bold;
-    clear: left;
+#results .result a:active, a:link  {
+    color: grey;
+    text-decoration: none;
+}
+
+#results .result a:hover {
+    border-bottom: 1px dotted green;
+}
+
+#results .result a:visited {
+    color: green;
+}
+
+#results .result .title {
+    clear: both;
     float: left;
     padding: 2px;
 }
 
-#results .result .fieldvalue {
-    clear: right;
+#results .result .user {
+    font-size: 9px;
+    clear: both;
     float: left;
     padding: 2px;
+}
+
+#results .result .text {
+    font-size: 9px;
+    clear: both;
+    float: left;
+    padding: 3px;
 }

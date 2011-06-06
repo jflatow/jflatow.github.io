@@ -35,17 +35,15 @@ function HNItem(result, parent, paper) {
   self.highlight = function () {
     self.label.show().animate({'opacity': 1}, 1e3);
     self.circle.animate({'stroke-width': 3, 'fill-opacity': .8}, 1e3);
-    self.element.css({'overflow-y': 'visible',
-                      'height': 'auto',
-                      'border-bottom': '0px',
-                      'background-color': 'rgba(255, 255, 0, .4)'});
+    self.element.css({'background-color': 'rgba(255, 255, 0, .4)'});
+    if (result.item.text) {
+      self.element.css({'height': 'auto'})
+    }
   }
   self.unhighlight = function () {
     self.label.animate({'opacity': 0}, 1e2, self.label.hide);
     self.circle.animate({'stroke-width': 1, 'fill-opacity': .3}, 1e3);
-    self.element.css({'overflow-y': 'scroll',
-                      'height': '50px',
-                      'border-bottom': '1px dotted black',
+    self.element.css({'height': '35px',
                       'background-color': 'white'});
   }
   self.select = function () {
@@ -55,27 +53,27 @@ function HNItem(result, parent, paper) {
   self.element = $('<div class="result item"></div>').prependTo(parent)
     .hover(self.highlight, self.unhighlight);
 
-  $.each(['username', 'title', 'points', 'text'], function (i, field) {
-      var value = result.item[field];
-      if (field == 'username')
-        value = link('http://news.ycombinator.com/user?id=' + result.item[field], value);
-      else if (field == 'title')
-        value = link('http://news.ycombinator.com/item?id=' + self.item.id, value);
-      if (result.item[field]) {
-        self.element.append('<div class="fieldname">' + field + ': </div>');
-        self.element.append('<div class="fieldvalue">' + value + '</div>');
-      }
-    });
+
+  self.element.append('<div class="title">' +
+                      link('http://news.ycombinator.com/item?id=' + self.item.id, result.item.title) +
+                      '</div>');
+  self.element.append('<div class="user">' +
+                      (result.item.points || 0) + ' points by ' +
+                      link('http://news.ycombinator.com/user?id=' + result.item.username, result.item.username) +
+                      '</div>');
+  if (result.item.text)
+    self.element.append('<div class="text">' + result.item.text + '</div>');
 
   self.circle = paper.circle(paper.width,
-                             Math.max(0, paper.height - self.item.points / 3 - 36),
+                             Math.max(0, paper.height - self.item.points / 3 - 36 * 2),
                              result.score + 6)
     .attr({'fill': 'hsb(' + [Math.random(), Math.random(), Math.random()].join(",") + ')',
            'fill-opacity': .3,
            'cursor': 'pointer'});
-  self.title = paper.text(paper.width / 2, paper.height / 4, result.item.title)
+  self.title = paper.text(paper.width / 2, 20, result.item.title)
     .attr({'font-size': '14px'});
-  self.user = paper.text(paper.width / 2, paper.height / 4 + 20, result.item.username)
+  self.user = paper.text(paper.width / 2, 40,
+                         (result.item.points || 0) + ' points by ' + result.item.username)
     .attr({'font-size': '13px'});
   self.label = paper.set([self.title, self.user]).attr({'opacity': 0}).hide();
   self.circle.click(self.select);
@@ -89,7 +87,7 @@ function HNItem(result, parent, paper) {
   self.circle.mouseout(function (event) {
       self.unhighlight();
       $.each(Results.data, function (i, result) {
-          result.element.css({'height': '50px'});
+          result.element.css({'height': '35px'});
         });
     });
 
@@ -107,7 +105,7 @@ function HNItem(result, parent, paper) {
 function ResultSet(parent, paper) {
   var self = this;
   self.data = [];
-  self.binx = 50;
+  self.binx = 25;
   self.nbin = (paper.width - 20) / (self.binx + 1);
   self.push = function (result, force) {
     if (!force)
@@ -135,6 +133,7 @@ function ResultSet(parent, paper) {
 function update(force) {
   var request = {'q': $('#control').data('topic'),
                  'filter[fields][type][]': 'submission',
+                 'limit': 20,
                  'sortby': $('#sortby').val() + ' ' + $('#order').val()};
   search('items', request, receiver(force));
 }
@@ -148,7 +147,7 @@ function change_topic(event) {
 $().ready(function () {
     var ticks = 6;
     Paper = new Raphael('paper',
-                        Math.max(550, $('#content').width() - $('#results').outerWidth(true) - 40),
+                        Math.max(500, $('#content').width() - $('#results').outerWidth(true) - 40),
                         $('body').height() - $('#control').outerHeight(true) - 10);
     Results = new ResultSet($('#results'), Paper);
     Paper.text(Paper.width - 10, Paper.height - 20, "Rank").attr({'text-anchor': 'end'});
@@ -156,14 +155,14 @@ $().ready(function () {
       Paper._xticks && Paper._xticks.remove();
       Paper._xticks = Paper.set();
       for (var i = 0; i < num; i++)
-        Paper._xticks.push(Paper.text(Math.floor((Paper.width - 20) / 51 - i) * 50,
+        Paper._xticks.push(Paper.text(Math.floor((Paper.width - 20) / (25 + 1) - i) * 25,
                                       Paper.height - 20,
                                       i + 1));
     }
     Paper.text(20, 20, "Points");
     for (var i = 1; i < ticks; i++) {
-      var ymarker = i * (Paper.height - 36) / ticks;
-      Paper.text(20, Paper.height - ymarker - 36, Math.floor(ymarker * 3));
+      var ymarker = i * (Paper.height - 36 * 2) / ticks;
+      Paper.text(20, Paper.height - ymarker - 36 * 2, Math.floor(ymarker * 3));
     }
     $('#control form').submit(change_topic);
     $('#topic').focus();
