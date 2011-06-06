@@ -85,11 +85,12 @@ function HNItem(result, parent, paper) {
         });
   }
   self.expand = function () {
-    if (self.ctrl)
-      self.element.animate({'height': '30%'}, 5e2, function () {
+    if (self.ctrl) {
+      self.element.animate({'height': '10%'}, 5e2, function () {
           self.ctrl.text('-');
           self.element.css({'height': 'auto'});
         });
+    }
   }
   self.select = function () {
     window.open('http://news.ycombinator.com/item?id=' + self.item.id);
