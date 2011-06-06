@@ -67,7 +67,7 @@ body {
     float: left;
     margin: 3px 5px 0px 5px;
     padding: 3px;
-    height: 35px;
+    height: 1.5em;
     width: 100%;
     overflow-x: hidden;
     overflow-y: hidden;
@@ -86,22 +86,30 @@ body {
     color: green;
 }
 
-#results .result .title {
-    clear: both;
-    float: left;
-    padding: 2px;
+#results .result .ctrl {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    float: right;
+    padding: 0px 4px;
 }
 
-#results .result .user {
-    font-size: 9px;
-    clear: both;
+#results .result .title {
+    font-size: 10px;
     float: left;
-    padding: 2px;
+    padding: 0px 2px;
+}
+
+#results .result .info {
+    font-size: 9px;
+    float: left;
+    clear: left;
+    padding: 5px 2px;
 }
 
 #results .result .text {
     font-size: 9px;
     clear: both;
     float: left;
-    padding: 3px;
+    padding: 15px 3px 0px 5px;
 }

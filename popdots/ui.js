@@ -55,37 +55,63 @@ function repeat(fun, interval) {
 
 function HNItem(result, parent, paper) {
   var self = this;
+  var points_str = (result.item.points || 0) + ' points by ';
+  var comments_str = ' | ' + (result.item.num_comments || 0) + ' comments';
+  var row_height = '1.5em';
+  var intensity = Math.max(result.item.num_comments || 0, 2) / 2;
+  var opacity = Math.max(.1, intensity / 1e3);
   self.item = result.item;
 
   self.highlight = function () {
     self.label.show().animate({'opacity': 1}, 1e3);
-    self.circle.animate({'stroke-width': 3, 'fill-opacity': .8}, 1e3);
+    self.circle.animate({'stroke-width': 3, 'fill-opacity': .9}, 1e3);
     self.element.css({'background-color': 'rgba(255, 255, 0, .4)'});
-    if (result.item.text) {
-      self.element.css({'height': 'auto'})
-    }
+    self.element.animate({'height': '3em'});
   }
   self.unhighlight = function () {
     self.label.animate({'opacity': 0}, 1e2, self.label.hide);
-    self.circle.animate({'stroke-width': 1, 'fill-opacity': .3}, 1e3);
-    self.element.css({'height': '35px',
-                      'background-color': 'white'});
+    self.circle.animate({'stroke-width': 1, 'fill-opacity': opacity}, 1e3);
+    self.element.css({'background-color': 'white'});
+    self.element.animate({'height': row_height}, 5e2, function () {
+        self.ctrl && self.ctrl.text('+');
+      });
+  }
+
+  self.collapse = function () {
+    if (self.ctrl)
+      self.element.animate({'height': row_height}, 5e2, function () {
+           self.ctrl.text('+');
+        });
+  }
+  self.expand = function () {
+    if (self.ctrl)
+      self.element.animate({'height': '30%'}, 5e2, function () {
+          self.ctrl.text('-');
+          self.element.css({'height': 'auto'});
+        });
   }
   self.select = function () {
     window.open('http://news.ycombinator.com/item?id=' + self.item.id);
   }
+  self.toggle = function () {
+    if (self.ctrl)
+      self.ctrl.text() == '+' ? self.expand() : self.collapse();
+  }
 
   self.element = $('<div class="result item"></div>').prependTo(parent)
+    .attr({'height': row_height})
     .hover(self.highlight, self.unhighlight);
 
-
+  if (result.item.text)
+    self.ctrl = $('<div class="ctrl">+</div>').click(self.toggle).appendTo(self.element);
   self.element.append('<div class="title">' +
                       link('http://news.ycombinator.com/item?id=' + self.item.id, result.item.title) +
                       '</div>');
-  self.element.append('<div class="user">' +
-                      (result.item.points || 0) + ' points by ' +
+  self.element.append('<div class="info">' +
+                      points_str +
                       link('http://news.ycombinator.com/user?id=' + result.item.username, result.item.username) + ' ' +
                       relative_time(result.item.create_ts) +
+                      comments_str +
                       '</div>');
   if (result.item.text)
     self.element.append('<div class="text">' + result.item.text + '</div>');
@@ -93,38 +119,37 @@ function HNItem(result, parent, paper) {
   self.circle = paper.circle(paper.width,
                              Math.max(0, paper.height - self.item.points / 3 - 36 * 2),
                              result.score + 6)
-    .attr({'fill': 'hsb(' + [Math.random(), Math.random(), Math.random()].join(",") + ')',
-           'fill-opacity': .3,
+    .attr({'fill': 'rgb(' + [Math.min(255, intensity), 0, Math.max(0, 255 - intensity)].join(",") + ')',
+           'fill-opacity': opacity,
            'cursor': 'pointer'});
   self.title = paper.text(paper.width / 2, 20, result.item.title)
-    .attr({'font-size': '14px'});
+    .attr({'font-size': '16px', 'font-weight': 'bold'});
   self.user = paper.text(paper.width / 2, 40,
-                         (result.item.points || 0) + ' points by ' + result.item.username)
-    .attr({'font-size': '13px'});
+                         points_str +
+                         result.item.username + ' ' +
+                         relative_time(result.item.create_ts) +
+                         comments_str)
+    .attr({'font-size': '11px'});
   self.label = paper.set([self.title, self.user]).attr({'opacity': 0}).hide();
   self.circle.click(self.select);
-  self.circle.mouseover(function (event) {
+  self.circle.mouseover(function () {
       self.highlight();
+      self.expand()
       $.each(Results.data, function (i, result) {
-          if (result.element != self.element)
-            result.element.css({'height': '0px'});
+          if (self.element != result.element)
+            result.collapse();
         });
     });
-  self.circle.mouseout(function (event) {
-      self.unhighlight();
-      $.each(Results.data, function (i, result) {
-          result.element.css({'height': '35px'});
-        });
-    });
+  self.circle.mouseout(self.unhighlight);
 
   self.slideTo = function (x) {
-    self.circle.animate({'cx': x}, 2e3);
+    self.circle.animate({'cx': x}, 1e3);
   }
 
   self.remove = function () {
     self.element.remove();
     self.label.remove();
-    self.circle.animate({'cx': -self.circle.attr('r') * 2}, 2e3, self.circle.remove);
+    self.circle.animate({'cx': -self.circle.attr('r') * 2}, 1e3, self.circle.remove);
   }
 }
 
