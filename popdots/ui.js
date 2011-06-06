@@ -55,7 +55,8 @@ function repeat(fun, interval) {
 
 function HNItem(result, parent, paper) {
   var self = this;
-  var title = result.item.title || 'Re: ' + result.item.discussion.title;
+  var title = result.item.title ||
+    'Re: ' + ((result.item.discussion && result.item.discussion.title) || '');
   var points_str = (result.item.points || 0) + ' points by ';
   var comments_str = ' | ' + (result.item.num_comments || 0) + ' comments';
   var row_height = '1.5em';
