@@ -21,6 +21,31 @@ function receiver(force) {
   }
 }
 
+function relative_time(timestamp) {
+  var date_time = timestamp.replace('Z', '').split('T');
+  var ymd = date_time[0].split('-'), hms = date_time[1].split(':');
+  var date = new Date(ymd[0], ymd[1] - 1, ymd[2], hms[0], hms[1], hms[2]);
+  var relative_to = (arguments.length > 1) ? arguments[1] : new Date();
+  var delta = parseInt((relative_to.getTime() - date.getTime()) / 1000) +
+    (relative_to.getTimezoneOffset() * 60);
+
+  if (delta < 60) {
+    return '< a minute ago';
+  } else if(delta < 120) {
+    return '~ a minute ago';
+  } else if(delta < (60*60)) {
+    return (parseInt(delta / 60)).toString() + ' minutes ago';
+  } else if(delta < (120*60)) {
+    return '~ an hour ago';
+  } else if(delta < (24*60*60)) {
+    return '~ ' + (parseInt(delta / 3600)).toString() + ' hours ago';
+  } else if(delta < (48*60*60)) {
+    return '~ 1 day ago';
+  } else {
+    return '~ ' + (parseInt(delta / 86400)).toString() + ' days ago';
+  }
+}
+
 function repeat(fun, interval) {
   (function closure() {
     fun();
@@ -59,7 +84,8 @@ function HNItem(result, parent, paper) {
                       '</div>');
   self.element.append('<div class="user">' +
                       (result.item.points || 0) + ' points by ' +
-                      link('http://news.ycombinator.com/user?id=' + result.item.username, result.item.username) +
+                      link('http://news.ycombinator.com/user?id=' + result.item.username, result.item.username) + ' ' +
+                      relative_time(result.item.create_ts) +
                       '</div>');
   if (result.item.text)
     self.element.append('<div class="text">' + result.item.text + '</div>');
