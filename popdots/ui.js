@@ -103,6 +103,7 @@ function HNItem(result, parent, paper) {
 
   self.element = $('<div class="result item"></div>').prependTo(parent)
     .attr({'height': row_height})
+    .dblclick(self.open)
     .hover(self.highlight, self.unhighlight);
 
   if (result.item.text)
