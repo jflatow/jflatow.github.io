@@ -207,22 +207,26 @@ $().ready(function () {
                         Math.max(500, $('#content').width() - $('#results').outerWidth(true) - 40),
                         $('body').height() - $('#control').outerHeight(true) - 10);
     Results = new ResultSet($('#results'), Paper);
-    Paper.text(Paper.width - 10, Paper.height - 20, "Rank").attr({'text-anchor': 'end'});
+    Paper.text(Paper.width - 10, Paper.height - 20, "Rank")
+      .attr({'font-weight': 'Bold', 'text-anchor': 'end'});
     Paper.xticks = function (num) {
       Paper._xticks && Paper._xticks.remove();
       Paper._xticks = Paper.set();
       for (var i = 0; i < num; i++)
         Paper._xticks.push(Paper.text(Math.floor((Paper.width - 20) / (25 + 1) - i) * 25,
                                       Paper.height - 20,
-                                      i + 1));
+                                      i + 1)
+                           .attr({'font-weight': 'Bold'}));
     }
     Paper.yticks = function (num) {
       if (!Paper._yticks) {
-        Paper._yticks = Paper.set([Paper.text(20, 20, "Points")]);
+        Paper._yticks = Paper.set([Paper.text(20, 20, "Points")
+                                   .attr({'font-weight': 'Bold'})]);
         for (var i = 1; i < num; i++) {
           var ymarker = i * (Paper.height - 36 * 2) / num;
           Paper._yticks.push(Paper.text(20, 20, Math.floor(ymarker * 3))
-                             .animate({'y': Paper.height - ymarker - 36 * 2}, 2e3, 'bounce'));
+                             .attr({'font-weight': 'Bold'})
+                             .animate({'y': Paper.height - ymarker - 36 * 2}, 3e3, 'bounce'));
         }
       }
     }
