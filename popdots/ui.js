@@ -123,7 +123,7 @@ function HNItem(result, parent, paper) {
 
   self.circle = paper.circle(20,
                              Math.max(0, paper.height - self.item.points / 3 - 36 * 2),
-                             result.score + 6)
+                             result.score + 10)
     .attr({'fill': 'rgb(' + [Math.min(255, intensity), 0, Math.max(0, 255 - intensity)].join(",") + ')',
            'fill-opacity': opacity,
            'cursor': 'pointer'});
