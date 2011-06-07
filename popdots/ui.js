@@ -167,11 +167,11 @@ function ResultSet(parent, paper) {
   self.binx = 25;
   self.nbin = (paper.width - 20) / (self.binx + 1);
   self.push = function (result, force) {
-    if (!force)
-      for (var i = 0; i < self.data.length; i++)
-        if (self.data[i].item.id == result.item.id)
-          return;
-    self.data.push(new HNItem(result, parent, paper));
+    var item;
+    for (var i = 0; i < self.data.length; i++)
+      if (result.item.id == self.data[i].item.id)
+        item = self.data.splice(i, 1)[0];
+    self.data.push(item || new HNItem(result, parent, paper));
     if (self.data.length > self.nbin)
       self.data.shift().remove();
   }
@@ -198,7 +198,6 @@ function update(force) {
 }
 
 function change_topic(event) {
-  Results.clear();
   $('#control').data('topic', $('#topic').val());
   return update(true) || false;
 }
