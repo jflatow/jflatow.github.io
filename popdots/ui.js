@@ -235,5 +235,5 @@ $().ready(function () {
     $('#control form').submit(change_topic);
     $('#control form select').change(change_topic);
     $('#topic').focus();
-    repeat(update, 5000);
+    repeat(update, 60000);
   });
