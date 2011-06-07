@@ -149,7 +149,9 @@ function HNItem(result, parent, paper) {
   self.circle.mouseout(self.unhighlight);
 
   self.slideTo = function (x) {
-    self.circle.animate({'cx': x}, 1e3);
+    self.circle.animate({'cx': x - 5}, 1e3, function() {
+        self.circle.animate({'cx': x}, 2e3, 'bounce');
+      });
   }
 
   self.remove = function () {
