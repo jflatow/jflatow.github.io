@@ -58,10 +58,12 @@ function HNItem(result, parent, paper) {
   var self = this;
   var title = result.item.title ||
     'Re: ' + ((result.item.discussion && result.item.discussion.title) || '');
+  var item_url = 'http://news.ycombinator.com/item?id=' + result.item.id;
+  var user_url = 'http://news.ycombinator.com/user?id=' + result.item.username;
   var points_str = (result.item.points || '-') + ' points by ';
-  var comments_str = ' | ' + (result.item.num_comments || 0) + ' comments';
+  var num_comments = result.item.num_comments || 0;
   var row_height = '1.5em';
-  var intensity = Math.max(result.item.num_comments || 0, 2) / 2;
+  var intensity = Math.max(num_comments, 2) / 2;
   var opacity = Math.max(.1, intensity / 1e3);
   self.item = result.item;
 
@@ -110,13 +112,13 @@ function HNItem(result, parent, paper) {
   if (result.item.text)
     self.ctrl = $('<div class="ctrl">+</div>').click(self.toggle).appendTo(self.element);
   self.element.append('<div class="title">' +
-                      link('http://news.ycombinator.com/item?id=' + self.item.id, title) +
+                      link(self.item.url || item_url, title) +
                       '</div>');
   self.element.append('<div class="info">' +
                       points_str +
-                      link('http://news.ycombinator.com/user?id=' + result.item.username, result.item.username) + ' ' +
-                      relative_time(result.item.create_ts) +
-                      comments_str +
+                      link(user_url, result.item.username) + ' ' +
+                      relative_time(result.item.create_ts) + ' | ' +
+                      link(item_url, num_comments + ' comments') +
                       '</div>');
   if (result.item.text)
     self.element.append('<div class="text">' + result.item.text + '</div>');
@@ -132,8 +134,8 @@ function HNItem(result, parent, paper) {
   self.user = paper.text(paper.width / 2, 40,
                          points_str +
                          result.item.username + ' ' +
-                         relative_time(result.item.create_ts) +
-                         comments_str)
+                         relative_time(result.item.create_ts) + ' | ' +
+                         num_comments + ' comments')
     .attr({'font-size': '11px'});
   self.label = paper.set([self.title, self.user]).attr({'opacity': 0}).hide();
   self.circle.click(function () {
