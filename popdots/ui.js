@@ -121,7 +121,7 @@ function HNItem(result, parent, paper) {
   if (result.item.text)
     self.element.append('<div class="text">' + result.item.text + '</div>');
 
-  self.circle = paper.circle(paper.width,
+  self.circle = paper.circle(20,
                              Math.max(0, paper.height - self.item.points / 3 - 36 * 2),
                              result.score + 6)
     .attr({'fill': 'rgb(' + [Math.min(255, intensity), 0, Math.max(0, 255 - intensity)].join(",") + ')',
@@ -149,7 +149,7 @@ function HNItem(result, parent, paper) {
   self.circle.mouseout(self.unhighlight);
 
   self.slideTo = function (x) {
-    self.circle.animate({'cx': x - 5}, 1e3, function() {
+    self.circle.animate({'cx': x + 5}, 2e3, function() {
         self.circle.animate({'cx': x}, 2e3, 'bounce');
       });
   }
@@ -157,7 +157,7 @@ function HNItem(result, parent, paper) {
   self.remove = function () {
     self.element.remove();
     self.label.remove();
-    self.circle.animate({'cx': -self.circle.attr('r') * 2}, 1e3, self.circle.remove);
+    self.circle.animate({'cx': paper.width * 2}, 1e3, self.circle.remove);
   }
 }
 
@@ -171,14 +171,14 @@ function ResultSet(parent, paper) {
     for (var i = 0; i < self.data.length; i++)
       if (result.item.id == self.data[i].item.id)
         item = self.data.splice(i, 1)[0];
-    self.data.push(item || new HNItem(result, parent, paper));
+    self.data.unshift(item || new HNItem(result, parent, paper));
     if (self.data.length > self.nbin)
-      self.data.shift().remove();
+      self.data.pop().remove();
   }
 
   self.slide = function () {
     for (var i = 0; i < self.data.length; i++)
-      self.data[i].slideTo(Math.floor(i + self.nbin - self.data.length + 1) * self.binx);
+      self.data[i].slideTo((i + 2) * self.binx);
   }
 
   self.clear = function () {
@@ -213,7 +213,7 @@ $().ready(function () {
       Paper._xticks && Paper._xticks.remove();
       Paper._xticks = Paper.set();
       for (var i = 0; i < num; i++)
-        Paper._xticks.push(Paper.text(Math.floor((Paper.width - 20) / (25 + 1) - i) * 25,
+        Paper._xticks.push(Paper.text((i + 2) * 25,
                                       Paper.height - 20,
                                       i + 1)
                            .attr({'font-weight': 'Bold'}));
