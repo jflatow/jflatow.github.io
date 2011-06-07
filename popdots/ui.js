@@ -14,6 +14,7 @@ function search(collection, request, callback) {
 
 function receiver(force) {
   return function (response) {
+    Paper.yticks(6);
     Paper.xticks(response.results.length);
     for (var i = response.results.length; i; i--)
       Results.push(response.results[i - 1], force);
@@ -201,7 +202,6 @@ function change_topic(event) {
 }
 
 $().ready(function () {
-    var ticks = 6;
     Paper = new Raphael('paper',
                         Math.max(500, $('#content').width() - $('#results').outerWidth(true) - 40),
                         $('body').height() - $('#control').outerHeight(true) - 10);
@@ -215,10 +215,15 @@ $().ready(function () {
                                       Paper.height - 20,
                                       i + 1));
     }
-    Paper.text(20, 20, "Points");
-    for (var i = 1; i < ticks; i++) {
-      var ymarker = i * (Paper.height - 36 * 2) / ticks;
-      Paper.text(20, Paper.height - ymarker - 36 * 2, Math.floor(ymarker * 3));
+    Paper.yticks = function (num) {
+      if (!Paper._yticks) {
+        Paper._yticks = Paper.set([Paper.text(20, 20, "Points")]);
+        for (var i = 1; i < num; i++) {
+          var ymarker = i * (Paper.height - 36 * 2) / num;
+          Paper._yticks.push(Paper.text(20, 20, Math.floor(ymarker * 3))
+                             .animate({'y': Paper.height - ymarker - 36 * 2}, 2e3, 'bounce'));
+        }
+      }
     }
     $('#control form').submit(change_topic);
     $('#control form select').change(change_topic);
