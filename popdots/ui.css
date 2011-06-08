@@ -12,8 +12,8 @@ body {
     float: left;
     height: 50px;
     width: 100%;
-    background-color: black;
-    color: white;
+    background-color: rgba(255, 255, 0, .1);
+    color: black;
 }
 
 #control form {
@@ -35,7 +35,7 @@ body {
 }
 
 #blurb a {
-    color: white;
+    color: black;
     border-bottom: 1px dotted #F60;
 }
 
@@ -54,9 +54,9 @@ body {
 }
 
 #info #author a {
-    color: white;
+    color: black;
     text-decoration: none;
-    border-bottom: 1px dotted white;
+    border-bottom: 1px dotted green;
 }
 
 #content {
