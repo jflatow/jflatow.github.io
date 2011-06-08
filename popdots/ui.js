@@ -70,7 +70,7 @@ function HNItem(result, parent, paper) {
   self.highlight = function () {
     self.label.show().animate({'opacity': 1}, 1e3);
     self.circle.animate({'stroke-width': 3, 'fill-opacity': .9}, 1e3);
-    self.element.css({'background-color': 'rgba(255, 255, 0, .4)'});
+    self.element.css({'background-color': 'rgba(255, 255, 0, .1)'});
     self.element.animate({'height': '3em'});
   }
   self.unhighlight = function () {
@@ -180,7 +180,7 @@ function ResultSet(parent, paper) {
 
   self.slide = function () {
     for (var i = 0; i < self.data.length; i++)
-      self.data[i].slideTo((i + 2) * self.binx);
+      self.data[i].slideTo((i + 3) * self.binx);
   }
 
   self.clear = function () {
@@ -209,13 +209,12 @@ $().ready(function () {
                         Math.max(500, $('#content').width() - $('#results').outerWidth(true) - 40),
                         $('body').height() - $('#control').outerHeight(true) - 10);
     Results = new ResultSet($('#results'), Paper);
-    Paper.text(Paper.width - 10, Paper.height - 20, "Rank")
-      .attr({'font-weight': 'Bold', 'text-anchor': 'end'});
     Paper.xticks = function (num) {
       Paper._xticks && Paper._xticks.remove();
-      Paper._xticks = Paper.set();
+      Paper._xticks = Paper.set([Paper.text(20, Paper.height - 20, "Rank")
+                                 .attr({'font-weight': 'Bold', 'text-anchor': 'start'})]);
       for (var i = 0; i < num; i++)
-        Paper._xticks.push(Paper.text((i + 2) * 25,
+        Paper._xticks.push(Paper.text((i + 3) * 25,
                                       Paper.height - 20,
                                       i + 1)
                            .attr({'font-weight': 'Bold'}));
