@@ -20,10 +20,23 @@ body {
     font-size: 14px;
     font-weight: bold;
     padding: 10px;
+    white-space: nowrap;
 }
 
 #control form input {
     line-height: 1.2em;
+}
+
+#blurb {
+    float: right;
+    padding: 16px 80px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+#blurb a {
+    color: white;
+    border-bottom: 1px dotted #F60;
 }
 
 #info {
