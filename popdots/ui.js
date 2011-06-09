@@ -66,15 +66,20 @@ function HNItem(result, parent, paper) {
   var intensity = Math.max(num_comments, 2) / 2;
   var opacity = Math.max(.1, intensity / 1e3);
   self.item = result.item;
+  self.selected = false;
 
   self.highlight = function () {
     self.label.show().animate({'opacity': 1}, 1e3);
+    if (self.selected)
+      return;
     self.circle.animate({'stroke-width': 3, 'fill-opacity': .9}, 1e3);
     self.element.css({'background-color': 'rgba(255, 255, 0, .1)'});
     self.element.animate({'height': '3em'});
   }
   self.unhighlight = function () {
     self.label.animate({'opacity': 0}, 1e2, self.label.hide);
+    if (self.selected)
+      return;
     self.circle.animate({'stroke-width': 1, 'fill-opacity': opacity}, 1e3);
     self.element.css({'background-color': 'white'});
     self.element.animate({'height': row_height}, 5e2, function () {
@@ -83,12 +88,14 @@ function HNItem(result, parent, paper) {
   }
 
   self.collapse = function () {
+    self.deselect();
     if (self.ctrl)
       self.element.animate({'height': row_height}, 5e2, function () {
            self.ctrl.text('+');
         });
   }
   self.expand = function () {
+    self.select();
     if (self.ctrl) {
       self.element.animate({'height': '10%'}, 5e2, function () {
           self.ctrl.text('-');
@@ -96,30 +103,49 @@ function HNItem(result, parent, paper) {
         });
     }
   }
-  self.toggle = function () {
+  self.toggle = function (event) {
+    event.stopPropagation();
     if (self.ctrl)
       self.ctrl.text() == '+' ? self.expand() : self.collapse();
   }
   self.open = function () {
     window.open('http://news.ycombinator.com/item?id=' + self.item.id);
   }
+  self.select = function () {
+    self.selected = true;
+    self.highlight();
+  }
+  self.deselect = function () {
+    self.selected = false;
+    self.unhighlight();
+  }
+  self.toggle_select = function (event) {
+    return self.selected ? self.deselect() : self.select();
+  }
+  self.force_select = function (event) {
+    event.stopPropagation();
+    self.select();
+  }
 
   self.element = $('<div class="result item"></div>').prependTo(parent)
     .attr({'height': row_height})
+    .click(self.toggle_select)
     .dblclick(self.open)
     .hover(self.highlight, self.unhighlight);
 
   if (result.item.text)
     self.ctrl = $('<div class="ctrl">+</div>').click(self.toggle).appendTo(self.element);
-  self.element.append('<div class="title">' +
-                      link(self.item.url || item_url, title) +
-                      '</div>');
-  self.element.append('<div class="info">' +
-                      points_str +
-                      link(user_url, result.item.username) + ' ' +
-                      relative_time(result.item.create_ts) + ' | ' +
-                      link(item_url, num_comments + ' comments') +
-                      '</div>');
+  $('<div class="title">' + link(self.item.url || item_url, title) + '</div>')
+    .appendTo(self.element)
+    .click(self.force_select);
+  $('<div class="info">' +
+    points_str +
+    link(user_url, result.item.username) + ' ' +
+    relative_time(result.item.create_ts) + ' | ' +
+    link(item_url, num_comments + ' comments') +
+    '</div>')
+    .appendTo(self.element)
+    .click(self.force_select);
   if (result.item.text)
     self.element.append('<div class="text">' + result.item.text + '</div>');
 
@@ -146,6 +172,7 @@ function HNItem(result, parent, paper) {
             result.collapse();
         });
     });
+  self.circle.click(self.toggle_select);
   self.circle.dblclick(self.open);
   self.circle.mouseover(self.highlight);
   self.circle.mouseout(self.unhighlight);
