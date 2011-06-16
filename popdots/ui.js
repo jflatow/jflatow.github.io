@@ -230,11 +230,19 @@ function ResultSet(parent, paper) {
 }
 
 function update(force) {
-  var request = {'q': $('#control').data('topic'),
-                 'sortby': $('#sortby').val() + ' ' + $('#order').val(),
+  var topic = $('#control').data('topic');
+  var sortby = $('#sortby').val();
+  var request = {'q': topic,
                  'filter[fields][type][]': $('#type').val(),
                  'limit': 20,
                  'highlight[markup_items]': true};
+  if (sortby == 'hotness') {
+    request['sortby'] = "product(points,div(sub(points,1),pow(sum(div(ms(NOW,create_ts),3600000),2.25),1.8)))"  + ' ' + $('#order').val();
+    if (!topic)
+      request['filter[fields][create_ts]'] = '[NOW-30DAYS TO NOW]';
+  } else {
+    request['sortby'] = sortby + ' ' + $('#order').val();
+  }
   search('items', request, receiver(force));
 }
 
