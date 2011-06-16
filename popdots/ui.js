@@ -60,16 +60,36 @@ function HNItem(result, parent, paper) {
     'Re: ' + ((result.item.discussion && result.item.discussion.title) || '');
   var item_url = 'http://news.ycombinator.com/item?id=' + result.item.id;
   var user_url = 'http://news.ycombinator.com/user?id=' + result.item.username;
-  var points_str = (result.item.points || '-') + ' points by ';
   var num_comments = result.item.num_comments || 0;
+  var points_str = (result.item.points || '-') + ' points by ';
+  var text = result.item.text || '';
+  var matches = text.match(/[^.^\(^\)]*?<strong>.*?<\/strong>.{0,100}/g) || [];
+  var info =
+    points_str +
+    result.item.username + ' ' +
+    relative_time(result.item.create_ts) + ' | ' +
+    num_comments + ' comments';
   var row_height = '1.5em';
   var intensity = Math.max(num_comments, 2) / 2;
   var opacity = Math.max(.1, intensity / 1e3);
+
   self.item = result.item;
   self.selected = false;
 
   self.highlight = function () {
-    self.label.show().animate({'opacity': 1}, 1e3);
+    $('#paper .detail .title').html(title);
+    $('#paper .detail .info').html(info);
+    $('#paper .detail .matches').empty();
+    for (var i = 0; i < matches.length; i++) {
+      var match = matches[i],
+        from = match.search(/<strong>/),
+        to = match.search(/<\/strong>/);
+      $('<div class="match">')
+        .html(match)
+        .appendTo($('#paper .detail .matches'))
+        .css({'left': paper.width / 3 - (from * 7)});
+    }
+    $('#paper .detail').show();
     if (self.selected)
       return;
     self.circle.animate({'stroke-width': 3, 'fill-opacity': .9}, 1e3);
@@ -77,7 +97,7 @@ function HNItem(result, parent, paper) {
     self.element.animate({'height': '3em'});
   }
   self.unhighlight = function () {
-    self.label.animate({'opacity': 0}, 1e2, self.label.hide);
+    $('#paper .detail').hide();
     if (self.selected)
       return;
     self.circle.animate({'stroke-width': 1, 'fill-opacity': opacity}, 1e3);
@@ -104,9 +124,11 @@ function HNItem(result, parent, paper) {
     }
   }
   self.toggle = function (event) {
-    event.stopPropagation();
+    event && event.stopPropagation();
     if (self.ctrl)
       self.ctrl.text() == '+' ? self.expand() : self.collapse();
+    else
+      self.toggle_select(event);
   }
   self.open = function () {
     window.open('http://news.ycombinator.com/item?id=' + self.item.id);
@@ -133,7 +155,7 @@ function HNItem(result, parent, paper) {
     .dblclick(self.open)
     .hover(self.highlight, self.unhighlight);
 
-  if (result.item.text)
+  if (text)
     self.ctrl = $('<div class="ctrl">+</div>').click(self.toggle).appendTo(self.element);
   $('<div class="title">' + link(self.item.url || item_url, title) + '</div>')
     .appendTo(self.element)
@@ -146,8 +168,8 @@ function HNItem(result, parent, paper) {
     '</div>')
     .appendTo(self.element)
     .click(self.force_select);
-  if (result.item.text)
-    self.element.append('<div class="text">' + result.item.text + '</div>');
+  if (text)
+    self.element.append('<div class="text">' + text + '</div>');
 
   self.circle = paper.circle(20,
                              Math.max(0, paper.height - self.item.points / 3 - 36 * 2),
@@ -155,24 +177,14 @@ function HNItem(result, parent, paper) {
     .attr({'fill': 'rgb(' + [Math.min(255, intensity), 0, Math.max(0, 255 - intensity)].join(",") + ')',
            'fill-opacity': opacity,
            'cursor': 'pointer'});
-  self.title = paper.text(paper.width / 2, 20, title)
-    .attr({'font-size': '16px', 'font-weight': 'bold'});
-  self.user = paper.text(paper.width / 2, 40,
-                         points_str +
-                         result.item.username + ' ' +
-                         relative_time(result.item.create_ts) + ' | ' +
-                         num_comments + ' comments')
-    .attr({'font-size': '11px'});
-  self.label = paper.set([self.title, self.user]).attr({'opacity': 0}).hide();
   self.circle.click(function () {
-      self.highlight();
       self.toggle();
       $.each(Results.data, function (i, result) {
           if (self.element != result.element)
             result.collapse();
         });
+      self.highlight();
     });
-  self.circle.click(self.toggle_select);
   self.circle.dblclick(self.open);
   self.circle.mouseover(self.highlight);
   self.circle.mouseout(self.unhighlight);
@@ -185,7 +197,6 @@ function HNItem(result, parent, paper) {
 
   self.remove = function () {
     self.element.remove();
-    self.label.remove();
     self.circle.animate({'cx': paper.width * 2}, 1e3, self.circle.remove);
   }
 }
@@ -222,7 +233,8 @@ function update(force) {
   var request = {'q': $('#control').data('topic'),
                  'sortby': $('#sortby').val() + ' ' + $('#order').val(),
                  'filter[fields][type][]': $('#type').val(),
-                 'limit': 20};
+                 'limit': 20,
+                 'highlight[markup_items]': true};
   search('items', request, receiver(force));
 }
 
@@ -245,6 +257,7 @@ $().ready(function () {
                                       Paper.height - 20,
                                       i + 1)
                            .attr({'font-weight': 'Bold'}));
+        Paper._xticks.animate({'fill-opacity': .4});
     }
     Paper.yticks = function (num) {
       if (!Paper._yticks) {
@@ -256,6 +269,7 @@ $().ready(function () {
                              .attr({'font-weight': 'Bold'})
                              .animate({'y': Paper.height - ymarker - 36 * 2}, 3e3, 'bounce'));
         }
+        Paper._yticks.animate({'fill-opacity': .4});
       }
     }
     $('#control form').submit(change_topic);

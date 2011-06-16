@@ -67,6 +67,49 @@ body {
 #paper {
     float: right;
     margin: 3px;
+    position: relative;
+}
+
+#paper .detail {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 60;
+    width: 75%;
+    text-align: center;
+    z-index: -1;
+}
+
+#paper .detail .title {
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px 0px;
+}
+
+#paper .detail .info {
+    font-size: 9px;
+}
+
+#paper .detail .matches {
+    padding: 25px 0px;
+    width: 100%;
+    overflow: hidden;
+}
+
+#paper .detail .matches .match {
+    color: rgba(0, 0, 0, .3);
+    font-family: Monaco;
+    font-size: 12px;
+    line-height: 2em;
+    position: relative;
+    text-align: left;
+    white-space: pre;
+}
+
+#paper .detail .matches .match strong {
+    background-color: rgba(150, 150, 255, .1);
+    color: rgba(255, 78, 0, .3);
+    padding: 2px;
 }
 
 #results {
