@@ -2,7 +2,7 @@ var HNSearchBucket = 'http://api.thriftdb.com/api.hnsearch.com';
 var Paper, Results;
 
 function link(href, text) {
-  return '<a href="' + href + '">' + text + '</a>';
+  return '<a href="' + $('<div>').html(href).text() + '">' + text + '</a>';
 }
 
 function search(collection, request, callback) {
