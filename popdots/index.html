@@ -1,1 +1,52 @@
-ui.html
+<html>
+<head>
+  <title>PopDots</title>
+  <link rel="stylesheet" href="ui.css" type="text/css" />
+  <script type="text/javascript" src="../analytics.js"></script>
+  <script type="text/javascript" src="jquery-1.6.1.min.js"></script>
+  <script type="text/javascript" src="raphael-min.js"></script>
+  <script type="text/javascript" src="ui.js"></script>
+</head>
+<body>
+  <div id="control">
+    <div id="info">
+      <div id="title"><a href="http://jflatow.github.com">PopDots</a></div>
+      <div id="author">by <a href="http://news.ycombinator.com/user?id=jflatow">jflatow</a></div>
+    </div>
+    <div id="blurb">
+      visually compare the popularity of <a href="http://www.hnsearch.com">hnsearch</a> results
+    </div>
+    <form>
+      <label for="topic">Topic:</label>
+      <input id="topic" type="text" />
+      <label for="sortby">by:</label>
+      <select id="sortby">
+        <option value="hotness">hotness</option>
+        <option value="points">points</option>
+        <option value="num_comments">number of comments</option>
+        <option value="create_ts">create date</option>
+      </select>
+      <select id="order">
+        <option value="desc">descending</option>
+        <option value="asc">ascending</option>
+      </select>
+      <label for="type">in:</label>
+      <select id="type">
+        <option value="">all</option>
+        <option value="comment">comments</option>
+        <option value="submission">submissions</option>
+      </select>
+    </form>
+  </div>
+  <div id="content">
+    <div id="results"></div>
+    <div id="paper">
+      <div class="detail">
+        <div class="title"></div>
+        <div class="info"></div>
+        <div class="matches"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
