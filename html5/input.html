@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>HTML5 Input Elements</title>
+  </head>
+  <style>
+    input {
+        clear: both;
+        float: left;
+        width: 200px;
+        margin: 3px;
+    }
+  </style>
+  <body>
+    <datalist id="emails">
+      <option value="jared@example.com">jared</option>
+      <option value="email@example.com">email</option>
+    </datalist>
+    <form>
+      <input type="email" name="email" list="emails" placeholder="Please enter some email addresses" multiple required />
+      <input type="color" name="color" />
+      <input type="date" name="date" />
+      <input type="number" name="number" />
+      <input type="range" name="range" />
+      <input type="search" name="search" />
+      <input type="url" name="url" />
+      <input type="submit" name="submit" />
+    </form>
+  </body>
+</html>
