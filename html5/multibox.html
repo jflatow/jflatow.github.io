@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>HTML5 MultiBox</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="multibox.js"></script>
+  </head>
+  <style>
+    form input {
+        clear: both;
+        float: left;
+        width: 100%;
+        margin: 3px;
+    }
+
+    form div {
+        float: left;
+        list-style-type: none;
+    }
+  </style>
+  <body>
+    <div>
+      <form></form>
+      <script type="text/javascript">
+        var datalist = [{text: 'jared', value: 'jared@example.com'},
+                        {text: 'email', value: 'email@example.com'}];
+        var attrs = {name: 'email', placeholder: 'Please enter some email addresses'};
+        $('form').multibox(datalist, attrs).submit(function () { return false });
+      </script>
+    </div>
+  </body>
+</html>
