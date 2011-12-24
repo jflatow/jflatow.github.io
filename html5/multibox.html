@@ -14,6 +14,7 @@
     }
 
     form div {
+        clear: both;
         float: left;
         list-style-type: none;
     }
@@ -22,10 +23,35 @@
     <div>
       <form></form>
       <script type="text/javascript">
-        var datalist = [{text: 'jared', value: 'jared@example.com'},
-                        {text: 'email', value: 'email@example.com'}];
+        var Keys = {
+                'left_arrow': 37,
+                'up_arrow': 38,
+                'right_arrow': 39,
+                'down_arrow': 40,
+        };
+        // Comfortably holds ~10k on my machine
+        var datalist = [{text: 'addr0', value: 'addr0@example.com'},
+                        {text: 'addr1', value: 'addr1@example.com'},
+                        {text: 'addr0', value: 'addr0@example.com'},
+                        {text: 'addr2 longer name:', value: 'addr2@example.com'},
+                        {text: 'addr2 longer name?', value: 'addr2@example.com'},
+                        {text: 'addr3 LONGER name!', value: 'addr3@example.com'},
+                        {text: 'email longer name*', value: 'email@example.com'},
+                        {text: 'addr4 longer name$', value: 'addr4@example.com'}];
+        for (var i = 0; i < 10; i ++)
+          datalist = datalist.concat(datalist);
         var attrs = {name: 'email', placeholder: 'Please enter some email addresses'};
-        $('form').multibox(datalist, attrs).submit(function () { return false });
+        $('form').multibox(datalist, attrs, 5).submit(function () { return false });
+        $('body').keyup(function (e) {
+            if (e.keyCode == Keys.left_arrow)
+              $(e.target).prev().focus();
+            if (e.keyCode == Keys.up_arrow)
+              $(e.target).parents().find('input').last().focus();
+            if (e.keyCode == Keys.right_arrow)
+              $(e.target).next().focus();
+            if (e.keyCode == Keys.down_arrow)
+              $(e.target).parents().find('button').last().focus();
+          });
       </script>
     </div>
   </body>
