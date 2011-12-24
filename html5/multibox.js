@@ -2,6 +2,7 @@
   var Keys = {
     'backspace': 8,
     'delete': 46,
+    'enter': 13,
   };
 
   $.fn.multibox = function (datalist, attrs, nresults, bind_arrows) {
@@ -18,9 +19,11 @@
       return $('<button>' + html + '</button>').data('value', value)
       .one('click', function () {
           results.append($(this).text($(html).text())
-                         .click(function () { $(this).focus(); })
-                         .keypress(function (e) {
-                             if (e.keyCode == Keys.backspace || e.keyCode == Keys.delete) {
+                         .on('click keypress', function (e) {
+                             if (e.keyCode == undefined ||
+                                 e.keyCode == Keys.backspace ||
+                                 e.keyCode == Keys.delete ||
+                                 e.keyCode == Keys.enter) {
                                var self = $(this), next = self.next(), prev = self.prev();
                                self.remove();
                                if (next.length)
@@ -32,7 +35,7 @@
                              }
                            }));
           input.focus();
-        })
+        });
     };
     input
     .on('focus input', function (e) {

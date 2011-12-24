@@ -6,6 +6,15 @@
     <script type="text/javascript" src="multibox.js"></script>
   </head>
   <style>
+    form button {
+        margin: 4px 2px;
+        line-height: 2em;
+    }
+
+    form button:focus {
+        color: green;
+    }
+
     form input {
         clear: both;
         float: left;
@@ -49,8 +58,9 @@
               $(e.target).parents().find('input').last().focus();
             if (e.keyCode == Keys.right_arrow)
               $(e.target).next().focus();
-            if (e.keyCode == Keys.down_arrow)
+            if (e.keyCode == Keys.down_arrow) {
               $(e.target).parents().find('button').last().focus();
+            }
           });
       </script>
     </div>
