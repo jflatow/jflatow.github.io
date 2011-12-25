@@ -7,7 +7,7 @@
   </head>
   <style>
     form button {
-        margin: 4px 2px;
+        margin: 2px;
         line-height: 2em;
     }
 
@@ -38,7 +38,7 @@
                 'right_arrow': 39,
                 'down_arrow': 40,
         };
-        // Comfortably holds ~10k on my machine
+        // comfortably holds ~10k on a macbook pro; ~1k on n9
         var datalist = [{text: 'addr0', value: 'addr0@example.com'},
                         {text: 'addr1', value: 'addr1@example.com'},
                         {text: 'addr0', value: 'addr0@example.com'},
@@ -47,7 +47,7 @@
                         {text: 'addr3 LONGER name!', value: 'addr3@example.com'},
                         {text: 'email longer name*', value: 'email@example.com'},
                         {text: 'addr4 longer name$', value: 'addr4@example.com'}];
-        for (var i = 0; i < 10; i ++)
+        for (var i = 0; i < 7; i ++)
           datalist = datalist.concat(datalist);
         var attrs = {name: 'email', placeholder: 'Please enter some email addresses'};
         $('form').multibox(datalist, attrs, 5).submit(function () { return false });

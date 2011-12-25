@@ -1,11 +1,11 @@
 (function ($) {
   var Keys = {
     'backspace': 8,
-    'delete': 46,
+    'del': 46,
     'enter': 13,
   };
 
-  $.fn.multibox = function (datalist, attrs, nresults, bind_arrows) {
+  $.fn.multibox = function (datalist, attrs, nresults) {
     var defaults = {autocapitalize: 'off',
                     autocomplete: 'off',
                     autocorrect: 'off',
@@ -18,20 +18,12 @@
       var html = '<span>' + text + '</span>';
       return $('<button>' + html + '</button>').data('value', value)
       .one('click', function () {
-          results.append($(this).text($(html).text())
+          results.append($(this)
+                         .text($(html).text())
                          .on('click keypress', function (e) {
-                             if (e.keyCode == undefined ||
-                                 e.keyCode == Keys.backspace ||
-                                 e.keyCode == Keys.delete ||
-                                 e.keyCode == Keys.enter) {
-                               var self = $(this), next = self.next(), prev = self.prev();
-                               self.remove();
-                               if (next.length)
-                                 next.focus();
-                               else if (prev.length)
-                                 prev.focus();
-                               else
-                                 input.focus();
+                             if (e.keyCode == undefined || e.keyCode == Keys.backspace || e.keyCode == Keys.del || e.keyCode == Keys.enter) {
+                               $(this).remove();
+                               input.focus();
                              }
                            }));
           input.focus();
