@@ -1,5 +1,7 @@
 var HNSearchBucket = 'http://api.thriftdb.com/api.hnsearch.com';
 var Paper, Results;
+var bitdeli = new BitDeli({auth: 'Wq0P5faqrbEoDIJOH8T243b6Ep4',
+                           feed: 'http://in.bitdeli.com/events/i-04b96b8567850c-ce425ebd'});
 
 function link(href, text) {
   return '<a href="' + $('<div>').html(href).text() + '">' + text + '</a>';
@@ -10,6 +12,7 @@ function search(collection, request, callback) {
           'data': request,
           'dataType': 'jsonp',
           'success': callback});
+  bitdeli.log({type: 'search', collection: collection, request: request});
 }
 
 function receiver(force) {
@@ -149,11 +152,27 @@ function HNItem(result, parent, paper) {
     self.select();
   }
 
+  self.log = function (event) {
+    var target = event.target;
+    bitdeli.log({type: 'ux',
+                 target_tag: target.tagName,
+                 target_id: target.id,
+                 target_href: target.href,
+                 event_type: event.type,
+                 event_client_x: event.clientX,
+                 event_client_y: event.clientY,
+                 event_screen_x: event.screenX,
+                 event_screen_y: event.screenY,
+                 item: self.item});
+    event.stopPropagation();
+  }
+
   self.element = $('<div class="result item"></div>').prependTo(parent)
     .attr({'height': row_height})
     .click(self.toggle_select)
     .dblclick(self.open)
-    .hover(self.highlight, self.unhighlight);
+    .hover(self.highlight, self.unhighlight)
+    .mousedown(self.log);
 
   if (text)
     self.ctrl = $('<div class="ctrl">+</div>').click(self.toggle).appendTo(self.element);
@@ -188,6 +207,7 @@ function HNItem(result, parent, paper) {
   self.circle.dblclick(self.open);
   self.circle.mouseover(self.highlight);
   self.circle.mouseout(self.unhighlight);
+  self.circle.mousedown(self.log);
 
   self.slideTo = function (x) {
     self.circle.animate({'cx': x + 5}, 2e3, function() {
@@ -284,4 +304,16 @@ $().ready(function () {
     $('#control form select').change(change_topic);
     $('#topic').focus();
     repeat(update, 60000);
+    $(document).on('mousedown', function (event) {
+        var target = event.target;
+        bitdeli.log({type: 'ux',
+                     target_tag: target.tagName,
+                     target_id: target.id,
+                     target_href: target.href,
+                     event_type: event.type,
+                     event_client_x: event.clientX,
+                     event_client_y: event.clientY,
+                     event_screen_x: event.screenX,
+                     event_screen_y: event.screenY});
+      });
   });
