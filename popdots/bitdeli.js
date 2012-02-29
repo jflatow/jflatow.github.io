@@ -1,5 +1,6 @@
 var BitDeli = (function (conf) {
     this.conf = conf;
+    this.subs = {};
   });
 
 BitDeli.prototype = {
@@ -19,6 +20,34 @@ BitDeli.prototype = {
       bd.fire('bitdeli:logged', JSON.parse(req.response));
     };
     this.req(this.conf.feed, {method: 'POST', data: JSON.stringify(ev), 200: ok});
+  },
+  subscribe: function (asset, callback, opts) {
+    var opts = opts || {};
+    var self = this;
+    var poll = function (req) {
+      var response = JSON.parse(req.response);
+      for (var i = response.groups.length; i > 0; i--) {
+        var group = response.groups[i - 1];
+        if (group.group_offset > (self.subs[asset] || -1)) {
+          var ok = function (req) {
+            callback(JSON.parse(req.response));
+          };
+          self.req(group.href + '?' + self.query(opts.group), {200: ok});
+          self.subs[asset] = group.group_offset;
+        }
+      }
+    };
+    var req = function () {
+      self.req(asset + '/groups' + '?' + self.query(opts.groups), {200: poll});
+      setTimeout(req, opts.interval || 60000);
+    };
+    req();
+  },
+  query: function (dict) {
+    var params = [];
+    for (var key in dict)
+      params.push(key + '=' + dict[key]);
+    return params.join('&');
   },
   req: function (url, opts) {
     var http_request = new XMLHttpRequest();

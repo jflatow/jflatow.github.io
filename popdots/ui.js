@@ -1,7 +1,7 @@
 var HNSearchBucket = 'http://api.thriftdb.com/api.hnsearch.com';
 var Paper, Results;
 var bitdeli = new BitDeli({auth: 'Wq0P5faqrbEoDIJOH8T243b6Ep4',
-                           feed: 'http://in.bitdeli.com/events/i-04b96b8567850c-ce425ebd'});
+                           feed: 'https://in.bitdeli.com/events/i-04b96b8567850c-ce425ebd'});
 
 function link(href, text) {
   return '<a href="' + $('<div>').html(href).text() + '">' + text + '</a>';

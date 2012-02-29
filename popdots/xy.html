@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <title>X-Y</title>
+    <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="raphael-min.js"></script>
+    <script type="text/javascript" src="bitdeli.js"></script>
+    <style>
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+        font-family: Verdana;
+      }
+
+      #easel {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+      }
+
+      .href {
+        color: rgba(0, 0, 0, .5);
+        display: block;
+      }
+
+      #paper {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="easel"></div>
+    <div id="paper"></div>
+    <script type="text/javascript">
+   $(document).ready(function () {
+       var Paper = new Raphael('paper', '100%', '100%');
+       var bitdeli = new BitDeli();
+       var queries = {};
+       var hrefs = {};
+       bitdeli.subscribe('https://out.bitdeli.com/v1/data/s-04ba15e12a669f-4caf174c', function (data) {
+           var obj = data.items[0].object;
+           for (var target in obj.targets) {
+             var tgt = obj.targets[target];
+             var tag = target.toUpperCase();
+             for (var i = 0; i < tgt.length; i++) {
+               var shape;
+               if (tag == 'INPUT' || tag == 'SELECT')
+                 shape = Paper.rect(tgt[i][0], tgt[i][1], 10, 10).attr({fill: '#00F'});
+               else if (tag == 'CIRCLE')
+                 shape = Paper.circle(tgt[i][0], tgt[i][1], 10).attr({fill: '#0F0'});
+               else
+                 shape = Paper.circle(tgt[i][0], tgt[i][1], 1).attr({fill: '#000'});
+               shape.attr({opacity: 0}).animate({opacity: 1}, 1e3);
+             }
+           }
+           for (var x in obj.counters.event_client_x) {
+             Paper.rect(x, 0, 3, obj.counters.event_client_x[x] * 2).attr({fill: '#F00', opacity: .3});
+           }
+           for (var y in obj.counters.event_client_y) {
+             Paper.rect(0, y, obj.counters.event_client_y[y] * 4, 3).attr({fill: '#F00', opacity: .3});
+           }
+           for (var q in obj.counters.query) {
+             if (!(q in queries))
+               queries[q] = $('<div class="query">').text(q).data('count', 0).appendTo('#easel');
+             var query = queries[q];
+             query.data('count', query.data('count') + obj.counters.query[q]);
+             query.css({'font-size': Math.sqrt(144 + query.data('count'))});
+           }
+           for (var h in obj.counters.target_href) {
+             if (!(h in hrefs))
+               hrefs[h] = $('<a class="href">').attr('href', h).text(h).data('count', 0).appendTo('#easel');
+             var href = hrefs[h];
+             href.data('count', href.data('count') + obj.counters.target_href[h]);
+             href.css({'font-size': Math.sqrt(100 + href.data('count'))});
+           }
+         }, {groups: {max: 25}, group: {max: 100}});
+     });
+    </script>
+  </body>
+</html>
