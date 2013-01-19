@@ -25,6 +25,12 @@
       <option value="M">Middle</option>
       <option value="H">High</option>
     </select>
+    <label for="sort">Sort by:</label>
+    <select id="sort">
+      <option value="rank">Rank</option>
+      <option value="deltar">&#x394; Rank</option>
+      <option value="deltag">&#x394; Grade</option>
+    </select>
     <button id="fit">Fit Map</button>
     <script type="text/javascript">
       function pathStr(coords) {
@@ -40,18 +46,21 @@
 
       var map = Raphael(0, 40, 1000, 560);
       var graph = Raphael(0, 600, '100%', 200);
-      var legend = Raphael(1000, 40, 200, 160);
+      var legend = Raphael(1000, 40, 200, 180);
       var info = Raphael(1000, 200, 400, 400);
       var label = map.text(0, 0, '').attr({'font-family': 'Verdana', 'font-size': '48px'}).hide();
       var schools = map.set();
       var districts = {};
 
-      function color(grade) {
-        return 'rgb(' + ((13 - grade) * 19) + ',' + (grade * 19) + ',0)';
+      function color(grade, max, min) {
+        var max = max || letter.length, min = min || 0;
+        if (!grade)
+         return 'gray';
+        return 'rgb(' + ((max - grade) / (max - min) * 255) + ',' + ((grade - min) / (max - min) * 255) + ',0)';
       }
 
-      legend.rect(10, 10, 180, 140, 12);
-      for (var i = 1; i < 14; i++) {
+      legend.rect(10, 10, 180, 150, 12);
+      for (var i = 0; i < 14; i++) {
         legend.circle(20, (14 - i) * 10 + 10, 4).attr({fill: color(i), 'fill-opacity': .5, 'stroke': 'none'});
         legend.text(30, (14 - i) * 10 + 10, letter[i]).attr({'text-anchor': 'start'});
       }
@@ -84,7 +93,12 @@
           districts[district.name].path.push(path);
         });
 
-      function draw(year, type) {
+      Schools.map(function (school) {
+          school.deltar = (school.rank[0] && school.rank[2]) ? school.rank[0] - school.rank[2] : null;
+          school.deltag = (school.grade[2] && school.grade[0]) ? school.grade[2] - school.grade[0] : null;
+        });
+
+      function draw(year, type, sort) {
        for (var d in districts)
         districts[d].schools = [];
        schools.forEach(function (e) { e.remove() });
@@ -93,7 +107,9 @@
        var szmax = 0;
        var nbars = 0;
        Schools.sort(function (a, b) {
-         return a.rank[year] - b.rank[year];
+         if (sort == 'rank')
+          return a[sort][year] - b[sort][year];
+         return b[sort] - a[sort];
         });
        Schools.map(function (school) {
           if (!school.type[year] || school.type[year].indexOf(type) < 0)
@@ -105,6 +121,8 @@
           var rank = school.rank[year];
           var free = school.free[year];
           var grade = school.grade[year];
+          var deltar = school.deltar;
+          var deltag = school.deltag;
           var radius = Math.round(Math.sqrt(size + 64) / 2);
           var circle = map.circle(school.coords[0], -school.coords[1], radius).attr({fill: color(grade), opacity: .4, stroke: 'none'});
           schools.push(circle);
@@ -113,10 +131,11 @@
           if (dist && size && rank) {
            bar.push(graph.rect(nbars, (1 - free) * 10, 1, free * 10).attr({fill: 'black', stroke: 'none', opacity: .5}));
            for (var i = 0; i < dist.length; i++) {
-            var h = dist[i] * 90;
+            var h = dist[i] * 80;
             bar.push(graph.rect(nbars, y, 1, h).attr({fill: colors[i], stroke: 'none', opacity: .5}));
             y += h;
            }
+           bar.push(graph.rect(nbars, y, 1, Math.abs(deltag) / 1.3).attr({fill: deltag > 0 ? color(13) : color(1), stroke: 'none', opacity: .5}));
            nbars++;
           }
           szmax = Math.max(szmax, size);
@@ -127,12 +146,25 @@
            bar.attr({opacity: 1});
            info.clear();
            info.rect(10, 20, 360, 320, 12);
-           info.text(20, 40, school.name).attr({'text-anchor': 'start', 'font-weight': 'bold'});
-           info.text(20, 100, 'Rank: ' + rank).attr({'text-anchor': 'start'});
-           info.text(20, 120, 'Grade: ' + letter[grade]).attr({'text-anchor': 'start'});
-           info.text(20, 140, '# of students: ' + size).attr({'text-anchor': 'start'});
-           info.text(20, 160, '% free lunches: ' + (free * 100).toFixed(2)).attr({'text-anchor': 'start'});
-           info.pieChart(180, 240, 50, dist, labels, colors, 1);
+           info.text(20, 30, school.name).attr({'text-anchor': 'start', 'font-weight': 'bold'});
+           info.text(20, 50, school.district[year]).attr({'text-anchor': 'start'});
+           info.text(20, 100, 'Rank:').attr({'text-anchor': 'start'});
+           info.text(20, 120, 'Grade:').attr({'text-anchor': 'start'});
+           info.text(20, 140, '# of students:').attr({'text-anchor': 'start'});
+           info.text(20, 160, '% free lunches:').attr({'text-anchor': 'start'});
+           info.text(120, 80, '2010').attr({'font-weight': 'bold'});
+           info.text(160, 80, '2011').attr({'font-weight': 'bold'});
+           info.text(200, 80, '2012').attr({'font-weight': 'bold'});
+           info.text(240, 80, '2yr \u0394').attr({'font-weight': 'bold'});
+           for (var i = 0; i < 3; i++) {
+             info.text(120 + 40 * i, 100, school.rank[i]);
+             info.text(120 + 40 * i, 120, letter[school.grade[i] || 0]).attr({fill: color(school.grade[i])});
+             info.text(120 + 40 * i, 140, school.size[i]);
+             info.text(120 + 40 * i, 160, (school.free[i] * 100).toFixed(2));
+           }
+           info.rect(240,  98, Math.abs(deltar) / 10, 4).attr({fill: deltar > 0 ? color(13) : color(1), stroke: 'none', opacity: .5});
+           info.rect(240, 118, Math.abs(deltag) *  5, 4).attr({fill: deltag > 0 ? color(13) : color(1), stroke: 'none', opacity: .5});
+           info.pieChart(180, 250, 50, dist, labels, colors, 1);
           }
           function normal() {
            label.hide();
@@ -158,8 +190,8 @@
        }
       }
 
-      (year.onchange = type.onchange = function () {
-        draw(parseInt(year.value), type.value);
+      (year.onchange = type.onchange = sort.onchange = function () {
+        draw(parseInt(year.value), type.value, sort.value);
       })();
 
       (fit.onclick = function () {
