@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>Scroll SVG</title>
+    <style>
+      #paper {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="paper"></div>
+    <script src="https://raw.github.com/jflatow/sky/master/sky.js"></script>
+    <script src="https://raw.github.com/jflatow/sky/master/sun.js"></script>
+    <script src="https://raw.github.com/jflatow/sky/master/act.js"></script>
+    <script>
+      (function () {
+        var win = {w: window.innerWidth, h: window.innerHeight};
+        var dim = {x: 0, y: 0, w: win.w, h: win.h};
+        var svg = Sky.svg().addTo(paper).attrs({viewBox: [dim.x, dim.y, dim.w, dim.h]});
+        var doc = svg.doc();
+        var cut = function (x, m, M) { return Math.min(Math.max(x, m), M) }
+
+        svg.style({height: win.h + 'px'});
+
+        var randInt = function (n) { return ~~(Math.random() * n) };
+
+        var g = svg.g();
+        var r = g.rect(dim.x, dim.y, 100, 100);
+        track = g.track({x: dim.x, y: dim.y, width: dim.w, height: dim.h / 2});
+        g.swipe(svg.hooke(track), {stop: true, release: function () {
+              r.attrs({fill: 'black'});
+            }, grab: function () {
+              r.attrs({fill: new Sky.RGB({r: randInt(255), g: randInt(255), b: randInt(255)})});
+            }});
+
+        dolly = svg.dolly(dim.x, dim.y, dim.w, dim.h, {x: dim.x - dim.w, y: dim.y - dim.h, width: 2 * dim.w, height: 4 * dim.h});
+        svg.swipe(svg.hooke(dolly, 64, 64))
+        svg.text(0, 0, 'origin');
+
+        var c = svg.circle(0, 0, 50);
+        c.animate(function (node, i) {
+            node.cx.baseVal.value += 1;
+            if (i < 100)
+              return true;
+          });
+
+        var d = svg.circle(50, 50, 10);
+        var e = svg.circle(50, 1000, 10);
+      })();
+    </script>
+  </body>
+</html>
