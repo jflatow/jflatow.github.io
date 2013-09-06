@@ -1,0 +1,202 @@
+<html>
+  <head>
+    <title>Colorado School Grades</title>
+    <script type="text/javascript" src="raphael-min.js"></script>
+    <script type="text/javascript" src="pie.js"></script>
+    <script type="text/javascript" src="districts.js"></script>
+    <script type="text/javascript" src="schools.js"></script>
+    <style>
+      body {
+        font-family: Verdana;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <label for="year">Year:</label>
+    <select id="year">
+      <option value="0">2010</option>
+      <option value="1">2011</option>
+      <option value="2">2012</option>
+    </select>
+    <label for="type">Type:</label>
+    <select id="type">
+      <option value="E">Elementary</option>
+      <option value="M">Middle</option>
+      <option value="H">High</option>
+    </select>
+    <label for="sort">Sort by:</label>
+    <select id="sort">
+      <option value="rank">Rank</option>
+      <option value="deltar">&#x394; Rank</option>
+      <option value="deltag">&#x394; Grade</option>
+    </select>
+    <button id="fit">Fit Map</button>
+    <script type="text/javascript">
+      function pathStr(coords) {
+        var str = '';
+        for (var i = 1; i < coords.length; i++)
+          str += (i > 1 ? 'L' : 'M') + coords[i][0] + ',' + -coords[i][1];
+        return str + 'Z';
+      }
+
+      var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black'];
+      var labels = ['American Indian', 'Asian', 'Black', 'Hispanic', 'White', 'Pacific Islander', 'Multiple']
+      var letter = ['N/A', 'F', 'D-', 'D', 'D+', 'C-', 'C', 'C+', 'B-', 'B', 'B+', 'A-', 'A', 'A+'];
+
+      var map = Raphael(0, 40, 1000, 560);
+      var graph = Raphael(0, 600, '100%', 200);
+      var legend = Raphael(1000, 40, 200, 180);
+      var info = Raphael(1000, 200, 400, 400);
+      var label = map.text(0, 0, '').attr({'font-family': 'Verdana', 'font-size': '48px'}).hide();
+      var schools = map.set();
+      var districts = {};
+
+      function color(grade, max, min) {
+        var max = max || letter.length, min = min || 0;
+        if (!grade)
+         return 'gray';
+        return 'rgb(' + ((max - grade) / (max - min) * 255) + ',' + ((grade - min) / (max - min) * 255) + ',0)';
+      }
+
+      legend.rect(10, 10, 180, 150, 12);
+      for (var i = 0; i < 14; i++) {
+        legend.circle(20, (14 - i) * 10 + 10, 4).attr({fill: color(i), 'fill-opacity': .5, 'stroke': 'none'});
+        legend.text(30, (14 - i) * 10 + 10, letter[i]).attr({'text-anchor': 'start'});
+      }
+
+      legend.rect(70, 20, 2, 15).attr({fill: 'black', opacity: .5, stroke: 'none'});
+      legend.text(90, 27, "% free lunches").attr({'text-anchor': 'start'});
+      for (var i = 0; i < labels.length; i++) {
+        legend.rect(70, i * 15 + 35, 2, 15).attr({fill: colors[i], opacity: .5, stroke: 'none'});
+        legend.text(90, i * 15 + 42, "% " + labels[i]).attr({'text-anchor': 'start'});
+      }
+
+      Districts.map(function (district) {
+          var path = map.path(pathStr(district.coords));
+          path.attr({fill: 'rgba(0, 0, 100, .02)'});
+          path.mouseover(function () {
+           path.attr({opacity: .5});
+           label.attr({x: district.coords[0][0], y: -district.coords[0][1], text: district.name}).show();
+          });
+          path.mouseout(function () {
+           path.attr({opacity: 1});
+           label.hide()
+          });
+          path.click(function () {
+           var bbox = path.getBBox();
+           var w = 2000, h = 1000;
+           map.setViewBox(bbox.x - w / 3, bbox.y - h / 3, w, h);
+          });
+          if (!(district.name in districts))
+           districts[district.name] = {path: map.set()};
+          districts[district.name].path.push(path);
+        });
+
+      Schools.map(function (school) {
+          school.deltar = (school.rank[0] && school.rank[2]) ? school.rank[0] - school.rank[2] : null;
+          school.deltag = (school.grade[2] && school.grade[0]) ? school.grade[2] - school.grade[0] : null;
+        });
+
+      function draw(year, type, sort) {
+       for (var d in districts)
+        districts[d].schools = [];
+       schools.forEach(function (e) { e.remove() });
+       schools.clear();
+       graph.clear();
+       var szmax = 0;
+       var nbars = 0;
+       Schools.sort(function (a, b) {
+         if (sort == 'rank')
+          return a[sort][year] - b[sort][year];
+         return b[sort] - a[sort];
+        });
+       Schools.map(function (school) {
+          if (!school.type[year] || school.type[year].indexOf(type) < 0)
+           return;
+          if (districts[school.district[year]])
+           districts[school.district[year]].schools.push(school);
+          var dist = school.dist[year];
+          var size = school.size[year];
+          var rank = school.rank[year];
+          var free = school.free[year];
+          var grade = school.grade[year];
+          var deltar = school.deltar;
+          var deltag = school.deltag;
+          var radius = Math.round(Math.sqrt(size + 64) / 2);
+          var circle = map.circle(school.coords[0], -school.coords[1], radius).attr({fill: color(grade), opacity: .4, stroke: 'none'});
+          schools.push(circle);
+
+          var bar = graph.set(), y = 10;
+          if (dist && size && rank) {
+           bar.push(graph.rect(nbars, (1 - free) * 10, 1, free * 10).attr({fill: 'black', stroke: 'none', opacity: .5}));
+           for (var i = 0; i < dist.length; i++) {
+            var h = dist[i] * 80;
+            bar.push(graph.rect(nbars, y, 1, h).attr({fill: colors[i], stroke: 'none', opacity: .5}));
+            y += h;
+           }
+           bar.push(graph.rect(nbars, y, 1, Math.abs(deltag) / 1.3).attr({fill: deltag > 0 ? color(13) : color(1), stroke: 'none', opacity: .5}));
+           nbars++;
+          }
+          szmax = Math.max(szmax, size);
+
+          function hilite() {
+           label.attr({x: school.coords[0], y: -school.coords[1] - 40, text: school.name}).show();
+           circle.attr({opacity: 8, stroke: 1});
+           bar.attr({opacity: 1});
+           info.clear();
+           info.rect(10, 20, 360, 320, 12);
+           info.text(20, 30, school.name).attr({'text-anchor': 'start', 'font-weight': 'bold'});
+           info.text(20, 50, school.district[year]).attr({'text-anchor': 'start'});
+           info.text(20, 100, 'Rank:').attr({'text-anchor': 'start'});
+           info.text(20, 120, 'Grade:').attr({'text-anchor': 'start'});
+           info.text(20, 140, '# of students:').attr({'text-anchor': 'start'});
+           info.text(20, 160, '% free lunches:').attr({'text-anchor': 'start'});
+           info.text(120, 80, '2010').attr({'font-weight': 'bold'});
+           info.text(160, 80, '2011').attr({'font-weight': 'bold'});
+           info.text(200, 80, '2012').attr({'font-weight': 'bold'});
+           info.text(240, 80, '2yr \u0394').attr({'font-weight': 'bold'});
+           for (var i = 0; i < 3; i++) {
+             info.text(120 + 40 * i, 100, school.rank[i]);
+             info.text(120 + 40 * i, 120, letter[school.grade[i] || 0]).attr({fill: color(school.grade[i])});
+             info.text(120 + 40 * i, 140, school.size[i]);
+             info.text(120 + 40 * i, 160, (school.free[i] * 100).toFixed(2));
+           }
+           info.rect(240,  98, Math.abs(deltar) / 10, 4).attr({fill: deltar > 0 ? color(13) : color(1), stroke: 'none', opacity: .5});
+           info.rect(240, 118, Math.abs(deltag) *  5, 4).attr({fill: deltag > 0 ? color(13) : color(1), stroke: 'none', opacity: .5});
+           info.pieChart(180, 250, 50, dist, labels, colors, 1);
+          }
+          function normal() {
+           label.hide();
+           circle.attr({opacity: .4, stroke: 'none'});
+           bar.attr({opacity: .5});
+          }
+
+          circle.hover(hilite, normal);
+          bar.hover(hilite, normal);
+         });
+        graph.setViewBox(0, 0, nbars, 100);
+
+        for (var d in districts) {
+         var grade = 0, size = 0;
+         districts[d].schools.map(function (school) {
+           if (school.grade[year]) {
+            size += school.size[year];
+            grade += school.grade[year] * school.size[year];
+           }
+          });
+         if (size)
+          districts[d].path.attr({fill: color(Math.round(grade / size)), 'fill-opacity': .2});
+       }
+      }
+
+      (year.onchange = type.onchange = sort.onchange = function () {
+        draw(parseInt(year.value), type.value, sort.value);
+      })();
+
+      (fit.onclick = function () {
+        map.setViewBox(-109500, -41100, 8000, 4000);
+      })();
+    </script>
+  </body>
+</html>
