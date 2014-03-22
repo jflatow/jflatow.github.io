@@ -1,7 +1,5 @@
 var HNSearchBucket = 'http://api.thriftdb.com/api.hnsearch.com';
 var Paper, Results;
-var bitdeli = new BitDeli({auth: 'Wq0P5faqrbEoDIJOH8T243b6Ep4',
-                           feed: 'https://in.bitdeli.com/events/i-04b96b8567850c-ce425ebd'});
 
 function link(href, text) {
   return '<a href="' + $('<div>').html(href).text() + '">' + text + '</a>';
@@ -12,7 +10,6 @@ function search(collection, request, callback) {
           'data': request,
           'dataType': 'jsonp',
           'success': callback});
-  bitdeli.log({type: 'search', collection: collection, request: request});
 }
 
 function receiver(force) {
@@ -154,16 +151,6 @@ function HNItem(result, parent, paper) {
 
   self.log = function (event) {
     var target = event.target;
-    bitdeli.log({type: 'ux',
-                 target_tag: target.tagName,
-                 target_id: target.id,
-                 target_href: target.href,
-                 event_type: event.type,
-                 event_client_x: event.clientX,
-                 event_client_y: event.clientY,
-                 event_screen_x: event.screenX,
-                 event_screen_y: event.screenY,
-                 item: self.item});
     event.stopPropagation();
   }
 
@@ -191,7 +178,7 @@ function HNItem(result, parent, paper) {
     self.element.append('<div class="text">' + text + '</div>');
 
   self.circle = paper.circle(20,
-                             Math.max(0, paper.height - self.item.points / 3 - 36 * 2),
+                             Math.max(0, paper.height - self.item.points / 10 - 36 * 2),
                              result.score + 10)
     .attr({'fill': 'rgb(' + [Math.min(255, intensity), 0, Math.max(0, 255 - intensity)].join(",") + ')',
            'fill-opacity': opacity,
@@ -250,7 +237,7 @@ function ResultSet(parent, paper) {
 }
 
 function update(force) {
-  var topic = $('#control').data('topic');
+  var topic = $('#control').data('topic') || ' ';
   var sortby = $('#sortby').val();
   var request = {'q': topic,
                  'filter[fields][type][]': $('#type').val(),
@@ -293,7 +280,7 @@ $().ready(function () {
                                    .attr({'font-weight': 'Bold'})]);
         for (var i = 1; i < num; i++) {
           var ymarker = i * (Paper.height - 36 * 2) / num;
-          Paper._yticks.push(Paper.text(20, 20, Math.floor(ymarker * 3))
+          Paper._yticks.push(Paper.text(20, 20, Math.floor(ymarker * 10))
                              .attr({'font-weight': 'Bold'})
                              .animate({'y': Paper.height - ymarker - 36 * 2}, 3e3, 'bounce'));
         }
@@ -306,14 +293,5 @@ $().ready(function () {
     repeat(update, 60000);
     $(document).on('mousedown', function (event) {
         var target = event.target;
-        bitdeli.log({type: 'ux',
-                     target_tag: target.tagName,
-                     target_id: target.id,
-                     target_href: target.href,
-                     event_type: event.type,
-                     event_client_x: event.clientX,
-                     event_client_y: event.clientY,
-                     event_screen_x: event.screenX,
-                     event_screen_y: event.screenY});
       });
   });
