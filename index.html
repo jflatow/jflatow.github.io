@@ -4,52 +4,52 @@
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" />
     <link rel="stylesheet" href="css/site.css" />
     <script type="text/javascript" src="js/analytics.js"></script>
+    <script type="text/javascript" src="sky/sky.js"></script>
+    <script type="text/javascript" src="sky/sun.js"></script>
   </head>
   <body>
     <header>
       <h1><a href="#">flatow<span class="en">n</span></a></h1>
     </header>
+
     <nav>
       <a href="about.html"><i class="fa fa-info fa-2x"></i></a>
       <a href="http://github.com/jflatow"><i class="fa fa-github fa-2x"></i></a>
       <a href="http://twitter.com/jmflatow"><i class="fa fa-twitter fa-2x"></i></a>
       <a href="https://www.linkedin.com/profile/view?id=11516235"><i class="fa fa-linkedin fa-2x"></i></a>
     </nav>
+
     <main>
       <section id="blog">
-        <article>
-          <header>
-            <h1><a href="#">Some title</a></h1>
-            <h6>August 2014</h6>
-          </header>
-
-          <main>
-            <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </p>
-            <p>
-              Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-            </p>
-          </main>
-        </article>
-
-        <article>
-          <header>
-            <h1>Another title</h1>
-            <h6>June 2014</h6>
-          </header>
-
-          <main>
-            <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </p>
-
-            <p>
-              Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-            </p>
-          </main>
-        </article>
+        <a href="blog/2014/08-02-begin-again.htm" />
       </section>
+      <script>
+        window.onload = function () {
+          var blog = Sky.$('#blog')
+          var q = Sun.form.decode(document.location.search.substr(1))
+          if (q.page) {
+            Sun.http.get(q.page, function (r) {
+              if (r.status < 400) {
+                blog.node.innerHTML = r.response;
+              }
+            })
+          } else {
+            blog.each('a', function (_, a) {
+              var href = a.getAttribute('href')
+              Sun.http.get(href, function (r) {
+                if (r.status < 400) {
+                  var article = blog.child('article'), n = article.node;
+                  n.innerHTML = r.response;
+                  blog.node.replaceChild(n, a)
+                  var h1 = article.$('header h1')
+                  console.log(article.node, h1)
+                  h1.node.outerHTML = '<a href="?page=' + href + '">' + h1.node.outerHTML + '</a>'
+                }
+              })
+            })
+          }
+        }
+      </script>
     </main>
 
     <footer>&copy; 2014 <a href="about.html">Jared Flatow</a></footer>

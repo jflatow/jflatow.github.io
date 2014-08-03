@@ -1,0 +1,3 @@
+[submodule "sky"]
+	path = sky
+	url = https://github.com/jflatow/sky.git

@@ -72,7 +72,7 @@ body {
 body > header {
     width: 100%;
     padding: 1em;
-    color: #eee;
+    color: #ddd;
 }
 
 body > header a, body > header a:visited {
@@ -80,11 +80,15 @@ body > header a, body > header a:visited {
 }
 
 body > header a:hover {
-    color: #484;
+    color: #4a4;
 }
 
 body > header .en {
-    color: #484;
+    color: #4a4;
+}
+
+body > header .curly {
+    color: #ca4;
 }
 
 body > nav a {
@@ -116,6 +120,14 @@ body > main {
     body > main {
         width: calc(100% - 12rem)
     }
+}
+
+article > header a, article > header a:visited {
+    color: inherit;
+}
+
+article > header a:hover {
+    color: #ca4;
 }
 
 article > footer {
