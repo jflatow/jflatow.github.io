@@ -1,0 +1,441 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+      }
+
+      #content {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script src="../../sky/sky.js"></script>
+    <script src="../../sky/sun.js"></script>
+    <script src="../../sky/orb.js"></script>
+    <script>
+  (function () {
+    var up = Sun.up, T = Sun.time, P = Sky.path, clip = Sky.util.clip;
+
+    Orb.prototype.sumxy = Orb.type(function SumXY(orb) {
+      this.elem = orb.elem;
+      this.jack = orb.elem.orb({move: function (dx, dy) { return this.push(0, dx + dy) }}, orb);
+    });
+
+    Widgets = {
+      app: Orb.type(function App(W, root, opts) {
+        var opts = this.opts = up({width: '100%', height: '100%'}, opts);
+        var dims = this.dims = Sky.box(0, 0, 200, 200 / opts.aspectRatio);
+        var elem = this.elem = Sky.svg({width: opts.width, height: opts.height, viewBox: dims})
+          .attrs({'font-size': 10, 'font-family': 'Helvetica'})
+          .swipe(function () { /* NB: prevent default */ }).addTo(root);
+
+        this.status = W.status(this, {conn: 'XXX'});
+        this.timepiece = W.timepiece(this, {schedule: 'XXX'});
+        this.drawer = W.drawer(this);
+        this.toolbar = W.toolbar(this);
+      }),
+
+      status: Orb.type(function Status(W, app, opts) {
+        var x, y, w, h, d = app.dims;
+        var opts = this.opts = up({}, opts);
+        var dims = this.dims = Sky.box(x = d.x, y = d.y, w = d.w, h = d.h * .05);
+        var elem = this.elem = app.elem.g();
+
+        elem.rect(x, y, w, h).attrs({fill: 'rgba(0, 0, 0, .8)'});
+        elem.text(dims.left, dims.midY, '\u2731 Jared Flatow').attrs({fill: 'white', dx: 4, dy: 3});
+        elem.text(dims.right, dims.midY, '\u267a').attrs({fill: 'white', dx: -14, dy: 3});
+      }),
+
+      timepiece: Orb.type(function TimePiece(W, app, opts) {
+        var x, y, w, h, d = app.dims;
+        var opts = this.opts = up({startTime: new Date}, opts);
+        var dims = this.dims = Sky.box(x = d.x, y = app.status.dims.bottom, w = d.w, h = d.h * .85);
+        var elem = this.elem = app.elem.g();
+
+        var back = this.back = this.elem.g();
+        var fore = this.fore = this.elem.g();
+
+        this.calHeight = .15 * h;
+        this.clockHeight = .85 * h;
+
+        this.cal = W.calendar(this);
+        this.clock = W.clock(this);
+      }),
+
+      calendar: Orb.type(function Calendar(W, tp, opts) {
+        var x, y, w, h, d = tp.dims, H = tp.clockHeight;
+        var opts = this.opts = up({}, opts);
+        var dims = this.dims = Sky.box(x = d.x, y = d.y, w = d.w, h = tp.calHeight);
+        var elem = this.elem = tp.fore.g();
+        var self = this;
+
+        var defs = elem.child('defs');
+        defs.child('clipPath', {id: 'clipCalTop'}).rect(x, dims.top, w, h);
+        defs.child('clipPath', {id: 'clipCalBot'}).rect(x, dims.bottom, w, H);
+
+        var top = elem.g().attrs({'clip-path': 'url(#clipCalTop)'});
+        var bot = elem.g().attrs({'clip-path': 'url(#clipCalBot)'});
+
+        var spring, dateBar, monthBar, monthView, N = 5, k = 1, D = [], z;
+        var time = T.pass({d: -N}, tp.opts.startTime), timeShown = T({h: 0, mi: 0, s: 0}, time);
+        var TimeToDx = w / N / (24 * 1000 * 60 * 60);
+        var passTime = this.passTime = function (s) {
+          var at = time, to = T.pass(s, at);
+          self.move(at - to);
+        }
+        var gotoTime = this.gotoTime = function (t) {
+          self.move(timeShown - t - spring.dx / TimeToDx);
+        }
+
+        var DateBar = Orb.type(function DateBar(_, g) {
+          var elem = this.elem = g.g();
+
+          var date = T({h: 0, mi: 0, s: 0}, time);
+          Sky.box(0, 0, w, h).grid(function (_, tile, i, j) {
+            if (j == 0)
+              z = Sky.box(x, y, tile.w, tile.h);
+            if (j == ~~(N / 2))
+              monthBar = new MonthBar(top, tile);
+            D.push(new DateTab(elem, tile, T.pass({d: j - k}, date)));
+          }, [], {cols: N});
+
+          var guide = elem.guide(D, {
+            kx: 6, ky: 6,
+            truncate: true,
+            settle: function () { tp.clock.gotoTime(new Date(time)) }
+          })
+          this.jack = guide;
+          elem.scroll(elem.orb({
+            move: function (dx) {
+              time -= dx / TimeToDx;
+              return this.push(dx, 0);
+            }
+          }, guide));
+          spring = guide.jack;
+          spring.jack.push(elem.orb({
+            grab: function () { spring.move((timeShown - time) * TimeToDx, 0) },
+            move: function (dx) {
+              var p = spring.dx, V = 1000, U = .8 * V;
+              if (p > 0) {
+                monthBar.prev.attrs({'fill-opacity': (V - clip(+p, 0, U)) / V});
+                monthBar.next.attrs({'fill-opacity': 1});
+              } else {
+                monthBar.prev.attrs({'fill-opacity': 1});
+                monthBar.next.attrs({'fill-opacity': (V - clip(-p, 0, U)) / V});
+              }
+              timeShown -= dx / TimeToDx;
+            }
+          }))
+        });
+
+        var DateTab = Orb.type(function DateTab(_, g, tile, t) {
+          var elem = this.elem = g.g().transform({translate: [tile.x, tile.y]});
+          var self = this;
+
+          var bg = elem.rect(z.x, z.y, tile.w, tile.h).attrs({fill: 'rgb(0, 0, 100)', 'fill-opacity': .5});
+          var dt = elem.text(z.midX, z.midY, '').attrs({dy: -4, 'text-anchor': 'middle'});
+          var wd = elem.text(z.midX, z.midY, '').attrs({dy: 10, 'text-anchor': 'middle'});
+
+          this.time = t;
+          this.jack = elem.wagon(elem.loop(null, {
+            bbox: Sky.box(-1, 0, w, 0),
+            wrap: function (wx) {
+              k = (k + wx + N) % N;
+              t = self.time = T.pass({d: wx * N}, t);
+              dt.txt(t.getDate());
+              wd.txt(T.weekday(t).substr(0, 3));
+
+              var d = D[k].time, f = T({d: 1}, d);
+              monthBar.showDate(d, f);
+              monthView.showDate(d, f);
+            }
+          }), {bbox: {y: 0, height: 0}});
+
+          elem.tap(function () { gotoTime(t) });
+        });
+
+        var MonthBar = Orb.type(function MonthBar(_, g, tile) {
+          var elem = this.elem = g.g();
+
+          var p = this.prev = elem.g().transform({translate: [0, tile.y - tile.h - 1]});
+          p.rect(z.x, z.y, tile.x, tile.h).attrs({fill: 'rgba(0, 0, 0, .8)'});
+          p.text(z.right, z.midY, '\u2190').attrs({dy: 6, fill: 'white', 'text-anchor': 'middle', 'font-size': 20});
+          p.press(p.spring({
+            grab: function () { passTime({m: -1}) },
+            move: function (dx, dy, s) {
+              if (s.dx > 30)
+                passTime({h: -Math.max(s.dx, 24)});
+            }
+          }));
+
+          var n = this.next = elem.g().transform({translate: [tile.x + tile.w, tile.y - tile.h - 1]});
+          n.rect(z.x, z.y, tile.x, tile.h).attrs({fill: 'rgba(0, 0, 0, .8)'});
+          n.text(z.x + z.w, z.midY, '\u2192').attrs({dy: 6, fill: 'white', 'text-anchor': 'middle', 'font-size': 20});
+          n.press(n.spring({
+            grab: function () { passTime({m: +1}) },
+            move: function (dx, dy, s) {
+              if (s.dx > 30)
+                passTime({h: +Math.max(s.dx, 24)});
+            }
+          }));
+
+          var pct;
+          var m = this.month = elem.g();
+          var bg = m.rect(z.x, z.y, tile.w, tile.h).attrs({fill: 'rgb(0, 0, 255)'});
+          var mo = m.text(z.midX, z.midY, '').attrs({dy: -4, 'text-anchor': 'middle'});
+          var yr = m.text(z.midX, z.midY, '').attrs({dy: 10, 'text-anchor': 'middle'});
+          m.tap(function () { Orb.move(monthView, 0, pct == 1 ? -H : H) });
+
+          this.jack = elem.orb({
+            move: function (dx, dy, cur) {
+              var oy = cur.translate[1];
+              pct = oy / H;
+              m.transform({translate: [pct * tile.x, tile.y]});
+              p.transform({translate: [0, Math.min(oy - 2 * tile.h, 0)]});
+              n.transform({translate: [tile.x + tile.w, Math.min(oy - 2 * tile.h, 0)]});
+              dateBar.elem.transform(cur);
+            }
+          });
+
+          this.showDate = function (t) {
+            mo.txt(T.month(t).substr(0, 3));
+            yr.txt(t.getFullYear());
+          }
+        });
+
+        var MonthView = Orb.type(function MonthView(_, g) {
+          var elem = this.elem = g.g().attrs({'font-size': 8});
+
+          var week = Sky.box(dims.left, dims.bottom - H, w, .1 * H).grid(function (c, tile, i, j) {
+            elem.rect(tile.x, tile.y, tile.w, tile.h).attrs({fill: 'rgba(0, 255, 0, .9)'});
+            elem.text(tile.midX, tile.midY, T.DoW[j].substr(0, 3)).attrs({dy: 2, 'text-anchor': 'middle'});
+          }, null, {cols: 7});
+
+          var grid = Sky.box(dims.left, dims.bottom - .9 * H, w, .9 * H).grid(function (c, tile, i, j, n, b) {
+            var g = elem.g(), bg = g.g(), fg = g.g();
+            var cell = {
+              bg: bg.rect(tile.x, tile.y, tile.w, tile.h),
+              fg: fg,
+              dt: fg.text(tile.midX, tile.midY, '').attrs({dy: 2, 'text-anchor': 'middle'})
+            }
+            g.tap(function () { gotoTime(cell.time) });
+            return c.push(cell) && c;
+          }, [], {rows: 6, cols: 7});
+
+          this.showDate = function (t, f) {
+            var d = t.getDate(), m = t.getMonth();
+            grid.reduce(function (u, cell) {
+              cell.time = u;
+              if (m == u.getMonth()) {
+                if (d == u.getDate())
+                  cell.fg.attrs({fill: 'white'});
+                else
+                  cell.fg.attrs({fill: 'black'});
+                cell.bg.attrs({fill: 'rgb(0, 0, 255)', 'fill-opacity': 1 - Math.abs(u - t) / (12 * T.Week)});
+              } else {
+                cell.fg.attrs({fill: 'black'});
+                cell.bg.attrs({fill: 'rgb(100, 100, 100)', 'fill-opacity': 1 - Math.abs(u - t) / (12 * T.Week)});
+              }
+              cell.dt.txt(u.getDate());
+              return T.pass({d: 1}, u);
+            }, T.pass({d: -f.getDay()}, f));
+          }
+
+          var wagon = elem.wagon(monthBar, {bbox: Sky.box(0, 0, 0, H)})
+          var tray = elem.guide(wagon, {kx: 4, ky: 4});
+          elem.scroll(elem.orb({
+            move: function (dx, dy) {
+              if (Math.abs(dy) > Math.abs(dx))
+                Orb.move(tray, dx, dy);
+              else
+                passTime({h: -dx});
+            }
+          }));
+          this.jack = tray;
+        });
+
+        dateBar = new DateBar(top);
+        monthView = new MonthView(bot);
+        monthBar.month.scroll(monthView.sumxy());
+        this.jack = dateBar;
+        this.move = function (dt) {
+          time -= dt;
+          return Orb.move(dateBar, dt * TimeToDx);
+        }
+        passTime({d: N});
+      }),
+
+      clock: Orb.type(function Clock(W, tp, opts) {
+        var x, y, w, h, d = tp.dims, H = tp.calHeight;
+        var dims = this.dims = Sky.box(x = d.x, y = d.y + tp.calHeight, w = d.w, h = tp.clockHeight);
+        var opts = this.opts = up({}, opts);
+        var elem = this.elem = tp.back.g();
+
+        var back = this.back = elem.g();
+        var fore = this.fore = elem.g();
+
+        this.timepiece = tp;
+        this.gotoTime = function (t) {
+          face.bezel.gotoTime(t);
+        }
+
+        var face = W.faceView(this);
+        var list = W.listView(this);
+        var wagon = fore.wagon([face.slide, list.slide], {bbox: Sky.box(-w, 0, w, 0)});
+        var guide = elem.guide(wagon, {
+          unit: {width: w},
+          stretch: function () {
+            this.dx = clip(this.dx, -w, w);
+            this.dy = clip(this.dy, -w, w);
+          },
+          balance: function () {
+            console.log('clock balanced');
+          }
+        });
+        back.rect(x, y, w, h).attrs({fill: 'rgb(100, 50, 0)', 'fill-opacity': .5});
+        back.scroll(guide);
+      }),
+
+      faceView: Orb.type(function FaceView(W, clock, opts) {
+        var x, y, w, h, d = clock.dims;
+        var dims = this.dims = Sky.box(x = d.x, y = d.y, w = d.w, h = d.h);
+        var opts = this.opts = up({}, opts);
+        var elem = this.elem = clock.fore.g();
+
+        var cx = dims.midX, cy = dims.midY, r = Math.min(w, h) / 2.75;
+        var defs = elem.child('defs');
+        var clip = defs.child('clipPath', {id: 'clipClockCore'}).circle(cx, cy, r);
+        var core = elem.g().attrs({'clip-path': 'url(#clipClockCore)'});
+
+        var time = clock.timepiece.opts.startTime;
+
+        var angle = function (t) { return (hours(t) - 3) * 30 }
+        var hours = function (t) { return t.getHours() + t.getMinutes() / 60 }
+        var bezel = this.bezel = new (function (g) {
+          var o = angle(time), L = 330, l = L, q = L / w;
+          var lip = g.path().attrs({stroke: 'green', 'fill-opacity': 0});
+          var tip = g.circle(cx, cy, 3).attrs({fill: 'green'});
+          var grip = g.path(P.ring(cx, cy, .8 * r, .8 * r, .5 * r)).attrs({'fill-opacity': 0});
+          var axle = g.spring({
+            move: function (dx) {
+              time -= 120000 * dx;
+              lip.attrs({d: P.arc(cx, cy, r, r, l, o -= dx)});
+              tip.transform({translate: g.polar(r, o)});
+            }
+          });
+          var gear = g.crank(g.orb({
+            move: function (da) {
+              Orb.move(axle, da);
+              this.push(120000 * da, 0);
+            }
+          }, clock.timepiece.cal), {cx: cx, cy: cy});
+          Orb.move(gear);
+          g.swipe(gear);
+
+          this.gotoTime = function (t) {
+           Orb.move(axle, angle(new Date(time)) - angle(t) - axle.dx);
+          }
+
+          this.spool = g.orb({
+            move: function (dx, dy, cur) {
+              var z = cur.translate || [0, 0];
+              lip.attrs({d: P.arc(cx, cy, r, r, l = L + z[0] * q, o)});
+            }
+          });
+        })(elem.g());
+
+        var slide = this.slide = elem.orb({
+          move: function (dx, dy, cur) {
+            var z = cur.translate || [0, 0], pct = 1 + z[0] / w;
+            elem.style({opacity: pct.toFixed(4)});
+            return this.push(dx, dy, cur);
+          }
+        }, bezel.spool);
+      }),
+
+      listView: Orb.type(function ListView(W, clock, opts) {
+        var x, y, w, h, d = clock.dims;
+        var dims = this.dims = Sky.box(x = d.x, y = d.y, w = d.w, h = d.h);
+        var opts = this.opts = up({}, opts);
+        var elem = this.elem = clock.fore.g().style({opacity: 0}).transform({translate: w});
+
+        var lx = x + .1 * w, ly = y + .1 * h, lw = .8 * w, lh = .8 * h, lb = ly + lh;
+        var lip = elem.path().attrs({stroke: 'green'});
+        var tip = elem.circle(x, y, 3).attrs({fill: 'green'});
+        var lst = elem.g().attrs({'font-size': 8});
+
+        var m = 0, s = lh / w;
+        var slide = this.slide = elem.orb({
+          move: function (dx, dy, cur) {
+            var z = cur.translate || [0, 0], pct = -z[0] / w;
+            var o = lb + (m = z[0] * s);
+            elem.style({opacity: pct.toFixed(4)});
+            lip.attrs({d: P.line(lx, lb, lx, o)});
+            tip.attrs({cx: lx, cy: o});
+            lst.transform({translate: [lx + 6, o + 12]});
+            return this.push(dx, dy, cur);
+          }
+        });
+      }),
+
+      drawer: Orb.type(function Drawer(W, app, opts) {
+        var x, y, w, h, d = app.dims;
+        var dims = this.dims = Sky.box(x = d.x, y = app.timepiece.dims.bottom, w = d.w, h = d.h * .85);
+        var opts = this.opts = up({}, opts);
+        var elem = this.elem = app.elem.g();
+
+        var rect = elem.rect(x, y, w, h).attrs({fill: 'rgba(0, 0, 0, .8)'});
+        var jack = this.jack = rect.spring(rect.wagon(null, {bbox: Sky.box(0, 0 - h, 0, h)}));
+        var open = this.open = function () {
+          Orb.move(jack, 0, -2 * h);
+        }
+        elem.scroll(this);
+      }),
+
+      toolbar: Orb.type(function ToolBar(W, app, opts) {
+        var x, y, w, h, d = app.dims;
+        var dims = this.dims = Sky.box(x = d.x, y = app.timepiece.dims.bottom, w = d.w, h = d.h * .1);
+        var opts = this.opts = up({}, opts);
+        var elem = this.elem = app.elem.g();
+
+        elem.rect(x, y, w, h).attrs({fill: 'red'});
+        elem.tap(app.drawer.open);
+        dims.grid(function (acc, cell, i, j) {
+          var text;
+          switch (j) {
+          case 0:
+            text = '+';
+            break;
+          case 1:
+            text = 'home';
+            break;
+          case 2:
+            text = 'queue';
+            break;
+          }
+          elem.text(cell.midX, cell.midY, text).attrs({'text-anchor': 'middle', dy: 2});
+          console.log(cell, i, j);
+        }, null, {cols: 3});
+      }),
+    };
+
+    var win = {w: window.innerWidth, h: window.innerHeight};
+    var app = Widgets.app(document.getElementById('content'), {aspectRatio: Math.min(win.w / win.h, .8)});
+  })();
+    </script>
+  </body>
+</html>

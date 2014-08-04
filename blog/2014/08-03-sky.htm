@@ -1,0 +1,90 @@
+<header>
+  <h1>A look at &lsquo;Sky&rsquo;</h1>
+  <h6>August 2014</h6>
+</header>
+
+<main>
+  <p>
+    We built <a href="https://www.skej.us">Skej</a> as a web app.
+    That means it runs entirely on HTML5, and works inside of a browser.
+    A very good question people sometimes ask is, why?
+    The next question people sometimes ask is, what frameworks does Skej use?
+    I'll try to answer both those questions below.
+  </p>
+
+  <p>
+    <b>First of all, the web is the ultimate distribution platform.</b>
+  </p>
+
+  <p>
+    It's no surprise, it was designed to be that way.
+    As a web app, anyone that has a browser can access your app directly.
+    And they're always on the latest version.
+  </p>
+
+  <p>
+    <b>Second of all, when you're engineering resources are constrained, you can get a lot of leverage by developing for the web.</b>
+  </p>
+
+  <p>
+    Because it's the browser's job to be portable, web apps can run on multiple platforms for free.
+    Of course in practice, browsers are not the same everywhere, and there are endless headaches due to differences between platforms.
+    But the situation is still somewhat better than trying to develop a completely different codebase for each platform.
+  </p>
+
+  <p>
+    The biggest objection to web apps is that JavaScript is slow.
+    The second biggest objection is that you can't access native APIs.
+    <a href="http://cordova.apache.org">Cordova</a> helps alleviate the second problem, but it is true that JavaScript is relatively slow.
+    The good news is computers are fast, and getting faster, and many things that people want to do don't require native speed, just clever use of resources.
+    Skej definitely falls into that category, as we don't need to do anything super expensive on the client.
+  </p>
+
+  <p>
+    <b>Skej doesn't use any frameworks, just the <a href="https://github.com/jflatow/sky">Sky</a> library.</b>
+  </p>
+
+  <p>
+    Many of the reasons I used to use jQuery are actually not an issue any more, because jQuery did such a good job of showing what was needed, browsers are actually much more capable than they used to be.
+    And since JavaScript <em>is</em> slow, we deprioritized backwards compatability and focused on doing things efficiently.
+  </p>
+
+  <p>
+    So what is Sky?
+    Sky is a lightweight library that provides a bunch of convenience, much like jQuery.
+    But Sky also introduces a paradigm for building up new kinds of interactions, and linking interactions together.
+    It came out of the very first version of Skej, where we built a sort of clock interface to your calendar, that let you spin through time like a corkscrew.
+    It looked a little bit like this:
+  </p>
+
+  <iframe src="blog/2014/08-03-sky.ex-1.html"></iframe>
+
+  <p>
+    I thought if we could develop a paradigm for building any type of interaction, we'd be able to iterate faster.
+    Instead of only having a choice of one of several out of the box components, we could just as easily roll our own.
+  </p>
+
+  <p>
+    I though about, what do I really want to do when I'm interacting with pages and apps?
+    I imagined being able to reach into the screen and grab different objects.
+    Move them around and have them connected together in arbitrary ways.
+  </p>
+
+  <p>
+    Sky makes this easy using something called <var>orbs</var>.
+    Orbs usually have an element attached, and can be chained together.
+    Orbs can have a jack, which is their outlet.
+    If you grab and move an orb, the default is to propagate and grab and move its jack.
+  </p>
+
+  <p>
+    The second key concept in Sky is that of <var>springs</var>.
+    Springs allow you to load up a bunch of potential and restore themselves effectively in the background, using animation frames.
+    The spring is what keeps things moving in the example above after you have released the objects.
+  </p>
+
+  <p>
+    I realize I haven't done much to explain how Sky works, but the idea here was to just give a taste.
+    I'll provide more examples in future posts, but if you've ever developed for the web, I hope the above example whets your appetite!
+  </p>
+</main>

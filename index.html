@@ -21,7 +21,8 @@
 
     <main>
       <section id="blog">
-        <a href="blog/2014/08-02-begin-again.htm" />
+        <a href="blog/2014/08-03-sky.htm"></a>
+        <a href="blog/2014/08-02-begin-again.htm"></a>
       </section>
       <script>
         window.onload = function () {
@@ -42,7 +43,6 @@
                   n.innerHTML = r.response;
                   blog.node.replaceChild(n, a)
                   var h1 = article.$('header h1')
-                  console.log(article.node, h1)
                   h1.node.outerHTML = '<a href="?page=' + href + '">' + h1.node.outerHTML + '</a>'
                 }
               })
