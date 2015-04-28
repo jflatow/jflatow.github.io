@@ -1,11 +1,11 @@
 @font-face {
     font-family: Vollkorn;
-    src: url(../fonts/Vollkorn-Regular.ttf)
+    src: url(../fonts/Vollkorn-Regular.ttf);
 }
 
 @font-face {
     font-family: Vollkorn;
-    src: url(../fonts/Vollkorn-Bold.ttf)
+    src: url(../fonts/Vollkorn-Bold.ttf);
     font-weight: bold;
 }
 
