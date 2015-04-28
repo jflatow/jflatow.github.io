@@ -1,3 +1,8 @@
+@font-face {
+    font-family: Slabo;
+    src: url(../fonts/Slabo27px-Regular.ttf)
+}
+
 * {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -63,7 +68,7 @@ iframe {
 
 html {
     color: #333;
-    font-family: Helvetica;
+    font-family: Slabo, Helvetica;
     font-size: 16px;
     text-align: center;
     -webkit-animation: focus 1s;
