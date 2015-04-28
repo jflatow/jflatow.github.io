@@ -1,6 +1,12 @@
 @font-face {
-    font-family: Slabo;
-    src: url(../fonts/Slabo27px-Regular.ttf)
+    font-family: Vollkorn;
+    src: url(../fonts/Vollkorn-Regular.ttf)
+}
+
+@font-face {
+    font-family: Vollkorn;
+    src: url(../fonts/Vollkorn-Bold.ttf)
+    font-weight: bold;
 }
 
 * {
@@ -68,7 +74,7 @@ iframe {
 
 html {
     color: #333;
-    font-family: Slabo, Helvetica;
+    font-family: Vollkorn, Helvetica;
     font-size: 16px;
     text-align: center;
     -webkit-animation: focus 1s;
