@@ -1,0 +1,2318 @@
+<html>
+  <head>
+    <title>Intro To Coding</title>
+    <style>
+      body {
+        font-size: 1.6rem;
+        padding-bottom: 8em;
+      }
+
+      section {
+        max-width: 640px;
+        margin: auto;
+        padding: 8em 0;
+        text-align: center;
+      }
+
+      section pre {
+        margin: auto;
+        margin-top: 2em;
+        text-align: left;
+      }
+
+      section svg {
+        width: 100%;
+      }
+
+      table {
+        text-align: center;
+      }
+
+      ul {
+        text-align: left;
+      }
+
+      /*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  background: #f0f0f0;
+  -webkit-text-size-adjust: none;
+}
+
+.hljs,
+.hljs-subst,
+.hljs-tag .hljs-title,
+.nginx .hljs-title {
+  color: black;
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-constant,
+.hljs-parent,
+.hljs-tag .hljs-value,
+.hljs-rule .hljs-value,
+.hljs-preprocessor,
+.hljs-pragma,
+.hljs-name,
+.haml .hljs-symbol,
+.ruby .hljs-symbol,
+.ruby .hljs-symbol .hljs-string,
+.hljs-template_tag,
+.django .hljs-variable,
+.smalltalk .hljs-class,
+.hljs-addition,
+.hljs-flow,
+.hljs-stream,
+.bash .hljs-variable,
+.pf .hljs-variable,
+.apache .hljs-tag,
+.apache .hljs-cbracket,
+.tex .hljs-command,
+.tex .hljs-special,
+.erlang_repl .hljs-function_or_atom,
+.asciidoc .hljs-header,
+.markdown .hljs-header,
+.coffeescript .hljs-attribute {
+  color: #800;
+}
+
+.smartquote,
+.hljs-comment,
+.hljs-annotation,
+.diff .hljs-header,
+.hljs-chunk,
+.asciidoc .hljs-blockquote,
+.markdown .hljs-blockquote {
+  color: #888;
+}
+
+.hljs-number,
+.hljs-date,
+.hljs-regexp,
+.hljs-literal,
+.hljs-hexcolor,
+.smalltalk .hljs-symbol,
+.smalltalk .hljs-char,
+.go .hljs-constant,
+.hljs-change,
+.lasso .hljs-variable,
+.makefile .hljs-variable,
+.asciidoc .hljs-bullet,
+.markdown .hljs-bullet,
+.asciidoc .hljs-link_url,
+.markdown .hljs-link_url {
+  color: #080;
+}
+
+.hljs-label,
+.hljs-javadoc,
+.ruby .hljs-string,
+.hljs-decorator,
+.hljs-filter .hljs-argument,
+.hljs-localvars,
+.hljs-array,
+.hljs-attr_selector,
+.hljs-important,
+.hljs-pseudo,
+.hljs-pi,
+.haml .hljs-bullet,
+.hljs-doctype,
+.hljs-deletion,
+.hljs-envvar,
+.hljs-shebang,
+.apache .hljs-sqbracket,
+.nginx .hljs-built_in,
+.tex .hljs-formula,
+.erlang_repl .hljs-reserved,
+.hljs-prompt,
+.asciidoc .hljs-link_label,
+.markdown .hljs-link_label,
+.vhdl .hljs-attribute,
+.clojure .hljs-attribute,
+.asciidoc .hljs-attribute,
+.lasso .hljs-attribute,
+.coffeescript .hljs-property,
+.hljs-phony {
+  color: #88f;
+}
+
+.hljs-keyword,
+.hljs-id,
+.hljs-title,
+.hljs-built_in,
+.css .hljs-tag,
+.hljs-javadoctag,
+.hljs-phpdoc,
+.hljs-dartdoc,
+.hljs-yardoctag,
+.smalltalk .hljs-class,
+.hljs-winutils,
+.bash .hljs-variable,
+.pf .hljs-variable,
+.apache .hljs-tag,
+.hljs-type,
+.hljs-typename,
+.tex .hljs-command,
+.asciidoc .hljs-strong,
+.markdown .hljs-strong,
+.hljs-request,
+.hljs-status {
+  font-weight: bold;
+}
+
+.asciidoc .hljs-emphasis,
+.markdown .hljs-emphasis {
+  font-style: italic;
+}
+
+.nginx .hljs-built_in {
+  font-weight: normal;
+}
+
+.coffeescript .javascript,
+.javascript .xml,
+.lasso .markup,
+.tex .hljs-formula,
+.xml .javascript,
+.xml .vbscript,
+.xml .css,
+.xml .hljs-cdata {
+  opacity: 0.5;
+}
+
+    </style>
+    <script>
+      !function(e){"undefined"!=typeof exports?e(exports):(window.hljs=e({}),"function"==typeof define&&define.amd&&define([],function(){return window.hljs}))}(function(e){function n(e){return e.replace(/&/gm,"&amp;").replace(/</gm,"&lt;").replace(/>/gm,"&gt;")}function t(e){return e.nodeName.toLowerCase()}function r(e,n){var t=e&&e.exec(n);return t&&0==t.index}function a(e){var n=(e.className+" "+(e.parentNode?e.parentNode.className:"")).split(/\s+/);return n=n.map(function(e){return e.replace(/^lang(uage)?-/,"")}),n.filter(function(e){return N(e)||/no(-?)highlight|plain|text/.test(e)})[0]}function i(e,n){var t,r={};for(t in e)r[t]=e[t];if(n)for(t in n)r[t]=n[t];return r}function o(e){var n=[];return function r(e,a){for(var i=e.firstChild;i;i=i.nextSibling)3==i.nodeType?a+=i.nodeValue.length:1==i.nodeType&&(n.push({event:"start",offset:a,node:i}),a=r(i,a),t(i).match(/br|hr|img|input/)||n.push({event:"stop",offset:a,node:i}));return a}(e,0),n}function u(e,r,a){function i(){return e.length&&r.length?e[0].offset!=r[0].offset?e[0].offset<r[0].offset?e:r:"start"==r[0].event?e:r:e.length?e:r}function o(e){function r(e){return" "+e.nodeName+'="'+n(e.value)+'"'}l+="<"+t(e)+Array.prototype.map.call(e.attributes,r).join("")+">"}function u(e){l+="</"+t(e)+">"}function c(e){("start"==e.event?o:u)(e.node)}for(var s=0,l="",f=[];e.length||r.length;){var g=i();if(l+=n(a.substr(s,g[0].offset-s)),s=g[0].offset,g==e){f.reverse().forEach(u);do c(g.splice(0,1)[0]),g=i();while(g==e&&g.length&&g[0].offset==s);f.reverse().forEach(o)}else"start"==g[0].event?f.push(g[0].node):f.pop(),c(g.splice(0,1)[0])}return l+n(a.substr(s))}function c(e){function n(e){return e&&e.source||e}function t(t,r){return new RegExp(n(t),"m"+(e.cI?"i":"")+(r?"g":""))}function r(a,o){if(!a.compiled){if(a.compiled=!0,a.k=a.k||a.bK,a.k){var u={},c=function(n,t){e.cI&&(t=t.toLowerCase()),t.split(" ").forEach(function(e){var t=e.split("|");u[t[0]]=[n,t[1]?Number(t[1]):1]})};"string"==typeof a.k?c("keyword",a.k):Object.keys(a.k).forEach(function(e){c(e,a.k[e])}),a.k=u}a.lR=t(a.l||/\b\w+\b/,!0),o&&(a.bK&&(a.b="\\b("+a.bK.split(" ").join("|")+")\\b"),a.b||(a.b=/\B|\b/),a.bR=t(a.b),a.e||a.eW||(a.e=/\B|\b/),a.e&&(a.eR=t(a.e)),a.tE=n(a.e)||"",a.eW&&o.tE&&(a.tE+=(a.e?"|":"")+o.tE)),a.i&&(a.iR=t(a.i)),void 0===a.r&&(a.r=1),a.c||(a.c=[]);var s=[];a.c.forEach(function(e){e.v?e.v.forEach(function(n){s.push(i(e,n))}):s.push("self"==e?a:e)}),a.c=s,a.c.forEach(function(e){r(e,a)}),a.starts&&r(a.starts,o);var l=a.c.map(function(e){return e.bK?"\\.?("+e.b+")\\.?":e.b}).concat([a.tE,a.i]).map(n).filter(Boolean);a.t=l.length?t(l.join("|"),!0):{exec:function(){return null}}}}r(e)}function s(e,t,a,i){function o(e,n){for(var t=0;t<n.c.length;t++)if(r(n.c[t].bR,e))return n.c[t]}function u(e,n){if(r(e.eR,n)){for(;e.endsParent&&e.parent;)e=e.parent;return e}return e.eW?u(e.parent,n):void 0}function f(e,n){return!a&&r(n.iR,e)}function g(e,n){var t=E.cI?n[0].toLowerCase():n[0];return e.k.hasOwnProperty(t)&&e.k[t]}function p(e,n,t,r){var a=r?"":x.classPrefix,i='<span class="'+a,o=t?"":"</span>";return i+=e+'">',i+n+o}function d(){if(!L.k)return n(y);var e="",t=0;L.lR.lastIndex=0;for(var r=L.lR.exec(y);r;){e+=n(y.substr(t,r.index-t));var a=g(L,r);a?(B+=a[1],e+=p(a[0],n(r[0]))):e+=n(r[0]),t=L.lR.lastIndex,r=L.lR.exec(y)}return e+n(y.substr(t))}function h(){if(L.sL&&!w[L.sL])return n(y);var e=L.sL?s(L.sL,y,!0,M[L.sL]):l(y);return L.r>0&&(B+=e.r),"continuous"==L.subLanguageMode&&(M[L.sL]=e.top),p(e.language,e.value,!1,!0)}function b(){return void 0!==L.sL?h():d()}function v(e,t){var r=e.cN?p(e.cN,"",!0):"";e.rB?(k+=r,y=""):e.eB?(k+=n(t)+r,y=""):(k+=r,y=t),L=Object.create(e,{parent:{value:L}})}function m(e,t){if(y+=e,void 0===t)return k+=b(),0;var r=o(t,L);if(r)return k+=b(),v(r,t),r.rB?0:t.length;var a=u(L,t);if(a){var i=L;i.rE||i.eE||(y+=t),k+=b();do L.cN&&(k+="</span>"),B+=L.r,L=L.parent;while(L!=a.parent);return i.eE&&(k+=n(t)),y="",a.starts&&v(a.starts,""),i.rE?0:t.length}if(f(t,L))throw new Error('Illegal lexeme "'+t+'" for mode "'+(L.cN||"<unnamed>")+'"');return y+=t,t.length||1}var E=N(e);if(!E)throw new Error('Unknown language: "'+e+'"');c(E);var R,L=i||E,M={},k="";for(R=L;R!=E;R=R.parent)R.cN&&(k=p(R.cN,"",!0)+k);var y="",B=0;try{for(var C,j,I=0;;){if(L.t.lastIndex=I,C=L.t.exec(t),!C)break;j=m(t.substr(I,C.index-I),C[0]),I=C.index+j}for(m(t.substr(I)),R=L;R.parent;R=R.parent)R.cN&&(k+="</span>");return{r:B,value:k,language:e,top:L}}catch(S){if(-1!=S.message.indexOf("Illegal"))return{r:0,value:n(t)};throw S}}function l(e,t){t=t||x.languages||Object.keys(w);var r={r:0,value:n(e)},a=r;return t.forEach(function(n){if(N(n)){var t=s(n,e,!1);t.language=n,t.r>a.r&&(a=t),t.r>r.r&&(a=r,r=t)}}),a.language&&(r.second_best=a),r}function f(e){return x.tabReplace&&(e=e.replace(/^((<[^>]+>|\t)+)/gm,function(e,n){return n.replace(/\t/g,x.tabReplace)})),x.useBR&&(e=e.replace(/\n/g,"<br>")),e}function g(e,n,t){var r=n?E[n]:t,a=[e.trim()];return e.match(/\bhljs\b/)||a.push("hljs"),-1===e.indexOf(r)&&a.push(r),a.join(" ").trim()}function p(e){var n=a(e);if(!/no(-?)highlight|plain|text/.test(n)){var t;x.useBR?(t=document.createElementNS("http://www.w3.org/1999/xhtml","div"),t.innerHTML=e.innerHTML.replace(/\n/g,"").replace(/<br[ \/]*>/g,"\n")):t=e;var r=t.textContent,i=n?s(n,r,!0):l(r),c=o(t);if(c.length){var p=document.createElementNS("http://www.w3.org/1999/xhtml","div");p.innerHTML=i.value,i.value=u(c,o(p),r)}i.value=f(i.value),e.innerHTML=i.value,e.className=g(e.className,n,i.language),e.result={language:i.language,re:i.r},i.second_best&&(e.second_best={language:i.second_best.language,re:i.second_best.r})}}function d(e){x=i(x,e)}function h(){if(!h.called){h.called=!0;var e=document.querySelectorAll("pre code");Array.prototype.forEach.call(e,p)}}function b(){addEventListener("DOMContentLoaded",h,!1),addEventListener("load",h,!1)}function v(n,t){var r=w[n]=t(e);r.aliases&&r.aliases.forEach(function(e){E[e]=n})}function m(){return Object.keys(w)}function N(e){return w[e]||w[E[e]]}var x={classPrefix:"hljs-",tabReplace:null,useBR:!1,languages:void 0},w={},E={};return e.highlight=s,e.highlightAuto=l,e.fixMarkup=f,e.highlightBlock=p,e.configure=d,e.initHighlighting=h,e.initHighlightingOnLoad=b,e.registerLanguage=v,e.listLanguages=m,e.getLanguage=N,e.inherit=i,e.IR="[a-zA-Z]\\w*",e.UIR="[a-zA-Z_]\\w*",e.NR="\\b\\d+(\\.\\d+)?",e.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)",e.BNR="\\b(0b[01]+)",e.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|-|-=|/=|/|:|;|<<|<<=|<=|<|===|==|=|>>>=|>>=|>=|>>>|>>|>|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~",e.BE={b:"\\\\[\\s\\S]",r:0},e.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[e.BE]},e.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[e.BE]},e.PWM={b:/\b(a|an|the|are|I|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such)\b/},e.C=function(n,t,r){var a=e.inherit({cN:"comment",b:n,e:t,c:[]},r||{});return a.c.push(e.PWM),a},e.CLCM=e.C("//","$"),e.CBCM=e.C("/\\*","\\*/"),e.HCM=e.C("#","$"),e.NM={cN:"number",b:e.NR,r:0},e.CNM={cN:"number",b:e.CNR,r:0},e.BNM={cN:"number",b:e.BNR,r:0},e.CSSNM={cN:"number",b:e.NR+"(%|em|ex|ch|rem|vw|vh|vmin|vmax|cm|mm|in|pt|pc|px|deg|grad|rad|turn|s|ms|Hz|kHz|dpi|dpcm|dppx)?",r:0},e.RM={cN:"regexp",b:/\//,e:/\/[gimuy]*/,i:/\n/,c:[e.BE,{b:/\[/,e:/\]/,r:0,c:[e.BE]}]},e.TM={cN:"title",b:e.IR,r:0},e.UTM={cN:"title",b:e.UIR,r:0},e});hljs.registerLanguage("javascript",function(e){return{aliases:["js"],k:{keyword:"in of if for while finally var new function do return void else break catch instanceof with throw case default try this switch continue typeof delete let yield const export super debugger as await",literal:"true false null undefined NaN Infinity",built_in:"eval isFinite isNaN parseFloat parseInt decodeURI decodeURIComponent encodeURI encodeURIComponent escape unescape Object Function Boolean Error EvalError InternalError RangeError ReferenceError StopIteration SyntaxError TypeError URIError Number Math Date String RegExp Array Float32Array Float64Array Int16Array Int32Array Int8Array Uint16Array Uint32Array Uint8Array Uint8ClampedArray ArrayBuffer DataView JSON Intl arguments require module console window document Symbol Set Map WeakSet WeakMap Proxy Reflect Promise"},c:[{cN:"pi",r:10,v:[{b:/^\s*('|")use strict('|")/},{b:/^\s*('|")use asm('|")/}]},e.ASM,e.QSM,{cN:"string",b:"`",e:"`",c:[e.BE,{cN:"subst",b:"\\$\\{",e:"\\}"}]},e.CLCM,e.CBCM,{cN:"number",b:"\\b(0[xXbBoO][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)",r:0},{b:"("+e.RSR+"|\\b(case|return|throw)\\b)\\s*",k:"return throw case",c:[e.CLCM,e.CBCM,e.RM,{b:/</,e:/>\s*[);\]]/,r:0,sL:"xml"}],r:0},{cN:"function",bK:"function",e:/\{/,eE:!0,c:[e.inherit(e.TM,{b:/[A-Za-z$_][0-9A-Za-z$_]*/}),{cN:"params",b:/\(/,e:/\)/,c:[e.CLCM,e.CBCM],i:/["'\(]/}],i:/\[|%/},{b:/\$[(.]/},{b:"\\."+e.IR,r:0},{bK:"import",e:"[;$]",k:"import from as",c:[e.ASM,e.QSM]},{cN:"class",bK:"class",e:/[{;=]/,eE:!0,i:/[:"\[\]]/,c:[{bK:"extends"},e.UTM]}]}});
+      (function () {
+  var abs = Math.abs, min = Math.min, max = Math.max, Rt2 = Math.sqrt(2), Inf = Infinity;
+  var add = function (p, d) { return isFinite(d) ? p + d : d }
+  var def = function (x, d) { return isNaN(x) ? d : x }
+  var dfn = function (x, d) { return x == undefined ? d : x }
+  var fnt = function (x, d) { return isFinite(x) ? x : d }
+  var get = function (a, k, d) { var v = a[k]; return dfn(v, d) }
+  var pop = function (a, k, d) { var v = get(a, k, d); delete a[k]; return v }
+  var pre = function (a, k, d) { return a[k] = get(a, k, d) }
+  var up = function (a, b) {
+    for (var k in b)
+      a[k] = b[k]
+    return a;
+  }
+  var ext = function (a, b) { return up(Object.create(a), b) }
+  var map = function (a, f) { return a && a.map ? a.map(f) : f(a) }
+  var anim = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+  var wrap = function (node) {
+    if (node)
+      switch (node.namespaceURI) {
+      case SVGElem.prototype.xmlns: return new SVGElem(node)
+      case Elem.prototype.xmlns:
+      default: return new Elem(node)
+      }
+  }
+  var util = {
+    add: add,
+    def: def,
+    dfn: dfn,
+    fnt: fnt,
+    get: get,
+    pop: pop,
+    pre: pre,
+    update: up,
+    extend: ext,
+    map: map,
+    wrap: wrap,
+    copy: function (b) { return up({}, b) },
+    clip: function (x, m, M) { return min(max(x, m), M) },
+    randInt: function (m, M) { return Math.round((M - m) * Math.random()) + m }
+  }
+
+  var trig = util.trig = {
+    rad: function (a) { return Math.PI / 180 * a },
+    sin: function (a) { return Math.sin(trig.rad(a)) },
+    cos: function (a) { return Math.cos(trig.rad(a)) },
+    cut: function (x) { return util.clip(x, -359.999, 359.999) }
+  }
+
+  var path = function (cmd) { return cmd + [].slice.call(arguments, 1) }
+  var P = up(path, {
+    M: function (xy) { return P('M', xy) },
+    L: function (xy) { return P('L', xy) },
+    join: function () {
+      return [].reduce.call(arguments, function (d, a) { return d + P.apply(null, a) }, '')
+    },
+    line: function (x1, y1, x2, y2, open) {
+      var open = open || P.M;
+      return open([x1, y1]) + P.L([x2, y2])
+    },
+    rect: function (x, y, w, h, open) {
+      var open = open || P.M;
+      var h = def(h, w)
+      return open([x, y]) + P('H', x + w) + P('V', y + h) + P('H', x) + 'Z';
+    },
+    border: function (box, t, r, b, l, open) {
+      var t = def(t, 0), r = def(r, t), b = def(b, t), l = def(l, r)
+      with (box) {
+        var ix = x + l, iy = y + t, iw = w - l - r, ih = h - t - b;
+        return (P.line(x, y, x + w, y, open) + P('v', h) + P('h', -w) + P('v', -h) +
+                P.line(ix, iy, ix, iy + ih) + P('h', iw) + P('v', -ih) + P('h', -iw))
+      }
+    },
+    corner: function (x1, y1, x2, y2, rx, ry, vh, iv, open) {
+      var open = open || P.M;
+      var rx = def(rx, 0), ry = def(ry, rx), iv = def(iv, 0)
+      var sx = x1 < x2 ? 1 : -1, sy = y1 < y2 ? 1 : -1;
+      var dx = sx * rx, dy = sy * ry;
+      var sd = vh ^ iv ? +(sx * sy < 0) : +(sx * sy > 0)
+      if (vh) {
+        var cx = x1 + dx, cy = y2 - dy;
+        return open([x1, y1]) + P('v', cy - y1) + P('a', rx, ry, 0, 0, sd, dx, dy) + P('h', x2 - cx)
+      } else {
+        var cx = x2 - dx, cy = y1 + dy;
+        return open([x1, y1]) + P('h', cx - x1) + P('a', rx, ry, 0, 0, sd, dx, dy) + P('v', y2 - cy)
+      }
+    },
+    chevron: function (cx, cy, w, h, t, open) {
+      var open = open || P.M;
+      var h = def(h, 2 * w), g = h / 2;
+      var t = def(t, w * Rt2 / 5), o = t / Rt2, z = t / abs(Math.sin(Math.atan2(g, w - o)))
+      var x = cx - w / 2, y = cy - g + o;
+      return open([x, y]) + P('l', o, -o) + P('l', w - o, g) + P('l', o - w, g) + P('l', -o, -o) + P('l', w - z, o - g) + 'z'
+    },
+    triangle: function (cx, cy, b, h, open) {
+      var open = open || P.M;
+      var h = def(h, b)
+      var x = cx - b / 2, y = cy - h / 2;
+      return open([x, y]) + P('L', cx, y + h) + P('L', x + b, y) + 'Z';
+    },
+    arc: function (cx, cy, rx, ry, len, off, open) {
+      var open = open || P.M;
+      var len = trig.cut(def(len, 360)), off = off || 0;
+      var ix = cx + rx * trig.cos(off), iy = cy + ry * trig.sin(off)
+      var fx = cx + rx * trig.cos(off + len), fy = cy + ry * trig.sin(off + len)
+      return (open([ix, iy]) +
+              P('A',
+                rx, ry, 0,
+                abs(len) > 180 ? 1 : 0,
+                len > 0 ? 1 : 0,
+                fx, fy))
+    },
+    oval: function (cx, cy, rx, ry, open) {
+      var ry = def(ry, rx)
+      return P.arc(cx, cy, rx, ry, 360, 0, open)
+    },
+    arch: function (cx, cy, rx, ry, t, len, off, open) {
+      var len = trig.cut(def(len, 360)), off = off || 0;
+      var t = def(t, 1)
+      return (P.arc(cx, cy, rx, ry, len, off, open) +
+              P.arc(cx, cy, rx + t, ry + t, -len, off + len, P.L) + 'Z')
+    },
+    ring: function (cx, cy, rx, ry, t, open) {
+      var t = def(t, 1)
+      return (P.arc(cx, cy, rx, ry, 360, 0, open) +
+              P.arc(cx, cy, rx + t, ry + t, -360, 360))
+    },
+    wedge: function (cx, cy, rx, ry, len, off, open) {
+      var open = open || P.M;
+      return open([cx, cy]) + P.arc(cx, cy, rx, ry, len, off, P.L) + 'Z';
+    },
+    snake: function (x1, y1, x2, y2, vh) {
+      if (vh) {
+        var my = (y1 + y2) / 2;
+        return P('C', x1, my, x2, my, x2, y2)
+      } else {
+        var mx = (x1 + x2) / 2;
+        return P('C', mx, y1, mx, y2, x2, y2)
+      }
+    }
+  })
+
+  var units = function (o, u) {
+    var t = {}
+    for (var k in o)
+      t[k] = Q.unify(k, o[k], u)
+    return t;
+  }
+  var Q = up(units, {
+    defaults: {
+      top: 'px',
+      left: 'px',
+      right: 'px',
+      bottom: 'px',
+      width: 'px',
+      height: 'px',
+      translate: 'px',
+      rotate: 'deg',
+      skewX: 'deg',
+      skewY: 'deg',
+      borderRadius: 'px',
+    },
+    unify: function (k, v, u) {
+      var u = u || Q.defaults, d = u[k] || '';
+      return map(v, function (x) { return isFinite(x) ? x + d : x })
+    },
+    strip: function (k, v, u) {
+      var u = u || Q.defaults, d = u[k], n = d && d.length;
+      if (d)
+        return map(v, function (x) { return x.substr(-n) == d ? parseFloat(x) : x })
+      return v;
+    },
+    each: function (ks, o, u) {
+      return map(ks, function (k) { return Q.unify(k, o[k], u) })
+    },
+    rect: function (b, u) {
+      return 'rect(' + Q.each(['top', 'right', 'bottom', 'left'], b, u) + ')'
+    },
+    calc: function (a, o) {
+      return 'calc(' + [].concat(a).join(' ' + (o || '-') + ' ') + ')'
+    },
+    url: function (a) {
+      return 'url(' + a + ')'
+    }
+  })
+
+  function Box(d, e) {
+    this.x = def(def(d.x, d.left), e ? -Inf : 0)
+    this.y = def(def(d.y, d.top), e ? -Inf : 0)
+    this.w = def(def(d.w, d.width), e ? Inf : 0)
+    this.h = def(def(d.h, d.height), e ? Inf : 0)
+  }
+  Box.prototype = {
+    constructor: Box,
+    get width() { return this.w },
+    get height() { return this.h },
+    get left() { return this.x },
+    get top() { return this.y },
+    get midX() { return add(this.x, this.w / 2) },
+    get midY() { return add(this.y, this.h / 2) },
+    get right() { return add(this.x, this.w) },
+    get bottom() { return add(this.y, this.h) },
+    grid: function (fun, acc, opts) {
+      var o = up({rows: 1, cols: 1}, opts)
+      var r = o.rows, c = o.cols;
+      var x = this.x, y = this.y, w = this.w / c, h = this.h / r;
+      var z = new Box({x: x, y: y, w: w, h: h})
+      for (var i = 0, n = 0; i < r; i++)
+        for (var j = 0; j < c; j++, n++)
+          acc = fun.call(this, acc, z.shift(w * j, h * i), i, j, n, z)
+      return acc;
+    },
+    join: function (boxs) {
+      var boxs = [].concat(boxs)
+      var bnds = boxs.reduce(function (a, b) {
+        return {x: min(a.x, b.x), y: min(a.y, b.y), right: max(a.right, b.right), bottom: max(a.bottom, b.bottom)}
+      }, this)
+      return new Box({x: bnds.x, y: bnds.y, w: bnds.right - bnds.x, h: bnds.bottom - bnds.y})
+    },
+    tile: function (fun, acc, opts) {
+      return this.grid(fun, acc, this.count(opts && opts.unit))
+    },
+    stack: function (fun, acc, opts) {
+      return this.times(opts).grid(fun, acc, opts)
+    },
+    count: function (box) {
+      var u = box || this;
+      return {rows: this.h / u.h, cols: this.w / u.w}
+    },
+    times: function (shape) {
+      var s = up({rows: 1, cols: 1}, shape)
+      return this.copy({w: s.cols * this.w, h: s.rows * this.h})
+    },
+    over: function (shape) {
+      var s = up({rows: 1, cols: 1}, shape)
+      return this.copy({w: this.w / s.cols, h: this.h / s.rows})
+    },
+    split: function (opts) {
+      return this.grid(function (acc, box) { return acc.push(box), acc }, [], opts)
+    },
+    align: function (box, ax, ay) {
+      var nx = (ax || 0) / 2, ny = (ay || 0) / 2, ox = nx + .5, oy = ny + .5;
+      var x = box.midX + nx * box.w - ox * this.w;
+      var y = box.midY + ny * box.h - oy * this.h;
+      return this.copy({x: x, y: y})
+    },
+    center: function (cx, cy) {
+      return this.copy({x: (cx || 0) - this.w / 2, y: (cy || 0) - this.h / 2})
+    },
+    xy: function (x, y) {
+      return this.copy({x: x || 0, y: y || 0})
+    },
+    scale: function (a, b) {
+      var w = a * this.w, h = def(b, a) * this.h;
+      return new Box({x: this.midX - w / 2, y: this.midY - h / 2, w: w, h: h})
+    },
+    shift: function (dx, dy) {
+      return this.copy({x: this.x + (dx || 0), y: this.y + (dy || 0)})
+    },
+    square: function (big) {
+      var o = big ? max : min, d = o(this.w, this.h)
+      return this.copy({w: d, h: d})
+    },
+    slice: function (ps, hzn) {
+      var d = hzn ? this.w : this.h, ps = [].concat(ps)
+      var f = 1 - ps.reduce(function (s, p) { return isFinite(p) ? s + p : s }, 0) / d;
+      return this.part(ps.map(function (p) {
+        var pct = typeof(p) == 'string' && p[p.length - 1] == '%';
+        return pct ? f * parseFloat(p.slice(0, -1)) / 100 : p / d;
+      }), hzn)
+    },
+    part: function (ps, hzn) {
+      var b = this, ko = hzn ? 'x' : 'y', kd = hzn ? 'w' : 'h';
+      var o = b[ko], u = {}, s = 0, ps = [].concat(ps, undefined)
+      return ps.map(function (p) {
+        u[ko] = (o += u[kd] || 0)
+        u[kd] = def(p, 1 - s) * b[kd]
+        s += p;
+        return b.copy(u)
+      })
+    },
+    pad: function (t, r, b, l) {
+      return this.trim(-t, -r, -b, -l)
+    },
+    trim: function (t, r, b, l) {
+      var t = def(t, 0), r = def(r, t), b = def(b, t), l = def(l, r)
+      return new Box({x: this.x + l, y: this.y + t, w: this.w - r - l, h: this.h - t - b})
+    },
+    copy: function (o) {
+      var o = o || {}, ow = def(o.w, o.width), oh = def(o.h, o.height)
+      with (this)
+        return new Box({x: def(o.x, x), y: def(o.y, y), w: def(ow, w), h: def(oh, h)})
+    },
+    equals: function (o) {
+      var o = o || {}, ow = def(o.w, o.width), oh = def(o.h, o.height)
+      with (this)
+        return x == def(o.x, 0) && y == def(o.y, 0) && w == def(ow, 0) && h == def(oh, 0)
+    },
+    toString: function () { with (this) return x + ',' + y + ',' + w + ',' + h }
+  }
+  Box.solve = function (opts) {
+    var o = up({}, opts)
+    var b = o.bbox, s = o.shape, u = o.unit;
+    if (b && s)
+      return up(o, {shape: up({rows: 1, cols: 1}, s), unit: b.over(s)})
+    if (u && s)
+      return up(o, {shape: up({rows: 1, cols: 1}, s), bbox: u.times(s)})
+    if (b && u)
+      return up(o, {shape: b.count(u), unit: u.copy({x: b.x, y: b.y})})
+  }
+
+  function RGB(d) { up(this, d) }
+  RGB.mix = function (x, opts) {
+    var o = up({min: 0, max: 100, lo: {b: 100}, hi: {r: 100}}, opts)
+    var m = o.min, M = o.max, lo = o.lo, hi = o.hi;
+    function w(a, b) { return ((b || 0) * max(x - m, 0) + (a || 0) * max(M - x, 0)) / (M - m) }
+    function i(a, b) { return Math.round(w(a, b)) }
+    if (lo.a == undefined && hi.a == undefined)
+      return new RGB({r: i(lo.r, hi.r), g: i(lo.g, hi.g), b: i(lo.b, hi.b)})
+    return new RGB({r: i(lo.r, hi.r), g: i(lo.g, hi.g), b: i(lo.b, hi.b), a: w(lo.a, hi.a)})
+  }
+  RGB.random = function () {
+    return new RGB({r: util.randInt(0, 255), g: util.randInt(0, 255), b: util.randInt(0, 255)})
+  }
+  RGB.prototype.update = function (obj) { return up(this, obj) }
+  RGB.prototype.update({
+    alpha: function (a) { return a == undefined ? this : this.update({a: a}) },
+    shift: function (x) {
+      function w(v) { return util.clip(v + x, 0, 255) }
+      return (new RGB({r: w(this.r || 0), g: w(this.g || 0), b: w(this.b || 0)})).alpha(this.a)
+    },
+    toString: function () {
+      if (this.a == undefined)
+        return 'rgb(' + (this.r || 0) + ',' + (this.g || 0) + ',' + (this.b || 0) + ')';
+      return 'rgba(' + (this.r || 0) + ',' + (this.g || 0) + ',' + (this.b || 0) + ',' + this.a + ')';
+    }
+  })
+
+  function elem(e, a, p, d) { return new Elem(e, a, p, d) }
+  function Elem(elem, attrs, props, doc) {
+    this.node = elem && elem.nodeType ? elem : (doc || document).createElementNS(this.xmlns, elem)
+    this.attrs(attrs)
+    this.props(props)
+  }
+  Elem.prototype.update = function (obj) { return up(this, obj) }
+  Elem.prototype.update({
+    xml: "http://www.w3.org/XML/1998/namespace",
+    xmlns: "http://www.w3.org/1999/xhtml",
+    addTo: function (parent) {
+      return (parent.node || parent).appendChild(this.node), this;
+    },
+    append: function (child) {
+      return child.addTo(this), this;
+    },
+    child: function (elem, attrs, props) {
+      return new this.constructor(elem, attrs, props).addTo(this)
+    },
+    clear: function () {
+      var node = this.node;
+      while (node.firstChild)
+        node.removeChild(node.firstChild)
+      return this;
+    },
+    insert: function (k) {
+      var n = this.node, p = n.parentNode;
+      p.insertBefore(n, p.childNodes[k])
+      return this;
+    },
+    remove: function () {
+      this.node.parentNode.removeChild(this.node)
+      return this;
+    },
+
+    $: function (q) {
+      return wrap(typeof(q) == 'string' ? this.node.querySelector(q) : q)
+    },
+    doc: function () {
+      return this.node.ownerDocument ? new Elem(this.node.ownerDocument) : this;
+    },
+    each: function (sel, fun, acc) {
+      return [].reduce.call(this.node.querySelectorAll(sel), fun, acc) || this;
+    },
+    parent: function () {
+      return wrap(this.node.parentNode)
+    },
+    root: function () {
+      for (var n = this.node; n.parentNode; n = n.parentNode) {}
+      return n;
+    },
+    attached: function (o) {
+      return this.root() == (o ? o.root() : this.doc().node)
+    },
+    detached: function (o) {
+      return !this.attached(o)
+    },
+
+    hide: function (b) { return this.attrs({hidden: b || b == undefined ? '' : null}) },
+    show: function (b) { return this.attrs({hidden: b || b == undefined ? null : ''}) },
+    attr: function (name, ns) {
+      return this.node.getAttributeNS(ns || null, name)
+    },
+    attrs: function (attrs, ns) {
+      for (var k in attrs) {
+        var v = attrs[k]
+        if (v == null)
+          this.node.removeAttributeNS(ns || null, k)
+        else
+          this.node.setAttributeNS(ns || null, k, v)
+      }
+      return this;
+    },
+    props: function (props) {
+      for (var k in props)
+        this.node[k] = props[k];
+      return this;
+    },
+    style: function (attrs) {
+      for (var k in attrs)
+        this.node.style[k] = attrs[k];
+      return this;
+    },
+
+    space: function (space) {
+      return this.attrs({space: space}, this.xml)
+    },
+    txt: function (text) {
+      return this.props({textContent: text})
+    },
+    uid: function () {
+      var id = (new Date - 0) + Math.random() + ''
+      return this.attrs({id: id}), id;
+    },
+    url: function () {
+      return Q.url('#' + (this.attr('id') || this.uid()))
+    },
+
+    addClass: function (cls) {
+      var node = this.node;
+      map(cls, function (c) { node.classList.add(c) })
+      return this;
+    },
+    hasClass: function (cls) {
+      return this.node.classList.contains(cls)
+    },
+    removeClass: function (cls) {
+      var node = this.node;
+      map(cls, function (c) { node.classList.remove(c) })
+      if (!node.classList.length)
+        node.removeAttribute('class')
+      return this;
+    },
+    css: function (k) {
+      var css = getComputedStyle(this.node)
+      return k ? css[k] : css;
+    },
+
+    animate: function (fun, n) {
+      var self = this, i = 0;
+      anim(function () {
+        if (fun.call(self, self.node, i++) || i < n)
+          anim(arguments.callee)
+      })
+      return this;
+    },
+    bind: function (name) {
+      var fun = this[name]
+      return fun.bind.apply(fun, [this].concat([].slice.call(arguments, 1)))
+    },
+
+    on: function (types, fun, capture) {
+      var node = this.node;
+      types.split(/\s+/).map(function (type) {
+        node.addEventListener(type, fun, capture)
+      })
+      return this;
+    },
+    off: function (types, fun, capture) {
+      var node = this.node;
+      types.split(/\s+/).map(function (type) {
+        node.removeEventListener(type, fun, capture)
+      })
+      return this;
+    },
+    trigger: function (type, data, opts) {
+      this.node.dispatchEvent(new CustomEvent(type, up({detail: data}, opts)))
+      return this;
+    },
+    upon: function (types, fun, capture) {
+      var f = function (e) { return fun.call(this, e, e.detail) }
+      return this.on(types, f, capture) && f;
+    },
+    once: function (types, fun) {
+      var n = 0;
+      return this.til(types, fun, function () { return n++ })
+    },
+    til: function (types, fun, dead) {
+      var self = this;
+      self.on(types, function () {
+        if (dead())
+          self.off(types, arguments.callee)
+        else
+          fun.apply(this, arguments)
+      })
+    },
+
+    svg: function (attrs, props) {
+      return svg(up({class: 'svg'}, attrs), props).addTo(this)
+    },
+    link: function (href) {
+      return this.child('a').href(href)
+    },
+    para: function (text) {
+      return this.child('p').txt(text)
+    },
+    div: function (attrs, props) {
+      return this.child('div', attrs, props)
+    },
+    span: function (attrs, props) {
+      return this.child('span', attrs, props)
+    },
+    form: function (attrs, props) {
+      return this.child('form', attrs, props)
+    },
+    input: function (attrs, props) {
+      return this.child('input', attrs, props)
+    },
+    image: function (x, y, w, h, href, u) {
+      return this.child('img', {class: 'image'}).attrs({src: href}).xywh(x, y, w, h, u)
+    },
+    circle: function (cx, cy, r, u) {
+      return this.div({class: 'circle'}).xywh(cx - r, cy - r, 2 * r, 2 * r, u).style(Q({borderRadius: r}, u))
+    },
+    ellipse: function (cx, cy, rx, ry, u) {
+      return this.div({class: 'ellipse'}).xywh(cx - rx, cy - ry, 2 * rx, 2 * ry, u).style({borderRadius: Q.unify('borderRadius', [rx, ry], u).join(' / ')})
+    },
+    rect: function (x, y, w, h, u) {
+      return this.div({class: 'rect'}).xywh(x, y, w, h, u)
+    },
+    text: function (x, y, text, u) {
+      return this.span({class: 'text'}).xy(x, y, u).txt(text)
+    },
+    label: function (x, y, text, i, j, u) {
+      return this.text(x, y, text, u).anchor(i, j)
+    },
+    g: function (attrs, props) {
+      return this.div(attrs, props)
+    },
+    icon: function (x, y, w, h, name, u) {
+      return this.svgX(Sky.box(x, y, w, h), u).attrs({class: 'icon'}).icon(x, y, w, h, name)
+    },
+
+    svgX: function (box, u) {
+      return this.svg({viewBox: box}).resize(box, u)
+    },
+    iconX: function (box, name, u) {
+      with (box || this.bbox())
+        return this.icon(x, y, w, h, name, u)
+    },
+    imageX: function (box, href, u) {
+      with (box || this.bbox())
+        return this.image(x, y, w, h, href, u)
+    },
+    circleX: function (box, p, big, u) {
+      var o = big ? max : min;
+      with (box || this.bbox())
+        return this.circle(midX, midY, def(p, 1) * o(w, h) / 2, u)
+    },
+    ellipseX: function (box, px, py, u) {
+      with (box || this.bbox())
+        return this.ellipse(midX, midY, def(px, 1) * w / 2, def(py, 1) * h / 2, u)
+    },
+    rectX: function (box, u) {
+      with (box || this.bbox())
+        return this.rect(x, y, w, h, u)
+    },
+    textX: function (box, text, ax, ay, u) {
+      return this.text(0, 0, text, u).align(box || this.bbox(), ax, ay)
+    },
+
+    anchor: function (i, j) {
+      var a = i < 0 ? 0 : (i > 0 ? -100 : -50)
+      var b = j < 0 ? 0 : (j > 0 ? -100 : -50)
+      return this.transform({translate: [a + '%', b + '%']})
+    },
+    bbox: function () {
+      return (new Box(this.node.getBoundingClientRect())).shift(pageXOffset, pageYOffset)
+    },
+    polar: function (r, a) {
+      return [r * trig.cos(a), r * trig.sin(a)];
+    },
+    href: function (href) {
+      return this.attrs({href: href})
+    },
+    xy: function (x, y, u) {
+      return this.style(Q({left: x, top: y}, u))
+    },
+    xywh: function (x, y, w, h, u) {
+      return this.style(Q({left: x, top: y, width: w, height: h}, u))
+    },
+    align: function (box, ax, ay, u) {
+      return this.place(Sky.box().align(box, ax, ay), u).anchor(ax, ay)
+    },
+    place: function (box, u) {
+      return this.parent().xy.call(this, box.x, box.y, u)
+    },
+    resize: function (box, u) {
+      return this.parent().xywh.call(this, box.x, box.y, box.w, box.h, u)
+    },
+    screen: function (x, y) {
+      return {x: x, y: y}
+    },
+    shift: function (dx, dy) {
+      var x = this.transformation(), t = x.translate = x.translate || [0, 0]
+      t[0] += dx || 0;
+      t[1] += dy || 0;
+      return this.transform(x)
+    },
+
+    transform: function (desc, u) {
+      var xform = []
+      for (var k in desc)
+        xform.push(k + '(' + Q.unify(k, [].concat(desc[k]), u).join(',') + ')')
+      xform = xform.join(' ')
+      return this.style({transform: xform,
+                         '-moz-transform': xform,
+                         '-ms-transform': xform,
+                         '-o-transform': xform,
+                         '-webkit-transform': xform})
+    },
+    transformation: function (val, u) {
+      var s = this.node.style, val = val ||
+        s['transform'] ||
+        s['-webkit-transform'] ||
+        s['-o-transform'] ||
+        s['-ms-transform'] ||
+        s['-moz-transform'] || '';
+      var m, p = /(\w+)\(([^\)]*)\)/g, tx = {}
+      while (m = p.exec(val)) {
+        var k = m[1], v = m[2].split(',')
+        tx[k] = Q.strip(k, v, u)
+      }
+      return tx;
+    }
+  })
+
+  function svg(a, p, d) { return new SVGElem('svg', a, p, d) }
+  function SVGElem() {
+    Elem.apply(this, arguments)
+  }
+  SVGElem.prototype = new Elem().update({
+    constructor: SVGElem,
+    xmlns: "http://www.w3.org/2000/svg",
+    xlink: "http://www.w3.org/1999/xlink",
+    svg: function (attrs, props) {
+      return this.child('svg', attrs, props)
+    },
+    circle: function (cx, cy, r) {
+      return this.child('circle', {cx: cx, cy: cy, r: r})
+    },
+    ellipse: function (cx, cy, rx, ry) {
+      return this.child('ellipse', {cx: cx, cy: cy, rx: rx, ry: ry})
+    },
+    line: function (x1, y1, x2, y2) {
+      return this.child('line', {x1: x1, y1: y1, x2: x2, y2: y2})
+    },
+    path: function (d) {
+      return this.child('path', d && {d: d})
+    },
+    polyline: function (points) {
+      return this.child('polyline', {points: points})
+    },
+    polygon: function (points) {
+      return this.child('polygon', {points: points})
+    },
+    rect: function (x, y, w, h) {
+      return this.child('rect', {x: x, y: y, width: w, height: h})
+    },
+    text: function (x, y, text) {
+      return this.child('text', {x: x, y: y}, {textContent: text})
+    },
+    tspan: function (text) {
+      return this.child('tspan', {}, {textContent: text})
+    },
+    g: function (attrs, props) {
+      return this.child('g', attrs, props)
+    },
+    image: function (x, y, w, h, href) {
+      return this.child('image').href(href).xywh(x, y, w, h)
+    },
+    use: function (href) {
+      return this.child('use').href(href)
+    },
+    mask: function (attrs, props) {
+      return this.child('mask', attrs, props)
+    },
+    clipPath: function (attrs, props) {
+      return this.child('clipPath', attrs, props)
+    },
+    icon: function (x, y, w, h, name) {
+      return this.use(name).xywh(x, y, w, h)
+    },
+
+    border: function (t, r, b, l, box) {
+      return this.path(P.border(box || this.bbox(), t, r, b, l))
+    },
+
+    anchor: function (i, j) {
+      var a = i < 0 ? 'start' : (i > 0 ? 'end' : 'middle')
+      var b = j < 0 ? 'hanging' : (j > 0 ? 'alphabetic' : 'central')
+      return this.attrs({'text-anchor': a, 'dominant-baseline': b})
+    },
+    bbox: function () {
+      return new Box(this.node.getBBox())
+    },
+    enc: function () {
+      return this.node.tagName == 'svg' ? this : new SVGElem(this.node.ownerSVGElement)
+    },
+    fit: function () {
+      return this.enc().attrs({viewBox: this.bbox()})
+    },
+    href: function (href) {
+      return this.attrs({href: href}, this.xlink)
+    },
+    xy: function (x, y) {
+      return this.attrs({x: x, y: y})
+    },
+    xywh: function (x, y, w, h) {
+      return this.attrs({x: x, y: y, width: w, height: h})
+    },
+    point: function (x, y) {
+      var p = this.enc().node.createSVGPoint()
+      p.x = x;
+      p.y = y;
+      return p;
+    },
+    screen: function (x, y) {
+      return this.point(x, y).matrixTransform(this.node.getScreenCTM())
+    },
+
+    transform: function (desc) {
+      var xform = [];
+      for (var k in desc)
+        xform.push(k + '(' + [].concat(desc[k]).join(',') + ')')
+      return this.attrs({transform: xform.join(' ')})
+    },
+    transformation: function (list) {
+      var tx = {}, list = list || this.node.transform.baseVal;
+      for (var i = 0; i < list.numberOfItems; i++) {
+        var t = list.getItem(i), m = t.matrix;
+        if (t.type == SVGTransform.SVG_TRANSFORM_MATRIX)
+          tx.matrix = [m.a, m.b, m.c, m.d, m.e, m.f];
+        else if (t.type == SVGTransform.SVG_TRANSFORM_TRANSLATE)
+          tx.translate = [m.e, m.f];
+        else if (t.type == SVGTransform.SVG_TRANSFORM_SCALE)
+          tx.scale = [m.a, m.d];
+        else if (t.type == SVGTransform.SVG_TRANSFORM_ROTATE)
+          tx.rotate = [t.angle, (m.f / m.c + m.e) / m.a, (m.e / m.b - m.f) / m.a];
+        else if (t.type == SVGTransform.SVG_TRANSFORM_SKEWX)
+          tx.skewX = t.angle;
+        else if (t.type == SVGTransform.SVG_TRANSFORM_SKEWY)
+          tx.skewY = t.angle;
+      }
+      return tx;
+    }
+  })
+
+  Sky = {
+    $: function (q) { return new Elem(document).$(q) },
+    box: function (x, y, w, h) { return new Box({x: x, y: y, w: w, h: h}) },
+    rgb: function (r, g, b, a) { return new RGB({r: r, g: g, b: b, a: a}) },
+    elem: elem,
+    svg: svg,
+    util: util,
+    path: path,
+    units: units,
+    Box: Box,
+    RGB: RGB,
+    Elem: Elem,
+    SVGElem: SVGElem
+  }
+})();
+
+      (function () {
+  var up = function (a, b) {
+    for (var k in b)
+      a[k] = b[k];
+    return a;
+  }
+  var cls = function (cons) {
+    [].slice.call(arguments, 1).map(function (base) { up(cons.prototype, base) })
+    return cons;
+  }
+  var int = function (x) { return parseInt(x, 10) }
+  var sgn = function (x) { return x < 0 ? -1 : 1 }
+  var pow = function (x, a) { return sgn(x) * Math.pow(Math.abs(x), a || 2) }
+  var add = function (x, y) { return x + y }
+  var max = function (x, y) { return x > y ? x : y }
+  var min = function (x, y) { return x < y ? x : y }
+  var mod = function (x, y) {
+    var r = x % y;
+    return r < 0 ? r + y : r;
+  }
+  var pad = function (s, opt) {
+    var s = s + '', w = opt && opt.width || 2, p = opt && opt.pad || '0';
+    while (s.length < w)
+      s = p + s;
+    return s;
+  }
+  var nchoosek = function (n, k) {
+    var c = 1, d = 1;
+    for (var i = n; i > k; i--) {
+      c *= i;
+      d *= n - i + 1;
+    }
+    return c / d;
+  }
+  var bezier = function (t, P) {
+    var n = P.length - 1, x = 0, y = 0;
+    for (i = 0; i <= n; i++) {
+      var p = P[i], w = nchoosek(n, i) * Math.pow(1 - t, n - i) * Math.pow(t, i)
+      x += w * (p[0] || 0)
+      y += w * (p[1] || 0)
+    }
+    return [x, y];
+  }
+
+  Sun = {
+    up: up,
+    cls: cls,
+    int: int,
+    sgn: sgn,
+    pow: pow,
+    add: add,
+    max: max,
+    min: min,
+    mod: mod,
+    pad: pad,
+    nchoosek: nchoosek,
+    bezier: bezier,
+    clockdist: function (a, b, c) {
+      return min(mod(a - b, c || 24), mod(b - a, c || 24))
+    },
+    ellipsis: function (text, n) {
+      if (n && text.length > n + 3)
+        return text.substr(0, n) + '\u2026';
+      return text;
+    },
+    count: function (fun, acc, opt) {
+      var o = up({start: 0, step: 1, stop: isFinite(opt) ? opt : undefined}, opt)
+      var f = o.start + o.step >= o.start;
+      for (var i = o.start; f ? i < o.stop : i > o.stop; i += o.step)
+        acc = fun(acc, i, o)
+      return acc;
+    },
+    range: function (opt) {
+      return Sun.count(L.append, [], opt)
+    },
+    fold: function (fun, acc, obj) {
+      if (obj && obj.reduce)
+        return obj.reduce(fun, acc)
+      var i = 0;
+      for (var k in obj)
+        acc = fun(acc, [k, obj[k]], i++, obj)
+      return acc;
+    },
+    format: function (fmt, arg) {
+      return fmt.replace(/{(.*?)}/g, function(m, k) { return k in arg ? arg[k] : m })
+    },
+    object: function (iter) {
+      return Sun.fold(function (o, i) { return (o[i[0]] = i[1]), o }, {}, iter)
+    },
+    repeat: function (fun, every) {
+      return fun() || setTimeout(function () {
+        fun() || setTimeout(arguments.callee, every)
+      }, every)
+    },
+    throttle: function (fun, every, T) {
+      return function () {
+        clearTimeout(T)
+        T = setTimeout(fun.bind.apply(fun, L.concat(this, arguments)), every)
+      }
+    }
+  }
+
+  Sun.Cage = function Cage(obj, opt) {
+    this.__opt__ = up({sep: /\s+/}, opt)
+    this.__obj__ = obj || this;
+    this.__fns__ = {}
+  }
+  up(Sun.Cage.prototype, {
+    change: function (k, v) {
+      var u = this.__obj__[k]
+      this.__obj__[k] = v;
+      this.trigger(k, v, u)
+      return v;
+    },
+    update: function (obj) {
+      for (var k in obj)
+        this.change(k, obj[k])
+      return this;
+    },
+    on: function (keys, fun) {
+      var fns = this.__fns__, sep = this.__opt__.sep;
+      keys.split(sep).map(function (k) { (fns[k] = fns[k] || []).push(fun) })
+      return this;
+    },
+    off: function (keys, fun) {
+      var fns = this.__fns__, sep = this.__opt__.sep;
+      keys.split(sep).map(function (k) {
+        var i = (fns[k] || []).indexOf(fun)
+        if (i >= 0)
+          delete fns[k][i]
+      })
+      return this;
+    },
+    once: function (keys, fun) {
+      var n = 0;
+      return this.til(keys, fun, function () { return n++ })
+    },
+    til: function (keys, fun, dead) {
+      this.on(keys, function () {
+        if (dead())
+          this.off(keys, arguments.callee)
+        else
+          fun.apply(this, arguments)
+      })
+    },
+    trigger: function (key, val, old) {
+      var self = this;
+      return (self.__fns__[key] || []).map(function (f) { f.call(self, val, old, key) })
+    }
+  })
+
+  Sun.form = {
+    encode: function (obj) {
+      var list = [];
+      for (var k in obj)
+        list.push(encodeURIComponent(k) + '=' + encodeURIComponent(obj[k]));
+      return list.join('&');
+    },
+    decode: function (str) {
+      var list = str ? str.split('&') : [];
+      return list.reduce(function (acc, item) {
+        var kv = item.split('=').map(decodeURIComponent);
+        acc[kv[0]] = kv[1];
+        return acc;
+      }, {});
+    }
+  }
+
+  var H = Sun.http = up(function (method, url, fun, data, hdrs) {
+    var req = new XMLHttpRequest()
+    req.onreadystatechange = function () {
+      if (this.readyState == this.DONE){
+        fun(this)
+      }
+    };
+    req.open(method, url, true)
+    Sun.fold(function (_, o) { req.setRequestHeader(o[0], o[1]) }, null, hdrs)
+    req.send(data)
+    return req;
+  }, {
+    get:  function (url, fun, hdrs)       { return H("GET",  url, fun, null, hdrs) },
+    put:  function (url, fun, data, hdrs) { return H("PUT",  url, fun, data, hdrs) },
+    post: function (url, fun, data, hdrs) { return H("POST", url, fun, data, hdrs) }
+  })
+
+  var L = Sun.lists = {
+    last: function (list, n) { return list[list.length - (n || 1)] },
+    append: function (list, item) { return list.push(item) && list },
+    concat: function (item, list) { return [item].concat([].slice.call(list)) },
+    drop: function (list, item) {
+      var i = list.indexOf(item)
+      if (i >= 0)
+        return list.splice(i, 1)[0]
+    },
+    fold: function(list, fun, acc) {
+      for (var i = 0; i < list.length; i++)
+        acc = fun(acc, list[i], i, list)
+      return acc;
+    },
+    groupby: function (list, key) {
+      var k, key = key || function (item) { return item[0] }
+      return L.fold(list, function (acc, item) {
+        var k_ = key(item)
+        if (k_ == k)
+          acc[acc.length - 1][1].push(item)
+        else
+          acc.push([k_, [item]])
+        k = k_;
+        return acc;
+      }, [])
+    },
+    unique: function (list, key) {
+      var keys = {}, key = key || function (item) { return item }
+      return L.fold(list, function (acc, item) {
+        var k = key(item)
+        if (k in keys)
+          return acc;
+        keys[k] = true;
+        return acc.push(item), acc;
+      }, [])
+    },
+    insert: function (list, item, lte) {
+      var lte = lte || function (a, b) { return a <= b }
+      for (var i = 0; i < list.length; i++)
+        if (lte(item, list[i]))
+          return list.splice(i, 0, item) && list;
+      return list.push(item) && list;
+    },
+    keyindex: function (list, val, key, eq) {
+      var eq = eq || function (a, b) { return a <= b && a >= b }
+      for (var i = 0, k = key || 0; i < list.length; i++) {
+        var v = list[i][k];
+        if (eq(v, val))
+          return i;
+      }
+    },
+    keydrop: function (list, val, key, eq) {
+      var i = L.keyindex(list, val, key, eq)
+      if (i >= 0)
+        return list.splice(i, 1)[0]
+    },
+    keyfind: function (list, val, key, eq) {
+      var i = L.keyindex(list, val, key, eq)
+      if (i >= 0)
+        return list[i];
+    },
+    keystore: function (list, val, rep, key, eq) {
+      var i = L.keyindex(list, val, key, eq)
+      if (i >= 0)
+        return list[i] = rep;
+      return list.push(rep) && rep;
+    },
+    times: function (list, n) {
+      var l = []
+      for (var i = 0; i < n; i++)
+        l = l.concat(list)
+      return l;
+    },
+    umerge: function (x, y, lt) {
+      var lt = lt || function (a, b) { return a < b }
+      var z = [], i = 0, j = 0, l;
+      while (i < x.length || j < y.length) {
+        if (j >= y.length || lt(x[i], y[j])) {
+          if (lt(l, x[i]) || !(i || j))
+            z.push(l = x[i])
+          i++;
+        }
+        else {
+          if (lt(l, y[j]) || !(i || j))
+            z.push(l = y[j])
+          j++;
+        }
+      }
+      return z;
+    },
+    values: function (obj) {
+      var vals = [];
+      for (var k in obj)
+        vals.push(obj[k])
+      return vals;
+    }
+  }
+
+  var Sec = 1000, Min = 60 * Sec, Hour = 60 * Min, Day = 24 * Hour, Week = 7 * Day;
+  var DoW = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  var MoY = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var T = Sun.time = up(function (set, rel) {
+    var rel = rel ? new Date(rel) : new Date, set = set || {};
+    return new Date(set.y == undefined ? rel.getFullYear() : set.y,
+                    set.m == undefined ? rel.getMonth() : set.m,
+                    set.d == undefined ? rel.getDate() : set.d,
+                    set.h == undefined ? rel.getHours() : set.h,
+                    set.mi == undefined ? rel.getMinutes() : set.mi,
+                    set.s == undefined ? rel.getSeconds() : set.s,
+                    set.ms == undefined ? rel.getMilliseconds() : set.ms)
+  }, {
+    get: function (k, rel) {
+      var rel = rel ? new Date(rel) : new Date;
+      switch (k) {
+        case 'y': return rel.getFullYear()
+        case 'm': return rel.getMonth()
+        case 'd': return rel.getDate()
+        case 'h': return rel.getHours()
+        case 'mi': return rel.getMinutes()
+        case 's': return rel.getSeconds()
+        case 'ms': return rel.getMilliseconds()
+      }
+    },
+    pass: function (dif, rel) {
+      var rel = rel ? new Date(rel) : new Date;
+      for (var k in dif)
+        switch (k) {
+        case 'y': rel.setFullYear(rel.getFullYear() + dif[k]); break;
+        case 'm': rel.setMonth(rel.getMonth() + dif[k]); break;
+        case 'w': rel.setDate(rel.getDate() + dif[k] * 7); break;
+        case 'd': rel.setDate(rel.getDate() + dif[k]); break;
+        case 'h': rel.setHours(rel.getHours() + dif[k]); break;
+        case 'mi': rel.setMinutes(rel.getMinutes() + dif[k]); break;
+        case 's': rel.setSeconds(rel.getSeconds() + dif[k]); break;
+        case 'ms': rel.setMilliseconds(rel.getMilliseconds() + dif[k]); break;
+        }
+      return rel;
+    },
+    fold: function (fun, acc, opt) {
+      var t = opt.start || new Date, stop = opt.stop, step = opt.step || {d: 1};
+      var f = T.pass(step, t) >= t, jump = {};
+      for (var i = 1, s = t; !stop || (f ? (t < stop) : (t > stop)); i++) {
+        acc = fun(acc, t)
+        for (var k in step)
+          jump[k] = step[k] * i;
+        t = T.pass(jump, s)
+      }
+      return acc;
+    },
+    parse: function (stamp, opt) {
+      var opt = opt || {};
+      var sep = opt.sep || 'T', dsep = opt.dsep || '-', tsep = opt.tsep || ':';
+      var utc = opt.utc || stamp[stamp.length - 1] == 'Z';
+      var dtp = stamp.split(sep)
+      var datep = dtp[0] ? dtp[0].split(dsep).map(int) : [0, 0, 0];
+      var timep = dtp[1] ? dtp[1].substring(0, 8).split(':').map(int) : [0, 0, 0];
+      if (utc)
+        return new Date(Date.UTC(datep[0], datep[1] - 1, datep[2], timep[0], timep[1], timep[2]))
+      return new Date(datep[0], datep[1] - 1, datep[2], timep[0], timep[1], timep[2])
+    },
+    datestamp: function (t) {
+      return t.getFullYear() + '/' + pad(t.getMonth() + 1) + '/' + pad(t.getDate())
+    },
+    timestamp: function (t) {
+      return pad(t.getHours()) + ':' + pad(t.getMinutes()) + ':' + pad(t.getSeconds())
+    },
+    stamp: function (t) { return T.datestamp(t) + ' ' + T.timestamp(t) },
+    fromGregorian: function (s) { return new Date((s - 62167219200) * 1000) },
+    toGregorian: function (t) { return ~~(t / 1000) + 62167219200 },
+    daysInMonth: function (y, m) { return 32 - new Date(y, m, 32).getDate() },
+    isLeapYear: function (y) { return !(y % 4) && ((y % 100) != 0 || !(y % 400)) },
+    weekday: function (t) { return DoW[t.getDay()] },
+    month: function (t) { return MoY[t.getMonth()] },
+    DoW: DoW,
+    MoY: MoY,
+    Sec: Sec,
+    Min: Min,
+    Hour: Hour,
+    Day: Day,
+    Week: Week
+  })
+})();
+
+      (function () {
+  var U = Sky.util;
+  var def = U.def, fnt = U.fnt, clip = U.clip;
+  var pop = U.pop, up = U.update, ext = U.extend;
+  var abs = Math.abs, log = Math.log, rnd = Math.round, E = Math.E;
+  var min = Math.min, max = Math.max;
+  var sgn = function (x) { return x < 0 ? -1 : 1 }
+  var cat = function (a, b) { return b ? [].concat(a, b) : a }
+  var id = function (o) { return o }
+  var noop = function () {}
+
+  var touch = 'ontouchstart' in window;
+  var pointerdown = touch ? 'touchstart' : 'mousedown';
+  var pointermove = touch ? 'touchmove' : 'mousemove';
+  var pointerup = touch ? 'touchend touchcancel' : 'mouseup';
+
+  Orb = function Orb(obj, jack, elem) {
+    this.jack = jack || this.jack;
+    this.elem = elem || this.elem;
+    this.grip = 0;
+    this.update(obj)
+  }
+  Orb.prototype.update = function (obj) { return up(this, obj) }
+  Orb.prototype.update({
+    prop: function (f, a) { return Orb.do(this.jack, f, a) },
+    grab: function () { this.grip++; return this.prop('grab', arguments) },
+    free: function () { this.grip--; return this.prop('free', arguments) },
+    move: function () { return this.prop('move', arguments) },
+    push: function () { return this.prop('move', arguments) },
+    sync: function () { return this.prop('sync', arguments) },
+    drag: function (f, a) { return Orb.drag(this, f, a) },
+    walk: function (f, a) { return Orb.walk(this, f, a) },
+    thru: function (o, a) { return Orb.thru(this, o, a) }
+  })
+  Orb = up(Orb, {
+    do: function (o, f, a) {
+      if (o) {
+        if (o[f])
+          return o[f].apply(o, a)
+        if (o instanceof Array)
+          return o.reduce(function (_, i) { return Orb.do(i, f, a) }, 0)
+      }
+    },
+    call: function (o, f) { return Orb.do(o, f, [].slice.call(arguments, 2)) },
+    grab: function (o) { return Orb.do(o, 'grab', [].slice.call(arguments, 1)) },
+    free: function (o) { return Orb.do(o, 'free', [].slice.call(arguments, 1)) },
+    move: function (o, dx, dy, a, r, g, s) {
+      return Orb.do(o, 'move', [dx || 0, dy || 0, a, r, g, s])
+    },
+    drag: function (o, f, a) {
+      return Orb.grab(o), Orb.do(o, f, a), Orb.free(o), o;
+    },
+    type: function (cons) {
+      var proto = cons.prototype = new Orb;
+      [].slice.call(arguments, 1).map(function (base) { up(proto, base) })
+      return function (a, r, g, s) { return new cons(this, a, r, g, s) }
+    },
+    walk: function (o, f, a) {
+      return f.call(o, o.parent ? Orb.walk(o.parent, f, a) : a)
+    },
+    thru: function (o, p, a) {
+      return a.map(function (k) {
+        Object.defineProperty(o, k, {get: function () { return p[k] }})
+      })
+    }
+  })
+
+  Sky.Elem.prototype.update({
+    tap: function (fun, opts, jack) {
+      var opts = up({gap: 250, mx: 1, my: 1}, opts)
+      var open, Dx, Dy;
+      return this.swipe(this.orb({
+        grab: function (e) {
+          Dx = Dy = 0;
+          open = true;
+          setTimeout(function () { open = false }, opts.gap)
+          if (opts.stop)
+            e.stopImmediatePropagation()
+          Orb.prototype.grab.apply(this, arguments)
+        },
+        move: function (dx, dy) {
+          Dx += abs(dx)
+          Dy += abs(dy)
+          this.push(dx, dy)
+        },
+        free: function (e) {
+          if (open && Dx <= opts.mx && Dy <= opts.my)
+            fun && fun.apply(this, arguments)
+          open = false;
+          if (opts.stop)
+            e.stopImmediatePropagation()
+          Orb.prototype.free.apply(this, arguments)
+        }
+      }, jack), {stop: opts.stop})
+    },
+
+    dbltap: function (fun, opts) {
+      var opts = up({gap: 250}, opts)
+      var self= this, taps = 0;
+      this.on(pointerdown, function (e) {
+        if (taps++)
+          fun && fun.apply(self, arguments)
+        setTimeout(function () { taps = 0 }, opts.gap)
+        if (opts.prevent)
+          e.preventDefault()
+      })
+      return this;
+    },
+
+    press: function (o, opts) {
+      var opts = up({gain: 1, every: 1}, opts)
+      var i, doc = this.doc()
+      return this.on(pointerdown, function (e) {
+        Orb.grab(o, e)
+        i = setInterval(function () { Orb.move(o, opts.gain) }, opts.every)
+        if (opts.prevent)
+          e.preventDefault()
+        doc.once(pointerup, function (e) {
+          Orb.free(o, e)
+          clearInterval(i)
+          if (opts.prevent)
+            e.preventDefault()
+        })
+      })
+    },
+
+    swipe: function (o, opts) {
+      var opts = up({glob: true}, opts)
+      var lx, ly, move, doc = this.doc(), that = opts.glob ? doc : this;
+      this.on(pointerdown, function (e) {
+        var t = e.touches ? e.touches[0] : e;
+        Orb.grab(o, e)
+        lx = t.pageX;
+        ly = t.pageY;
+        if (opts.prevent)
+          e.preventDefault()
+        that.on(pointermove, move = function (e) {
+          var t = e.touches ? e.touches[0] : e;
+          Orb.move(o, t.pageX - lx, t.pageY - ly, lx, ly, e)
+          lx = t.pageX;
+          ly = t.pageY;
+          if (opts.stop)
+            e.stopImmediatePropagation()
+          if (opts.prevent)
+            e.preventDefault()
+        })
+        doc.once(pointerup, function (e) {
+          that.off(pointermove, move)
+          Orb.free(o, e)
+          if (opts.prevent)
+            e.preventDefault()
+        })
+      })
+      return this;
+    },
+
+    scroll: function (o, opts) {
+      var opts = up({prevent: true}, opts)
+      var lx, ly;
+      return this.on('mousewheel', function (e) {
+        Orb.move(o, e.wheelDeltaX, e.wheelDeltaY, lx, ly, e)
+        lx = e.pageX;
+        ly = e.pageY;
+        if (opts.stop)
+          e.stopImmediatePropagation()
+        if (opts.prevent)
+          e.preventDefault()
+      }).swipe(o, opts)
+    },
+
+    orb: function (obj, jack) {
+      return new Orb(obj, jack, this)
+    },
+
+    amp: Orb.type(function Amp(elem, jack, opts) {
+      var ax, ay, kx, ky;
+      var pow = Sun.pow;
+      var opts = up({ax: 1, ay: 1, kx: 1, ky: 1}, opts)
+      this.elem = elem;
+      this.jack = jack;
+      this.move = function (dx, dy, a, r, g, s) {
+        this.push(kx * pow(dx, ax), ky * pow(dy, ay), a, r, g, s)
+      }
+
+      this.setOpts = function (o) {
+        opts = up(opts, o)
+        ax = opts.ax; ay = opts.ay;
+        kx = opts.kx; ky = opts.ky;
+      }
+      this.setOpts(opts)
+    }),
+
+    spring: Orb.type(function Spring(elem, jack, opts) {
+      var lock, kx, ky, lx, ly, tx, ty, restore, stretch, balance, perturb, anim;
+      var opts = up({}, opts)
+      this.dx = 0;
+      this.dy = 0;
+      this.elem = elem;
+      this.jack = jack;
+      this.move = function (dx, dy) {
+        var s = this;
+        s.dx += lx * dx;
+        s.dy += ly * dy;
+        stretch && stretch.call(s)
+        if (!anim) {
+          perturb && perturb.call(s)
+          anim = elem.animate(function () {
+            var dx = s.dx, dy = s.dy, mx = abs(dx), my = abs(dy)
+            var more = restore.call(s, dx, dy, mx, my) || s.dx || s.dy || s.grip;
+            if (!more) {
+              anim = null;
+              balance && balance.call(s)
+            }
+            return more;
+          })
+        }
+      }
+
+      this.setOpts = function (o) {
+        opts = up(opts, o)
+        lock = opts.lock;
+        kx = opts.kx || 8; ky = opts.ky || 8;
+        lx = opts.lx || 1; ly = opts.ly || 1;
+        tx = opts.tx || 1; ty = opts.ty || 1;
+        restore = opts.restore || function (dx, dy, mx, my) {
+          if (lock && this.grip)
+            return;
+          if (mx > tx) dx /= kx * log(mx + 1)
+          if (my > ty) dy /= ky * log(my + 1)
+          this.dx -= dx;
+          this.dy -= dy;
+          return this.push(dx, dy, this)
+        }
+        stretch = opts.stretch;
+        balance = opts.balance;
+        perturb = opts.perturb;
+      }
+      this.setOpts(opts)
+    }),
+
+    guide: Orb.type(function Guide(elem, jack, opts) {
+      var unit, bbox, w, h, px, py, mx, my, balance, settle, truncate;
+      var dist = Sun.clockdist;
+      var opts = up({}, opts)
+      var self = this;
+      var spring = elem.spring(jack)
+      this.elem = elem;
+      this.jack = spring;
+      this.move = function (dx, dy) {
+        self.px = px += dx;
+        self.py = py += dy;
+        self.push(dx, dy)
+      }
+      this.goto = function (i, j) {
+        var ox = px + spring.dx - (i || 0) * w, oy = py + spring.dy - (j || 0) * h;
+        self.move(-ox, -oy)
+      }
+      this.slot = function () {
+        return [rnd((px + spring.dx) / w), rnd((py + spring.dy) / h)]
+      }
+
+      this.setOpts = function (o) {
+        opts = up(opts, o)
+        unit = pop(opts, 'unit', unit || {})
+        bbox = opts.bbox || elem.bbox()
+        w = def(unit.width, def(w, bbox.width))
+        h = def(unit.height, def(h, bbox.height))
+        px = self.px = opts.px || 0;
+        py = self.py = opts.py || 0;
+        mx = opts.mx || 1e-3;
+        my = opts.my || 1e-3;
+        balance = opts.balance;
+        settle = pop(opts, 'settle', settle)
+        truncate = pop(opts, 'truncate', truncate)
+        spring.setOpts(ext(opts, {
+          balance: function () {
+            var ox = w && px % w, oy = h && py % h;
+            var far = dist(ox, 0, w) > mx || dist(oy, 0, h) > my;
+            if (far)
+              Orb.move(self.hook || self,
+                       abs(ox) < w / 2 && !truncate ? -ox : sgn(ox) * w - ox,
+                       abs(oy) < h / 2 && !truncate ? -oy : sgn(oy) * h - oy)
+            if (!far)
+              settle && settle.call(this, rnd(px / (w || 1)), rnd(py / (h || 1)))
+            balance && balance.call(this, ox, oy)
+          }
+        }))
+      }
+      this.setOpts(opts)
+    }),
+
+    tether: Orb.type(function Tether(elem, jack, opts) {
+      var bbox, xmin, xmax, ymin, ymax, rx, ry, px, py;
+      var opts = up({}, opts)
+      var self = this;
+      var plug = elem.orb({
+        move: function (dx, dy) {
+          self.px = px += dx;
+          self.py = py += dy;
+          return this.push(dx, dy, px, py, bbox)
+        }
+      }, jack)
+      var coil = elem.spring(plug, {kx: 1, ky: 1, lx: -1, ly: -1, lock: true})
+      this.elem = elem;
+      this.jack = cat(plug, coil)
+      this.move = function (dx, dy) {
+        var cx = 0, cy = 0, ix = dx, iy = dy;
+        var nx = px + dx + coil.dx, ny = py + dy + coil.dy;
+        var ux = nx - xmin, uy = ny - ymin;
+        var ox = nx - xmax, oy = ny - ymax;
+        if (ux < 0 && dx < 0) {
+          cx = (px < xmin ? dx : ux) / (rx * log(abs(coil.dx) + E))
+          ix = min(dx - ux, 0)
+        } else if (ox > 0 && dx > 0) {
+          cx = (px > xmax ? dx : ox) / (rx * log(abs(coil.dx) + E))
+          ix = max(dx - ox, 0)
+        }
+        if (uy < 0 && dy < 0) {
+          cy = (py < ymin ? dy : uy) / (ry * log(abs(coil.dy) + E))
+          iy = min(dy - uy, 0)
+        } else if (oy > 0 && dy > 0) {
+          cy = (py > ymax ? dy : oy) / (ry * log(abs(coil.dy) + E))
+          iy = max(dy - oy, 0)
+        }
+        Orb.move(coil, cx, cy)
+        return Orb.move(plug, cx + ix, cy + iy)
+      }
+
+      this.goto = function (x, y) {
+        return Orb.move(this, (x || 0) - (px + coil.dx), (y || 0) - (py + coil.dy))
+      }
+
+      this.setOpts = function (o) {
+        opts = up(opts, o)
+        bbox = new Sky.Box(opts.bbox || {}, true)
+        xmin = bbox.x; xmax = bbox.right;
+        ymin = bbox.y; ymax = bbox.bottom;
+        rx = opts.rx || 1;
+        ry = opts.ry || 1;
+        px = self.px = def(opts.px, px || 0)
+        py = self.py = def(opts.py, py || 0)
+        if (px < xmin || px > xmax || py < ymin || py > ymax)
+          self.goto(px < xmin ? xmin : (py > xmax ? xmax : px),
+                    py < ymin ? ymin : (py > ymax ? ymax : py))
+      }
+      this.setOpts(opts)
+    }),
+
+    crank: Orb.type(function Crank(elem, jack, opts) {
+      var cx, cy;
+      var opts = up({}, opts)
+      this.elem = elem;
+      this.jack = jack;
+      this.move = function (dx, dy, px, py) {
+        var c = elem.screen(cx, cy)
+        var rx = px - c.x, ry = py - c.y;
+        if (rx > 0)
+          dy = -dy;
+        if (ry < 0)
+          dx = -dx;
+        return this.push(dx + dy, 0, this)
+      }
+
+      this.setOpts = function (o) {
+        opts = up(opts, o)
+        cx = opts.cx || 0;
+        cy = opts.cy || 0;
+      }
+      this.setOpts(opts)
+    }),
+
+    wagon: Orb.type(function Wagon(elem, jack, opts) {
+      var bbox, xmin, xmax, ymin, ymax, wide, high;
+      var opts = up({}, opts)
+      this.elem = elem;
+      this.jack = jack;
+      this.move = function (dx, dy) {
+        var cur = elem.transformation(), off = cur.translate = cur.translate || [0, 0]
+        if (wide)
+          cur.translate[0] = clip(off[0] + dx, xmin, xmax)
+        if (high)
+          cur.translate[1] = clip(off[1] + dy, ymin, ymax)
+        elem.transform(this.push(dx, dy, cur) || cur)
+      }
+
+      this.setOpts = function (o) {
+        opts = up(opts, o)
+        bbox = new Sky.Box(opts.bbox || {}, true)
+        xmin = bbox.x; xmax = bbox.right;
+        ymin = bbox.y; ymax = bbox.bottom;
+        wide = bbox.width; high = bbox.height;
+      }
+      this.setOpts(opts)
+    }),
+
+    loop: Orb.type(function Loop(elem, jack, opts) {
+      var bbox, xmin, xmax, ymin, ymax, wide, high, wrap;
+      var opts = up({}, opts)
+      this.elem = elem;
+      this.jack = jack;
+      this.move = function (dx, dy, cur) {
+        var off = cur.translate || [0, 0]
+        var ox = fnt(off[0], xmin), oy = fnt(off[1], ymin), lx = ox, ly = oy, over = true;
+        while (over) {
+          over = false;
+          if (wide) {
+            var wx = lx < xmin && 1 || lx > xmax && -1;
+            if (wx) {
+              over = true;
+              lx += wx * wide;
+              if (!wrap.call(this, wx, 0, ox, oy))
+                ox += wx * wide;
+            }
+          }
+          if (high) {
+            var wy = ly < ymin && 1 || ly > ymax && -1;
+            if (wy) {
+              over = true;
+              ly += wy * high;
+              if (!wrap.call(this, 0, wy, ox, oy))
+                oy += wy * high;
+            }
+          }
+        }
+        cur.translate = [ox, oy]
+        return this.push(dx, dy, cur) || cur;
+      }
+
+      this.setOpts = function (o) {
+        opts = up(opts, o)
+        bbox = new Sky.Box(opts.bbox || {}, true)
+        xmin = bbox.x; xmax = bbox.right;
+        ymin = bbox.y; ymax = bbox.bottom;
+        wide = bbox.width; high = bbox.height;
+        wrap = opts.wrap || noop;
+      }
+      this.setOpts(opts)
+    }),
+
+    belt: Orb.type(function Belt(elem, jack, opts) {
+      var wbox, bbox, draw;
+      var opts = up({h: true, v: true}, opts)
+      var self = this;
+      var orbs = [].concat(jack), n = orbs.length;
+      this.elem = elem;
+      this.jack = orbs.map(function (o, k) {
+        var e = o.elem; o.k = k;
+        return e.wagon(e.loop(o, {
+          wrap: function (wx, wy) {
+            var k_ = o.k;
+            if (draw.call(self, o, mapk(o.k += n * (wx + wy)), wx, wy))
+              return o.k = k_, true;
+          }
+        }))
+      }, [])
+
+      this.sync = function () {
+        orbs.map(function (o) { draw.call(self, o, mapk(o.k)) })
+      }
+
+      this.setOpts = function (o) {
+        opts = up(opts, o)
+        wbox = up(opts.h ? {} : {width: 0}, opts.v ? {} : {height: 0})
+        bbox = opts.bbox || elem.bbox()
+        draw = opts.draw || noop;
+        mapk = opts.mapk || id;
+        self.jack.map(function (w) {
+          w.setOpts({bbox: wbox})
+          w.jack.setOpts({bbox: bbox})
+        })
+      }
+      this.setOpts(opts)
+    }),
+
+    treadmill: Orb.type(function Treadmill(elem, jack, opts) {
+      var init, dims, soln, bbox, unit, shape, rows, cols;
+      var opts = up({h: true, v: true}, opts)
+      var orbs = []
+      var self = this;
+      this.elem = elem;
+
+      this.setOpts = function (o) {
+        opts = up(opts, o)
+        init = opts.init || id;
+
+        if (soln = Sky.Box.solve(up({bbox: opts.dims}, opts)) || soln) {
+          dims = bbox = soln.bbox; unit = soln.unit; shape = soln.shape;
+          shape = {rows: rows = shape.rows, cols: cols = shape.cols}
+        } else {
+          dims = bbox = unit = elem.bbox()
+          shape = {rows: rows = 1, cols: cols = 1}
+        }
+
+        if (opts.h) {
+          shape.cols = Math.ceil(cols + 1)
+          bbox = Sky.Box.solve({unit: unit, shape: shape}).bbox.shift(1 - unit.w, 0)
+        }
+        if (opts.v) {
+          shape.rows = Math.ceil(rows + 1)
+          bbox = Sky.Box.solve({unit: unit, shape: shape}).bbox.shift(0, 1 - unit.h)
+        }
+
+        orbs.map(function (o) { o.elem.remove() })
+        orbs = unit.stack(function (a, b) {
+          var o = elem.g().shift(b.x, b.y).orb({dims: b.xy()})
+          return a.push(init.call(self, o) || o), a;
+        }, [], shape)
+
+        self.dims = dims;
+        self.bbox = bbox;
+        self.unit = unit;
+        self.rows = rows;
+        self.cols = cols;
+        self.jack = elem.belt(cat(orbs, jack), ext(opts, {bbox: bbox}))
+        self.sync()
+      }
+      this.setOpts(opts)
+    }),
+
+    wheel: Orb.type(function Wheel(elem, jack, opts) {
+      var kx, ky, rx, ry, gunit, settle, active, window, offset, range, zero, u, i;
+      var opts = up({kx: 2, ky: 2, rx: 3, ry: 3}, opts)
+      var self = this;
+      var tmill = this.tmill = elem.treadmill(null)
+      var guide = this.guide = elem.guide(tmill)
+      var tether = guide.hook = elem.tether(cat(guide, jack))
+      this.thru(tmill, ['dims', 'bbox', 'unit', 'rows', 'cols'])
+      this.elem = elem;
+      this.jack = tether;
+      this.getActive = function () {
+        return guide.slot().map(function (v) { return -v })
+      }
+      this.setActive = function (x, y) {
+        return tether.goto(-x * u.w, -y * u.h)
+      }
+
+      this.setOpts = function (o) {
+        opts = up(opts, o)
+        kx = pop(opts, 'kx', kx)
+        ky = pop(opts, 'ky', ky)
+        rx = pop(opts, 'rx', rx)
+        ry = pop(opts, 'ry', ry)
+        gunit = pop(opts, 'gunit', gunit)
+        settle = pop(opts, 'settle', settle)
+        active = pop(opts, 'active', active)
+        window = pop(opts, 'window', window)
+        offset = pop(opts, 'offset', offset || [0, 0])
+        range = pop(opts, 'range', range)
+        zero = pop(opts, 'zero', zero || [0, 0])
+
+        tmill.setOpts(ext(opts, {mapk: function (k) { return k - i }}))
+        guide.setOpts({
+          kx: kx,
+          ky: ky,
+          unit: gunit || self.unit,
+          settle: function (x, y) { settle && settle(-x, -y) }
+        })
+
+        u = self.unit;
+        i = zero[0] + zero[1] * self.cols;
+
+        if (range) {
+          var r = up({rows: 1, cols: 1}, range)
+          var w = up({rows: self.rows, cols: self.cols}, window)
+          var a = Sky.box(0, 0, offset[0] * u.w, offset[1] * u.h)
+          var b = u.times({cols: max(r.cols - w.cols, 0), rows: max(r.rows - w.rows, 0)}).align(a, 1, 1)
+          tether.setOpts({bbox: Sky.box().join(b), rx: rx, ry: ry, px: 0, py: 0})
+        }
+
+        self.setActive.apply(this, active || [])
+        self.sync()
+      }
+      this.setOpts(opts)
+    })
+  })
+
+  Sky.SVGElem.prototype.update({
+    dolly: Orb.type(function Dolly(elem, jack, opts) {
+      var vbox, bbox, xmin, xmax, ymin, ymax;
+      var opts = up({}, opts)
+      this.elem = elem;
+      this.jack = jack;
+      this.move = function (dx, dy) {
+        var cur = elem.node.viewBox.baseVal;
+        var dim = [clip(cur.x - dx, xmin, xmax),
+                   clip(cur.y - dy, ymin, ymax),
+                   cur.width, cur.height]
+        elem.attrs({viewBox: this.push(dx, dy, dim) || dim})
+      }
+
+      this.setOpts = function (o) {
+        opts = up(opts, o)
+        vbox = new Sky.Box(opts.vbox || elem.bbox())
+        bbox = new Sky.Box(opts.bbox || {}, true)
+        bbox = bbox.trim(0, vbox.width, 0, vbox.height)
+        xmin = bbox.x; xmax = bbox.right;
+        ymin = bbox.y; ymax = bbox.bottom;
+        elem.attrs({viewBox: vbox})
+      }
+      this.setOpts(opts)
+    })
+  })
+})();
+
+    </script>
+  </head>
+  <body>
+
+    <main>
+
+      <section>
+        <h1>Intro To Coding</h1>
+        <h2>Jared Flatow</h2>
+        <h3>Silicon Valley GradNation Youth Summit</h3>
+        <h4>May 2, 2015</h4>
+        <a href="">Link to Slides</a>
+      </section>
+
+      <section>
+        <h1>Who am I?</h1>
+        <ul>
+          <li>Self-taught programmer</li>
+          <li>Open source contributor: <a href="https://github.com/jflatow">GitHub</a></li>
+          <li>Studied electrical engineering; worked in bioinformatics, distributed computing</li>
+          <li>Entrepreneur: <a href="http://www.convex.io">Quasi Convex Union</a></li>
+          <li>Current project: <a href="https://www.skej.us">Skej</a></li>
+        </ul>
+      </section>
+
+      <section>
+        <h1>Why are we here?</h1>
+        <ul>
+          <li>To learn more about programming</li>
+          <li>To write our (first?) algorithm</li>
+          <li>To figure out if this stuff interests you</li>
+        </ul>
+      </section>
+
+      <section>
+        <h1>What's a computer?</h1>
+                <span>
+  <a href="http://en.wikipedia.org/wiki/Turing_machine">Turing Machine</a> running a
+  <a href="http://en.wikipedia.org/wiki/Busy_beaver">Busy Beaver</a> program:
+</span>
+<svg id="turing"></svg>
+<br />
+<br />
+<table>
+  <tbody>
+    <tr>
+      <th rowspan="2">Tape symbol</th>
+      <th colspan="3">Current state A</th>
+      <th colspan="3">Current state B</th>
+      <th colspan="3">Current state C</th>
+    </tr>
+    <tr style="font-size:9pt">
+      <td>Write symbol</td>
+      <td>Move tape</td>
+      <td>Next state</td>
+      <td>Write symbol</td>
+      <td>Move tape</td>
+      <td>Next state</td>
+      <td>Write symbol</td>
+      <td>Move tape</td>
+      <td>Next state</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>R</td>
+      <td><b>B</b></td>
+      <td>1</td>
+      <td>L</td>
+      <td><b>A</b></td>
+      <td>1</td>
+      <td>L</td>
+      <td><b>B</b></td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td>L</td>
+      <td><b>C</b></td>
+      <td>1</td>
+      <td>R</td>
+      <td><b>B</b></td>
+      <td>1</td>
+      <td>R</td>
+      <td><b>HALT</b></td>
+    </tr>
+  </tbody>
+</table>
+<script>
+(function (id) {
+  var $ = Sky.$, P = Sky.path
+  var dim = Sky.box(0, 0, 200, 80)
+  var svg = $('#' + id).attrs({viewBox: dim})
+  var fwd = [], bwd = []
+  var instruction = function (k, i) {
+    if (i == undefined) {
+      return (k < 0 ? bwd[-k] : fwd[k]) || 0
+    } else if (k < 0) {
+      return bwd[-k] = i;
+    } else {
+      return fwd[k] = i;
+    }
+  }
+  var transitions = {
+    A: {0: [1, 'R', 'B'], 1: [1, 'L', 'C']},
+    B: {0: [1, 'L', 'A'], 1: [1, 'R', 'B']},
+    C: {0: [1, 'L', 'B'], 1: [1, 'R', '\u22a5']},
+  }
+  var size = 7;
+  var tape = svg.wheel(null, {
+    v: false,
+    kx: 6,
+    dims: dim.scale(1, 0.5),
+    zero: [~~(size / 2), 0],
+    shape: {cols: size},
+    init: function (o) {
+      o.background = o.elem.rectX(o.dims).attrs({fill: 'none', stroke: 'black'})
+      o.instruction = o.elem.label(o.dims.midX, o.dims.midY)
+    },
+    draw: function (o, k) {
+      o.instruction.txt(instruction(k))
+    },
+    settle: function (x, y) {
+      var q = state.node.textContent
+      if (q == '\u22a5')
+        return;
+      var next = transitions[q][instruction(x)]
+      setTimeout(function () {
+        instruction(x, next[0])
+        tape.sync()
+        tape.setActive(x + (next[1] == 'L' ? -1 : 1), y)
+        state.txt(next[2])
+      }, 1000)
+    }
+  })
+  var m = 12
+  var head = svg.path(P('M', dim.midX - m, 1.6 * dim.midY) +
+                      P('l', m, -m) +
+                      P('l', m, m) +
+                      P('v', m) +
+                      P('h', -2 * m) +
+                      P('z')).attrs({fill: 'black'})
+  var state = svg.label(dim.midX, 1.6 * dim.midY + 3, 'A').attrs({fill: 'white', 'font-size': 20})
+  state.tap(function () {
+    fwd = []
+    bwd = []
+    tape.sync()
+    state.txt('A')
+    tape.setActive(0, 0)
+  })
+  svg.swipe(tape)
+})('turing')
+</script>
+      </section>
+
+      <section>
+        <h1>What is engineering?</h1>
+        <ul>
+          <li>Designing and building stuff</li>
+          <li>All about modelling (not that kind of modelling)</li>
+          <li>Everything we know about the world is an approximation</li>
+        </ul>
+      </section>
+
+      <section>
+        <h1>If I gave you each $100 and sent you back in time two weeks...</h1>
+        <ul>
+          <li>What would you have done with it?</li>
+          <li>How much could you have made by investing it (by now)?</li>
+          <li>What about only investing in stocks?</li>
+          <li>Could anyone have done better than you?</li>
+        </ul>
+      </section>
+
+      <section>
+        <h1>Let's figure it out</h1>
+        <span>We'll make some simplifying assumptions (which aren't true in the real world):</span>
+        <ul>
+          <li>You can only spend cash you have</li>
+          <li>You can only sell stocks you own</li>
+          <li>You only know one price per day</li>
+        </ul>
+        <span>What's the <b>most</b> money you can make, given the stock prices below?</span>
+
+                <svg id="single_stock"></svg>
+<script>
+(function (id) {
+  function holdings(prices, i) {
+    var cash = 100, stock = 0;
+    for (var t = 0, T = prices.length - 1; t <= i; t++) {
+      if (t < T && prices[t] < prices[t + 1]) {
+        var buy = Math.floor(cash / prices[t])
+        stock = stock + buy
+        cash = cash - buy * prices[t]
+      } else if (t == T || prices[t] > prices[t + 1]) {
+        cash = cash + stock * prices[t]
+        stock = 0
+      }
+    }
+    return {cash: cash, stock: stock}
+  }
+
+  var $ = Sky.$, P = Sky.path
+  var dim = Sky.box(-3, 0, 33, 15)
+  var svg = $('#' + id).attrs({viewBox: dim}).attrs({height: 320, preserveAspectRatio: 'xMidYMid', 'font-size': 1})
+  var fbq = [83.01, 83.52, 82.71, 82.31, 80.78, 83.09, 83.62, 84.63, 82.41, 81.53]
+
+  var ax = svg.g()
+  var xLabel = ax.label(dim.midX, dim.bottom - 1, 'time').attrs({'font-size': 0.75})
+  var yLabel = ax.label(dim.x + 1.5, dim.midY, 'price').transform({rotate: [-90, dim.x + 1.5, dim.midY]}).attrs({'font-size': 0.75})
+  var cLabel = ax.text(dim.midX - 4, dim.y + 1, '').attrs({display: 'none'}).space('preserve')
+  var qLabel = ax.text(dim.midX - 4, dim.y + 2, '').attrs({display: 'none'}).space('preserve')
+
+  var g = svg.g()
+  var tLabel = g.label(0, 0, '')
+  var deltaP = g.label(0, 0, '')
+  var deltaL = g.line(0, 0, 0, 0).attrs({'stroke-width': 0.25})
+  for (var i = 0; i < fbq.length; i++)
+    (function (i) {
+      var cx = 1.5 + 3 * i, cy = 90 - fbq[i]
+      var cx_ = 1.5 + 3 * (i + 1), cy_ = 90 - fbq[i + 1]
+      var h = g.g()
+      h.circle(cx, cy, 1).attrs({stroke: 'black', 'stroke-width': 0.1, fill: 'white'})
+      h.label(cx, cy + 0.25, "$" + fbq[i]).attrs({'font-size': .5})
+      h.tap(function () {
+        var hold = holdings(fbq, i)
+        xLabel.attrs({display: 'none'})
+        yLabel.attrs({display: 'none'})
+        cLabel.attrs({display: ''}).txt('cash  = $' + hold.cash.toFixed(2))
+        qLabel.attrs({display: ''}).txt('stock = ' + hold.stock + ' shares')
+        tLabel.xy(cx, dim.bottom - 1).txt('t = ' + i)
+        if (i < fbq.length - 1) {
+          var c = fbq[i + 1] > fbq[i] ? 'green' : 'red'
+          deltaP.xy(cx, cy - 3).txt('$' + (fbq[i + 1] - fbq[i]).toFixed(2)).attrs({fill: c})
+          deltaL.attrs({x1: cx, y1: cy, x2: cx_, y2: cy_, stroke: c})
+        } else {
+          deltaP.xy(0, 0).txt('')
+          deltaL.attrs({x1: 0, y1: 0, x2: 0, y2: 0})
+        }
+      })
+    })(i)
+})('single_stock')
+</script>
+      </section>
+
+      <section>
+        <h1>But what about the code?</h1>
+        <span>Here's our logic for each time step in <a href="http://en.wikipedia.org/wiki/JavaScript">JavaScript</a>:</span>
+        <pre>
+          <code>
+if (prices[t] < prices[t + 1]) {
+    var buy = Math.floor(cash / prices[t])
+    stock = stock + buy
+    cash = cash - prices[t] * buy
+} else if (prices[t] > prices[t + 1]) {
+    cash = cash + stock * prices[t]
+    stock = 0
+}
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h1>Did we answer the original question?</h1>
+        <span>We don't want to just compute the value for one stock, we want to maximize over <em>all</em> stocks:</span>
+        <pre>
+          <code>
+var bestSymbol, bestCash = 0;
+for (var symbol in stocks) {
+    var cash = total_cash(stocks[symbol])
+    if (cash > bestCash) {
+        bestSymbol = symbol
+        bestCash = cash
+    }
+}
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h1>Define a function for fun and profit</h1>
+        <pre>
+          <code>
+function total_cash(prices) {
+    var cash = 100, stock = 0
+    var T = prices.length - 1
+    for (var t = 0; t < T; t++) {
+        if (prices[t] < prices[t + 1]) {
+            var buy = Math.floor(cash / prices[t])
+            stock = stock + buy
+            cash = cash - prices[t] * buy
+        } else if (prices[t] > prices[t + 1]) {
+            cash = cash + stock * prices[t]
+            stock = 0
+        }
+    }
+    return cash + stock * prices[T]
+}
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h1>How well can we do?</h1>
+        <ul>
+          <li>Downloaded stock data from <a href="http://quandl.com/">Quandl</a></li>
+          <li>Ran on 2493 stocks with price data between April 12-26</li>
+          <li>Best performer was MCP with a total value of $226.74</li>
+          <li>About 30x better return than FB</li>
+          <li>Average total value was $104.97</li>
+        </ul>
+      </section>
+
+      <section>
+        <h1>If I gave you each $100 today...</h1>
+        <ul>
+          <li>Could you do as well as our algorithm?</li>
+          <li>Why not?</li>
+          <li>How well do you <em>actually</em> think you might do?</li>
+          <li>Can you do better now?</li>
+        </ul>
+      </section>
+
+      <section>
+        <h1>Is this a hard problem?</h1>
+        <ul>
+          <li>Does it matter if I give you $100, $10000, or $1000000?</li>
+          <li>What about transaction costs?</li>
+          <li>What about the risk? Can we quantify it?</li>
+          <li>What about if we can short stocks too? Or borrow money? Or trade options?</li>
+          <li>What other data could we be using to predict prices?</li>
+        </ul>
+      </section>
+
+      <section>
+        <h1>Is this an important problem?</h1>
+        <ul>
+          <li>Why did I pick it then?</li>
+          <li>What other applications are there for similar technology?</li>
+          <li>Is there a more general problem we are trying to solve?</li>
+        </ul>
+      </section>
+
+      <section>
+        <h1>Is this for you?</h1>
+        <ul>
+          <li>Yes</li>
+          <li>Not always easy</li>
+          <li>Sometimes seems impossibly hard</li>
+          <li>Incredibly rewarding on all levels</li>
+        </ul>
+      </section>
+
+      <section>
+        <h1>Thanks! Want to learn more?</h1>
+        <ul>
+          <li><a href="http://acko.net/tv/wdcode/">Making Things With Maths</a></li>
+          <li><a href="http://bost.ocks.org/mike/algorithms/">Visualizing Algorithms</a></li>
+          <li><a href="http://www.codecademy.com/">Code Academy</a></li>
+          <li><a href="http://www.code.org/">Code.org</a></li>
+          <li><a href="http://www.google.com">Google</a> (too many resources to mention)</li>
+          <li><a href="http://www.stackoverflow.com">Stack Overflow</a> (for when you get stuck)</li>
+        </ul>
+      </section>
+    </main>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+    </script>
+  </body>
+</html>
