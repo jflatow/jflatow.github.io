@@ -4,8 +4,7 @@
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" />
     <link rel="stylesheet" href="css/site.css" />
     <script type="text/javascript" src="js/analytics.js"></script>
-    <script type="text/javascript" src="sky/sky.js"></script>
-    <script type="text/javascript" src="sky/sun.js"></script>
+    <script type="text/javascript" src="sky/all"></script>
   </head>
   <body>
     <header>
@@ -36,7 +35,7 @@
               }
             })
           } else {
-            blog.each('a', function (_, a) {
+            blog.each('a', function (a) {
               var href = a.getAttribute('href')
               Sun.http.get(href, function (r) {
                 if (r.status < 400) {

@@ -23,12 +23,10 @@
   </head>
   <body>
     <div id="content"></div>
-    <script src="../../sky/sky.js"></script>
-    <script src="../../sky/sun.js"></script>
-    <script src="../../sky/orb.js"></script>
+    <script src="../../sky/all"></script>
     <script>
   (function () {
-    var up = Sun.up, T = Sun.time, P = Sky.path, clip = Sky.util.clip;
+    var up = Sun.up, T = Sun.time, P = Sky.path, clip = Sky.util.clip, trig = Sky.util.trig;
 
     Orb.prototype.sumxy = Orb.type(function SumXY(orb) {
       this.elem = orb.elem;
@@ -334,7 +332,7 @@
             move: function (dx) {
               time -= 120000 * dx;
               lip.attrs({d: P.arc(cx, cy, r, r, l, o -= dx)});
-              tip.transform({translate: g.polar(r, o)});
+              tip.transform({translate: trig.polar(r, o)});
             }
           });
           var gear = g.crank(g.orb({
