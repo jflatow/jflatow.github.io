@@ -1,0 +1,799 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Intro to JFDB</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: Helvetica Neue;
+      }
+
+      section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        width: 720px;
+      }
+
+      section + section {
+        margin-top: 50vh;
+      }
+
+      section h1, section h2 {
+        margin: 1.5rem 0;
+        padding: 0;
+      }
+
+      section h1 {
+        font-size: 2.0em;
+      }
+
+      section h2 {
+        color: #5b5c60;
+        font-size: 1.8em;
+      }
+
+      section h2 a {
+        color: #000;
+        transition: all 0.3s;
+      }
+
+      section h2 a:hover {
+        opacity: 0.5;
+        transition: all 0.3s;
+      }
+
+      section h2 a .icon {
+        width: 1em;
+        height: 1em;
+        fill: #6abaf0;
+      }
+
+      section .backdrop {
+        display: flex;
+        align-items: center;
+        margin: 0 0 6em;
+      }
+
+      section .backdrop img {
+        max-width: 100%;
+      }
+
+      section .content {
+        width: 640px;
+        text-align: center;
+      }
+
+      section .content * {
+      text-align: left;
+      }
+
+      section .content img {
+        max-width: 80%;
+        margin: 1em 0;
+      }
+
+      section .content em {
+        color: #933;
+      }
+
+      section .content i, section .content pre {
+        font-family: monospace;
+        padding: 1ex;
+        background-color: #efefef;
+      }
+
+      section .content p, section .content pre, section .content ul {
+        line-height: 2em;
+      }
+
+      section .content p.todo {
+        margin: 2em 1em;
+        padding: 1em 2em;
+        border: 2px dashed #ef3333;
+      }
+
+      section .content q {
+        font-style: italic;
+      }
+
+      #title-screen {
+        justify-content: center;
+      }
+
+      #title-screen h1 {
+        font-size: 3.6em;
+      }
+
+      #title-screen h1, #title-screen h2 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <header></header>
+
+    <main>
+      <section id="title-screen">
+        <h1>Intro to JFDB</h1>
+        <h2>
+          <span>by</span>
+          <span style="padding: 0 0.25ex"></span>
+          <a href="mailto:jared@convex.io">Jared Flatow</a>
+        </h2>
+        <h2>
+          <a href="https://github.com/jflatow/jfdb">
+            <svg class="icon">
+              <use xlink:href="img/icons.svg#github" />
+            </svg>
+          </a>
+          <span style="padding: 0 1ex">&#x2758;</span>
+          <span>August 2016</span>
+      </section>
+
+      <section id="in-defense-of-curiosity">
+        <div class="backdrop">
+          <img src="img/curiosity.jpg" title="Curiosity killed the cat by SuperJesusPump" />
+        </div>
+
+        <div class="content">
+          <h1>In defense of curiosity</h1>
+          <p>
+            When I tell people about <b>JFDB</b>, their first question is usually <q>What's wrong with all of the existing databases?</q>.
+            I originally felt pressure to tell a story along the lines of <q>Here's a problem that I faced, here's why none of the existing solutions work, here's how my solution works</q>.
+            But in trying to explain what's <q>wrong</q> with everything else, I kept hitting a wall.
+          </p>
+
+          <p>
+            I've since come to the realization that telling the story that way is disingenuous.
+            I didn't actually set about writing <b>JFDB</b> because other systems failed to do one particular thing or another.
+            I didn't have to create <b>JFDB</b> at all.
+            It's always easy to justify continuing with status quo.
+          </p>
+
+          <p>
+            The truth is I was driven by a nagging sense that <q>there's got to be a better way</q> and a compulsion to figure out what that could be.
+            The pieces of the puzzle just never gave me that satisfying click, and if nothing else, I wanted to understand why.
+            For me, curiosity is often reason enough to try something new.
+          </p>
+        </div>
+      </section>
+
+      <section id="eye-of-the-beholder">
+        <div class="backdrop">
+          <img src="img/viz.png" title="Viz icon by Carl Flatow" />
+        </div>
+
+        <div class="content">
+          <h1>Eye of the beholder</h1>
+          <p>
+            With that said, in my opinion, <b>JFDB</b> is an elegant solution to a problem I've been thinking about for many years.
+            And the process of creating it has brought me much personal satisfaction.
+            But as the saying goes, beauty is in the eye of the beholder, and I'll be the first to admit that I'm kind of weird.
+          </p>
+
+          <p>
+            My mom is a social worker.
+            My dad was a photographer, now a beekeeper.
+            My first computer was a Commodore 64.
+            In college I <q>studied</q> electrical engineering (I was a terrible student, but it shaped the way I look at things).
+          </p>
+
+          <p>
+            I'm fascinated by the idea of perpetual learning machines.
+            For the past decade, I've alternated working on infrastructure, (machine) intelligence, and (human) interaction.
+            Its all pretty much motivated by my obsession with self-sustaining feedback systems, a.k.a. life.
+          </p>
+
+          <p>
+            <b>JFDB</b> falls into the infrastructure bucket.
+          </p>
+        </div>
+      </section>
+
+      <section id="storage-and-retrieval">
+        <div class="backdrop">
+          <img src="img/library.jpg" title="The Long Room by Diliff" />
+        </div>
+
+        <div class="content">
+          <h1>Storage and retrieval</h1>
+          <p>
+            Suppose I'm collecting data over time.
+            I want to remember the data, and to be able to search it by various properties.
+          </p>
+
+          <p>
+            For example, let's say I want to store data that each look something like this:
+          </p>
+
+          <pre>{
+  "first_name": "Jared",
+  "last_name": "Flatow",
+  "email": "jared@convex.io",
+  "interests": ["machine learning", "convex optimization", ...],
+  "affiliations": [{name: "AdRoll", title: "Engineer", ...}, ...],
+  ...
+}</pre>
+
+          <p>
+            And then I want to retrieve the data in various ways:
+          </p>
+
+          <ul>
+            <li>search by first name or last name or email address
+            <li>search by affiliation name or title
+            <li>search by interest
+            <li>search by a partial match of any of the text
+            <li>any combination thereof, e.g. <q>engineers interested in convex optimization</q>
+          </ul>
+
+          <p>
+            How do I do that?
+          </p>
+        </div>
+      </section>
+
+      <section id="in-the-beginning">
+        <div class="backdrop">
+          <img src="img/eden.jpg" title="Garden of Eden by Jan Brueghel the Elder and Pieter Paul Rubens" />
+        </div>
+
+        <div class="content">
+          <h1>In the beginning, things were relational</h1>
+          <p>
+            Okay, so maybe not the very beginning, but pretty early on.
+            I think it's fair to call the relational model <q>the classic approach</q>.
+            At the least, relational databases have been the de facto off-the-shelf solution for information storage and retrieval for the past 40 years.
+          </p>
+
+          <p>
+            Most of us are familiar with the relational model, but let's quickly review:
+          </p>
+
+          <ul>
+            <li>relations are tuples, each field in the tuple is an attribute with a domain, as specified by a schema
+            <li>relations can be retrieved by matching combinations of their attributes
+            <li>relations can be joined via their common attributes
+          </ul>
+
+          <p>
+            Here's what our schema and relations might look like in a relational database:
+          </p>
+
+          <img src="img/schema-relations.svg" />
+
+          <p>
+            I can't help but notice that there are several awkward things about this model.
+          </p>
+
+          <p>
+            First of all, there is an impedance mismatch between the data we are collecting, and how it is handled by the database.
+            Our variable length lists were transformed into separate relations, tied to their <q>owner</q> by an id.
+            We had to define three types of relations initially, and must use those whenever we want to work with the data.
+            This places a cognitive burden on not only the developer, but also on the machine.
+            There is a ubiquitous layer of mapping between the <q>natural</q> form of the data, and the relational form, and that is not free.
+          </p>
+
+          <p>
+            Secondly, we are required to declare all the attributes our relations <em>may</em> have up front.
+            During development especially, this can be an onerous burden.
+            When multiple parts of the system are evolving in parallel, such a rigid structure can slow down iterations on the system itself.
+            Of course in other cases, we may find such structure valuable, but in this particular case, it <em>feels</em> unnecessary.
+          </p>
+
+          <p>
+            Finally, in the real world, we need to give the database more information in order to feasibly handle the ways we are going to search.
+            We generally declare indices along with our schema, so that the database knows to make retrieval by those attributes more efficient.
+            Any property we want to search by must be an attribute within a relation, we cannot derive properties <em>just</em> for searching.
+            The support for partial text matches are foreign to the relational model, and would need to be handled by custom extensions to the model, specific to the particular database we are using.
+          </p>
+
+          <p>
+            I can't help feeling that this is all more complicated than it needs to be.
+          </p>
+        </div>
+      </section>
+
+      <section id="documents-are-the-new-tuples">
+        <div class="backdrop">
+          <img src="img/document.jpg" title="John Hancock's Defiance" />
+        </div>
+
+        <div class="content">
+          <h1>Documents are the new tuples</h1>
+          <p>
+            Of course, I'm not the only one who feels that way.
+            Those coming from the relational model might think <q>what happens if we add support for dynamic and nested attributes to relations</q>?
+            That's essentially what document-oriented databases do.
+          </p>
+
+          <p>
+            Documents can be added to typical relational databases by adding a new type and a corresponding syntax to the query language.
+            That's essentially what <b>PostgreSQL</b> does with <a href="https://www.postgresql.org/docs/9.4/static/datatype-json.html">JSONB</a>, for instance.
+          </p>
+
+          <p>
+            Alternatively, we can start from scratch and abandon the relational model altogether.
+            The past 15 years have seen the rise of document-oriented databases which do precisely that (e.g. <b>MongoDB</b>, <b>CouchDB</b>, etc.).
+          </p>
+
+          <p>
+            In any case, we can store our <q>person</q> data more or less directly under the document model.
+            But in every DBMS I know of, we must separately describe which parts of a document we want to be indexed for fast retrieval.
+            To do that, every database has its own language for annotating what should happen when the database indexes a document.
+            And although the goal is to hide implementation details, in practice, we must be aware of how the indices are maintained, in order to understand system performance.
+          </p>
+
+          <p>
+            In other words, every database adds a specification layer and a runtime, which invariably increase complexity of the system.
+          </p>
+
+          <p>
+            This whole thing is something of black box.
+            This is the point where you need to decide to take the red pill or the blue pill.
+            Do you just want to use the black box, and never worry what happens inside it?
+            Or do you want to open the box?
+          </p>
+
+          <img src="img/pills.jpg" />
+
+          <p>
+            I think you know which I'm going to choose.
+            I want to try and find a simpler model.
+            And if I can't do that, then I want to understand why not.
+          </p>
+        </div>
+      </section>
+
+      <section id="keys-and-values">
+        <div class="backdrop">
+          <img src="img/keys.jpg" title="Keys to Your Acadamic Success by University of Nebraska-Lincoln" />
+        </div>
+
+        <div class="content">
+          <h1>Just give me the keys (and values)</h1>
+          <p>
+            If we open the box, what we find are key-value stores and a bunch of logic for controlling them.
+            Most databases are built on top of some sort of <a href="https://en.wikipedia.org/wiki/B-tree">B-tree</a>.
+            A primary key maps to a value in one of these trees, and indices are implemented as secondary trees whose value points to the primary value.
+          </p>
+
+          <p>
+            We could replace our favorite document-oriented database with our favorite key-value store, and things would be fine and dandy.
+            We only start running into problems when we try to index our data.
+          </p>
+
+          <p>
+            First of all, we need a way of storing a pointer directly to a value in another tree.
+            And we need a way of making sure that pointer is always valid.
+            We don't want to start writing a primary key, and fail before the indices are written.
+            We want to write the primary key, value, and indices together atomically.
+            Well, no problem, our key-value store probably has transactions.
+          </p>
+
+          <img src="img/key-value.svg" />
+
+          <p>
+          </p>
+
+          <p>
+            But now we have another problem.
+            Let's say we have an index pointing to a key's value, and that key-value gets overwritten.
+            We must somehow make the old indices obsolete, atomically together with the primary key update.
+          </p>
+
+          <img src="img/index-dilemma.svg" />
+
+          <p>
+            You not only need to figure out which index keys are affected, you need to obsolete them all atomically with the primary key-value.
+          </p>
+
+          <p>
+            This is an annoyingly complicated issue to think about every single time you want to index data.
+            It seems to me that if indexing key-value data were easier, in many cases a DBMS would not be needed.
+            I wonder what happens if we try to push some of this complexity down to the key-value storage layer?
+          </p>
+        </div>
+      </section>
+
+      <section id="lego-my-eggo">
+        <div class="backdrop">
+          <img src="img/lego.jpg" title="Lego my Eggo by Brainless Tales" />
+        </div>
+
+        <div class="content">
+          <h1>Lego my eggo</h1>
+          <p>
+            I think what we actually need is a more powerful building block.
+            Instead of just primary keys and values, I want to make indices a primitive.
+            I have a dream that looks like:
+          </p>
+
+          <img src="img/primary-value-indices.svg" />
+
+          <p>
+            The indices are written atomically together with the primary key and value.
+            When a primary key is overwritten, the value and indices are completely replaced as well.
+          </p>
+
+          <p>
+            Under this model, our motivating example becomes trivial.
+            We write something like this to our database:
+          </p>
+
+          <pre>"jflatow@gmail.com"
+ => {"first_name": "Jared", ...}
+ <= ["first_name:Jared",
+     "last_name:Flatow",
+     "interest:machine learning",
+     "interest:convex optimization",
+     "affiliation-name:AdRoll",
+     "affiliation-title:Engineer", ...]</pre>
+
+          <p>
+            And then we could search using logical combinations of indices, for example:
+          </p>
+
+          <pre>"affiliation-title:Engineer" AND "interest:convex optimization"</pre>
+
+          <p>
+            Notice how these indices can easily be derived properties rather than explicitly stored attributes of the value.
+            We can index anything we want.
+          </p>
+
+          <p>
+            Ideally, all the redundant prefixes would be compressed.
+            Better yet, if we can search by prefix.
+            While we're at it, lets have the keys ordered, so we can search for arbitrary ranges too.
+            For instance, <i>first_name:J</i> to find anyone with a first name starting with <i>J</i>.
+            Or <i>interest:</i> to find anyone with any interests at all.
+            Or <i>affilitation-name:AdRoll...affiliation-name:Apple</i> to find anyone affiliated with an organization name between <em>AdRoll</em> and <em>Apple</em>.
+          </p>
+        </div>
+      </section>
+
+      <section id="imagine-the-possibilities">
+        <div class="backdrop">
+          <img src="img/possibilities.jpg" title="Bizarre Cloud Animals by Judy Watson" />
+        </div>
+
+        <div class="content">
+          <h1>Imagine the possibilities</h1>
+          <p>
+            We've only scratched the surface on how we can use this API.
+          </p>
+
+          <p>
+            Demo how ideal version works with additional features:
+            <ul>
+              <li>ordered keys / range queries
+              <li>key compression
+              <li>nested objects
+            </ul>
+          </p>
+
+          <p class="todo">
+            This section is incomplete.
+            For now, the <a href="https://github.com/jflatow/jfdb">README</a> contains the clearest examples of more sophisticated usage.
+          </p>
+        </div>
+      </section>
+
+      <section id="hard-part">
+        <div class="backdrop">
+          <img src="img/salesman.jpg" title="Traveling Salesman" />
+        </div>
+
+        <div class="content">
+          <h1>Now the NP-hard part</h1>
+          <p>
+            I can't wait to use this API.
+            But first, we need a database design that can implement it efficiently.
+            This seems like a good time to take stock of what we want and what we know.
+          </p>
+
+          <p>
+            We know we want to atomically write <i>(primary, value, indices)</i> on updates.
+            Given how we are using keys (ordered, prefix-compressed), we also know we probably want to use some kind of trie.
+          </p>
+
+          <p>
+            We're also going to want to persist this thing on disk.
+            It should never possibly exist in a corrupted state (machines can crash at any time and databases are supposed to be reliable).
+            Ideally we can work with the resource the same way we work with a normal file: open it, use it, close it.
+          </p>
+
+          <p>
+            So if we know roughly what the end result should look like, how do we build it?
+            How do we begin to evaluate a design?
+            Let's pause to take a moment and consider the next step.
+          </p>
+        </div>
+      </section>
+
+      <section id="a-little-perspective">
+        <div class="backdrop">
+          <img src="img/homogenous.svg" title="Rational Bézier curve by Wojciech Muła" width="800px" />
+        </div>
+
+        <div class="content">
+          <h1>A little perspective</h1>
+          <p>
+            At times like this, I find it useful to take <a href="https://www.youtube.com/watch?v=q3turHmOWq4">a step back</a> and imagine the realm of possibility, a.k.a. the design space.
+            The goal is to find the most efficient design (in this space) that meets our criteria.
+            I also want to find a <em>simple</em> solution, but we're in luck because <em>simplicity is efficiency</em>.
+          </p>
+
+          <p>
+            Our design space in this case is the set of all possible database designs.
+            And roughly speaking, we can measure the efficiency of a database design in terms of reading and writing.
+            To understand the solution space a little bit better, let's evaluate some well-known database designs according to a loose conception of read and write throughput.
+          </p>
+
+          <img src="img/db-design-space-1.svg" />
+
+          <p>
+            Here we visualize the fact that <b>LMDB</b> favors read performance, while <b>LevelDB</b> favors writes.
+            <b>BerkeleyDB</b> and <b>SQLite</b> are designed for roughly even amounts of both.
+          </p>
+
+          <p>
+            Almost all databases are based on <a href="https://en.wikipedia.org/wiki/B-tree">B-trees</a>.
+            In order to get some more context, let's add a couple of more data points.
+            Let's include <em>log files</em>, which are pretty much optimal for writing.
+            And we'll also include <b>DiscoDB</b>, which is immutable and uses perfect hashing to optimize for reading.
+          </p>
+
+          <img src="img/db-design-space-2.svg" />
+
+          <p>
+            Looking at it this way gives us a feel for the design space.
+            The last two we added are especially interesting because they are at the extremes.
+            We can use the extremes to help us understand the space in between.
+            Let's think of these as our <em>basis</em> vectors.
+          </p>
+
+          <p>
+            We can try to understand all database designs as a combination of the basis vectors.
+            The more a database favors writing, the more it is like a log file.
+            The more a database favors reading, the more it is like an immutable perfect hash.
+          </p>
+        </div>
+      </section>
+
+      <section id="the-write-spectrum">
+        <div class="backdrop">
+          <img src="img/crayons.jpg" title="Rainbow Falls by JKCreate" />
+        </div>
+
+        <div class="content">
+          <h1>The <em>write</em> spectrum</h1>
+          <p>
+            To get some deeper insight, I want to look at how each of these examples behaves with respect to incremental updates.
+            Let's consider what happens when we add <i>N</i> items to each database, one at a time.
+          </p>
+
+          <p>
+            (We'll ignore the key size for now since it doesn't change the relative analysis much.
+            We're also mainly paying attention to disk operations, since this is generally the dominant cost in a database.)
+          </p>
+
+          <p>
+            On one end of the spectrum, we have the log:
+          </p>
+
+          <img src="img/write-log-file.svg" />
+
+          <p>
+            On the other end of the spectrum is DiscoDB:
+          </p>
+
+          <img src="img/write-discodb.svg" />
+
+          <p>
+            Somewhere in the middle we have the copy-on-write B-tree used by <a href="http://lmdb.tech/doc/">LMDB</a>:
+          </p>
+
+          <img src="img/write-copy-on-write_b-tree.svg" />
+
+          <p>
+            And a little bit closer to log files we find the variant of <a href="https://en.wikipedia.org/wiki/Log-structured_merge-tree">log-structured merge trees</a>, which <b>JFDB</b> is based on:
+          </p>
+
+          <img src="img/write-log-structured_merge_trie.svg" />
+
+          <p>
+            The power of power laws is kind of remarkable.
+            This is a simple idea which works well in practice, a.k.a. <em>leverage</em>.
+            This strategy also has another property that I'd like to exploit: a chance to take any database and optimize if for reading.
+            The cost of lookups is basically due to the number of layers we may need to search in order to find what we're looking for.
+            So it should be possible to merge the layers at any time, and lookups would be <i>O(1)</i> instead of <i>O(log N)</i>.
+            This almost sounds too good to be true, the caveat is we pay <i>O(N)</i> to compress the database to a single level.
+          </p>
+        </div>
+      </section>
+
+      <section id="putting-it-together">
+        <div class="backdrop">
+          <img src="img/humpty.jpg" title="Humpty Dumpty by John Tenniel" />
+        </div>
+
+        <div class="content">
+          <h1>Putting it together</h1>
+          <p>
+            Now we have not only an API, but a strategy for writing to the database.
+            We also need a data structure that can handle all of these requirements.
+          </p>
+
+          <p>
+            Consider a trie which looks something like this:
+          </p>
+
+          <img src="img/hypothetical-trie.svg" />
+
+          <p>
+            Now imagine that we have a way of constructing such a trie from a single <i>(primary, value, indices)</i>.
+            We'll call the result an <em>atom</em>:
+          </p>
+
+          <img src="img/hypothetical-atom.svg" />
+
+          <p>
+            Imagine also that we have a way of merging tries together to form other tries.
+            By induction, we can create tries of any size.
+            We can write these tries sequentially to form <em>layers</em> of information in our database.
+          </p>
+
+          <p>
+            Every time we write to the database, we add a layer which is a trie.
+            Whenever we reach an even number of layers, we merge all the small layers into a larger trie.
+            When we reach <i>2<sup>n</sup></i> layers (where <i>n</i> is the level of our database), we merge all the layers into a new file, and increment the level of the database.
+          </p>
+
+          <p>
+            It's not that complicated, we are basically just counting:
+          </p>
+
+          <img src="img/trie-strategy.svg" />
+
+          <p>
+            <b>JFDB</b> has just such a data structure called a <a href="https://github.com/jflatow/jfdb/blob/master/src/trie.h">JFT</a>: an adaptive radix tree with an in-memory layout the same as on disk.
+            And it can efficiently merge up to <i>64</i> tries at a time.
+            <b>JFDB</b> separates the database into two files, a <em>keys</em> file which contains the tries and a <em>vals</em> file which contains the value data.
+            The values in the tries are offsets into the <em>vals</em> file or <i>NULL</i> to represent a lack of value (i.e. for deletion).
+          </p>
+
+          <p>
+            When you merge <b>JFTs</b> into a new trie, a scan list or jump table (and range) is chosen based on the branching factor of each merged branch.
+            Tries on disk can be directly mapped to data structures in memory for lightning fast load times.
+            Sub-tries are automatically cached in virtual memory pages by the operating system.
+            The merge operation also serves as a way of folding over many tries to produce an arbitrary accumulated value.
+          </p>
+
+          <p>
+            Primary keys and indices in a <b>JFT</b> are actually two (special) keyspaces in a single trie, distinguished by a 1-byte prefix.
+            Each leaf node in the primary keyspace stores an offset into the <em>vals</em> file (or <i>NULL</i>).
+            Each leaf node in the indices keyspace stores a list of offsets to the nodes in the primary sub-trie.
+        </div>
+      </section>
+
+      <section id="combine-the-layers">
+        <div class="backdrop">
+          <img src="img/layers.png" title="The views of a navigation interface by Apple" />
+        </div>
+
+        <div class="content">
+          <h1>Combine the layers</h1>
+          <p>
+            We need to combine layers whenever we read from multiple tries, or merge and write a new one.
+            Let's consider how exactly that's supposed to work.
+          </p>
+
+          <p>
+            In the primary keyspace, new paths simply clobber old paths.
+            When a path is clobbered, any values under the path become obsolete.
+            Normally, this happens implicitly, since when we search backwards for a path, we will stop after we find the most recent modification to it.
+          </p>
+
+          <img src="img/read-primary.svg" />
+
+          <p>
+            In the indices keyspace, new paths are merged with old paths.
+            This is implemented by searching <em>all</em> levels for indices.
+          </p>
+
+          <img src="img/read-indices.svg" />
+
+          <p>
+            However, this introduces a problem, since values from the old layers may have become obsolete.
+            This is actually the problem we noticed earlier when we looked at how to store indices in a plain key-value store.
+            Fortunately we can solve this problem efficiently at the low-level, so users of <b>JFDB</b> never have to worry about it.
+            If we set a dirty bit on the leaf node whenever the value is overwritten, we have an easy way to check whether we should skip it (i.e. when looking up indices or merging tries).
+            Unfortunately, this generally means an extra page will be written to disk every time the database is modified, but that's a story for another time and place.
+          </p>
+        </div>
+      </section>
+
+      <section id="mind-the-gaps">
+        <div class="backdrop">
+          <img src="img/jenga.jpg" title="Built for 'it' trials by Caterpillar" />
+        </div>
+
+        <div class="content">
+          <h1>Mind the gaps</h1>
+          <p>
+            When we write a value, we may need space to store it.
+            New space is allocated (in blocks) from the <em>vals</em> file whenever a non-nil value gets written.
+            The <em>keys</em> file stores tries with values that are offsets into that file.
+            Deletes are represented as a <i>NULL</i> value in a trie, and remain explicit until compacted out.
+            A gap is created whenever a value gets overwritten.
+          </p>
+
+          <img src="img/overwrite-vals.svg" />
+
+          <p>
+            To support reusing space in the <em>vals</em> file, we can track the largest gaps and try to allocate from those instead of appending to the file.
+            But to be certain which gaps are the largest, we would need to keep track of all of them.
+            In <b>JFDB</b> we keep only a fixed number of gaps, and thus may lose sight of where the biggest holes are.
+            To mitigate this, whenever we compact the layers into a fresh <em>keys</em> file, we also recalculate the largest gaps in the <em>vals</em> file.
+          </p>
+        </div>
+      </section>
+
+      <section id="promised-land">
+        <div class="backdrop">
+          <img src="img/moses.jpg" title="Moses views the promised land by Gerard Jollain" />
+        </div>
+
+        <div class="content">
+          <h1>To be continued...</h1>
+          <p>
+            Until then, if you want to know more about the implementation, please check out <a href="https://github.com/jflatow/jfdb">the project on GitHub</a>.
+            Especially if you want to see how <a href="https://github.com/jflatow/jfdb#indices">the search interface</a> works.
+          </p>
+
+          <p>
+            As far as benchmarking, there's still a lot of work to be done. For a rough sense of throughput, my laptop can do:
+          </p>
+
+          <ul>
+            <li>
+              <i>~25K writes/second</i> using a db size of <i>1M primary keys</i>
+            </li>
+            <li>
+              <i>~2M lookups/second</i> on the same database
+            </li>
+            <li>
+              <i>~0.7 seconds</i> to crush the database to a single layer
+            </li>
+            <li>
+              <i>~4.5M lookups/second</i> on the crushed database
+            </li>
+          </ul>
+
+          <p>
+            I get similar throughput with at least <i>10x</i> the number of keys.
+            I have yet to experiment with much larger databases, though in theory nothing should change.
+            Keep in mind these lookups are not doing anything with the values, nor are they using any of the advanced querying features.
+          </p>
+
+          <p>
+            <b>JFDB</b> has become a great tool for me these past few months, I hope others may find it useful too!
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer></footer>
+  </body>
+</html>
